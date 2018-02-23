@@ -1,0 +1,55 @@
+.page-wrapper.prizes
+  #prizes.content-wrapper
+    .header-nav
+      h1.headers
+        | Prizes
+      .button-group
+        button.prizes-btn.primary-button((click)='addPrize()') 
+          | New Prizes
+        button.prizes-btn.primary-button((click)='openModal(template)') 
+          | Activate Key Cards
+        button.prizes-btn.primary-button((click)='openCsv(csv)')
+          | Recipients CSV
+    .justify-start.newTabs.mb-4
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('prizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'prizes'}")
+        | Prizes
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('keycards')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'keycards'}")
+        | Key Card Recipients
+    app-prizesindex(*ngIf="selectedTab === 'prizes'")      
+    ng-template(#template)
+      .modal-header.active-modal-header
+        h6.modal-title
+          | ACTIVATE KEY CARDS
+        button.close((click)='modalRef.hide()',aria-label='close')
+          span(aria-hidden='true')
+            | &times;
+      .modal-body.active-modal-body
+        .input-label
+          | KEY CARD NUMBER
+        input.input([(ngModel)]='cardNumber')
+        button.prizes-btn.primary-button((click)='activate()')
+          | Activate
+    ng-template(#csv)
+      .modal-header.active-modal-header
+        h6.modal-title
+          | RECIPIENTS CSV
+        button.close((click)='modalRef.hide()',aria-label='close')
+          span(aria-hidden='true')
+            | &times;
+      .modal-body.active-modal-body
+        .checkbox-wrapper
+          .checkbox-prizes 
+            input.large-checkbox(type='checkbox' [(ngModel)]='newPrizes')
+          .checkbox-label
+            | Print All New Prizes
+        p.custom
+          | Or Select Custom Date Range Below
+        .input-label  
+          | START DATE
+        input.input([(ngModel)]='startDate')
+        .input-label
+          | END DATE
+        input.input([(ngModel)]='endDate')
+        .button-export
+          button.prizes-btn.primary-button.csv((click)='export()')
+            | Export csv

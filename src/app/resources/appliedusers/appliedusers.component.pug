@@ -1,0 +1,27 @@
+.page-wrapper.resources
+  #appliedusers.content-wrapper
+    .header-nav
+      h1.headers
+        | Applicants
+    .resource-name
+      | {{resource.title}}
+    .d-flex.space-between.py-1
+      .table-header.mx-4.col-student
+        | Student
+      .table-header.mx-4.col-school
+        | School
+      .table-header.mx-4.col-grade
+        | Grade
+      .table-header.mx-4.col-email
+        | Email
+    .table-content-without-search(*ngIf="resource.users")
+      .list(*ngFor="let user of resource.users")
+        .d-flex.space-between.bg-white.py-1
+          .table-data-primary.mx-4.col-student
+            | Name
+          .table-data.mx-4.col-school
+            | {{user.organization.name}}
+          .table-data.mx-4.col-grade
+            | Grade
+          .table-data.mx-4.col-email
+            | {{user.email}}

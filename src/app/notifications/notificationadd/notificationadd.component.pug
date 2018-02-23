@@ -1,0 +1,35 @@
+.page-wrapper
+  #notification.content-wrapper
+    form.form-group(#notificationForm="ngForm" (ngSubmit)="saveNotification(notificationForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | New Notification
+        .button-group
+            button.resources-btn.primary-button(type="submit") 
+              | Save
+            button.resources-btn.secondary-button(type="button" (click)="cancelNotification()") 
+              | Cancel  
+      .wrapper-content 
+        .item-info
+          .input-label-top
+            | SUBJECT
+            .invalid-validation([hidden]="subject.valid || (subject.pristine && !notificationForm.submitted)")
+              | Subject is required
+          input.notification-input(type="text" name="subject" [(ngModel)]='notification.subject' #subject="ngModel" required)
+        .item-info
+          .input-label
+            | MESSAGE
+            .invalid-validation([hidden]="message.valid || (message.pristine && !notificationForm.submitted)")
+              | Message is required
+          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.message" (ngModelChange)="onChange($event)"  #message="ngModel" required)
+        .item-info
+          .input-label-dropdown
+              | CAREERS
+          angular2-multiselect(
+            name = 'careers'
+            [data]='careerList'
+            [(ngModel)]='selectedCareers'
+            [settings]='ktsMultiSettings'
+            (onSelect)='onCareerSelect($event)'
+            (onDeSelect)='onCareerDeSelect($event)'
+          )

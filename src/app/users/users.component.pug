@@ -1,0 +1,21 @@
+.page-wrapper.users
+  #users.content-wrapper
+    .header-nav
+      h1.headers
+        | Users
+      .button-group
+          button.resource-button((click)='addNewUser()')
+            | New User          
+    .justify-start.newTabs.mb-4
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('students')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'students'}")
+        | Students
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('keycontacts')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'keycontacts'}")
+        | Key Contacts
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('counselors')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselors'}")
+        | Counselors
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('businessowners')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'businessowners'}")
+        | Business Owners
+    app-students(*ngIf="selectedTab === 'students'")
+    app-keycontacts(*ngIf="selectedTab === 'keycontacts'")
+    app-counselors(*ngIf="selectedTab === 'counselors'")
+    app-businessowners(*ngIf="selectedTab === 'businessowners'")

@@ -1,0 +1,30 @@
+#keycontacts
+  .search-bar
+    i.fa.fa-search.search-icon
+    input.search-text(type="text" placeholder="Search key contacts..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
+  .d-flex.space-between.py-1
+    .table-header.mx-4.col-name
+      | NAME
+    .table-header.mx-4.col-school
+      | School
+    .table-header.mx-4.col-email
+      | Email
+    .table-header.mx-4.col-created
+      | Created
+    .table-header.mx-4.col-edit
+      | &nbsp;
+  .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+    .list(*ngFor="let keycontact of keycontacts")
+      .d-flex.space-between.bg-white.py-1
+        .table-data-primary.mx-4.col-name
+          | {{keycontact.getName()}}
+        .table-data.mx-4.col-school
+          | {{keycontact.organization.name}}
+        .table-data.mx-4.col-email
+          | {{keycontact.email}}
+        .table-data.mx-4.col-created
+          | {{keycontact.created_at}}
+        .table-data.mx-4.col-edit
+          i.fa.fa-pencil.edit-row((click)='editKeyContact(keycontact.id)')
+    .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+      |Loading ...

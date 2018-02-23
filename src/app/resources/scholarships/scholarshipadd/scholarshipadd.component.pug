@@ -1,0 +1,93 @@
+.page-wrapper.resources
+  #scholarshipadd.content-wrapper
+    form.form-group(#scholarshipForm='ngForm' (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+          button.resources-btn.primary-button(type='submit')
+            | Save
+          button.resources-btn.secondary-button((click)='goBack()' type='button') 
+            | Cancel  
+      .wrapper-content 
+          .item-info
+            .input-label-top
+              | NAME
+              .invalid-validation([hidden]="name.valid || (name.pristine && !scholarshipForm.submitted)")
+                | Name is required
+            input.resources-input(type="text" name="name" [(ngModel)]='scholarship.title' #name='ngModel' required)
+          .item-info
+            .input-label
+              | DESCRIPTION
+              .invalid-validation([hidden]="details.valid || (details.pristine && !scholarshipForm.submitted)")
+                | Description is required
+            textarea.resources-textarea(rows='6' name="details" [(ngModel)]='scholarship.details' #details="ngModel" required) 
+          .item-info
+            .input-label-dropdown
+                | ORGANIZATION
+            angular2-multiselect(
+              name = 'organization'
+              [data]='organizationList'
+              [(ngModel)]='selectedOrganization'
+              [settings]='ktsSelectSettings'
+              (onSelect)='onOrganizationSelect($event)'
+              (onDeSelect)='onOrganizationDeSelect($event)'
+            )
+          .item-info
+            .input-label
+              | APPLICATION LINK
+              .invalid-validation([hidden]="link.valid || (link.pristine && !scholarshipForm.submitted)")
+                | Application link is required
+            input.resources-input([(ngModel)]='scholarship.link' name="link" #link='ngModel' required)
+          .item-info
+            .input-label
+              | AMOUNT
+              .invalid-validation([hidden]="amount.valid || (amount.pristine && !scholarshipForm.submitted)")
+                | Amount is required
+            input.resources-input([(ngModel)]='scholarship.amount' name='amount' #amount='ngModel' required)
+          .item-info
+            .input-label
+              | NUMBER AVAILABLE
+              .invalid-validation([hidden]="number_available.valid || (number_available.pristine && !scholarshipForm.submitted)")
+                | Number available is required
+            input.resources-input([(ngModel)]='scholarship.number_available' name="number_available" #number_available="ngModel" required)
+          .item-info
+            .input-label-dropdown
+              | CAREERS
+            angular2-multiselect(
+              name = 'careers'
+              [data]='careerList'
+              [(ngModel)]='selectedCareers'
+              [settings]='ktsMultiSettings'
+              (onSelect)='onCareerSelect($event)'
+              (onDeSelect)='onCareerDeSelect($event)'
+            )
+          .item-info
+            .input-label-bold
+                | ETHNICITIES
+            angular2-multiselect(
+              name = 'ethnicity'
+              [data]='ethnicityList'
+              [(ngModel)]='selectedEthnicities'
+              [settings]='ktsMultiSettings'
+              (onSelect)='onEthnicitySelect($event)'
+              (onDeSelect)='onEthnicityDeSelect($event)'
+            )     
+          .item-info
+            .input-label-bold
+                | HIGH SCHOOLS
+            angular2-multiselect(
+              name = 'schools'
+              [data]='schoolList'
+              [(ngModel)]='selectedSchools'
+              [settings]='ktsMultiSettings'
+              (onSelect)='onSchoolSelect($event)'
+              (onDeSelect)='onSchoolDeSelect($event)'
+            )     
+          .item-info
+            input(type='checkbox' [(ngModel)]='scholarship.is_active' id='active' name='checkbox')
+            label(for='active')
+              | Active  
+          .item-info   
+            button.resources-btn.secondary-button.delete-internship((click)='deleteScholarship()') 
+              | Delete Scholarship  

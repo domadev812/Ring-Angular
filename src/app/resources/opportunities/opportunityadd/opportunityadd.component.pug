@@ -1,0 +1,66 @@
+.page-wrapper.resources
+  #opportunity.content-wrapper
+    form.form-group(#opportunityForm="ngForm" (ngSubmit)="saveOpportunity(opportunityForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+            button.resources-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
+              | Save
+            button.resources-btn.secondary-button(type="button" (click)="goBack()") 
+              | Cancel
+      .applicants-view(*ngIf="editFlag === true && opportunity.users" (click)="gotoApplicants(opportunity.id)")
+        | Applicants: {{opportunity.users.length}} 
+        img.link-arrow(src="../assets/imgs/link-arrow.svg") 
+      .wrapper-content 
+        .item-info
+          .input-label
+            | NAME
+            .invalid-validation([hidden]="name.valid || (name.pristine && !opportunityForm.submitted)")
+              | Name is required
+          input.resources-input(type="text" name="name" [(ngModel)]="opportunity.title" (ngModelChange)="onChange($event)" #name="ngModel" required) 
+        .item-info
+          .input-label
+            | ORGANIZATION
+            .invalid-validation([hidden]="selectedOrganization.length > 0 || !opportunityForm.submitted")
+              | Organization is required
+          angular2-multiselect(
+              name = 'organization'
+              [data]='organizationList'
+              [(ngModel)]='selectedOrganization'
+              [settings]='ktsSelectSettings'
+              (onSelect)='onOrganizationSelect($event)'
+              (onDeSelect)='onOrganizationDeSelect($event)'
+            )
+        .item-info
+          .input-label
+            | DESCRIPTION
+            .invalid-validation([hidden]="details.valid || (details.pristine && !opportunityForm.submitted)")
+              | Description is required
+          textarea.resources-textarea(rows="6" name="details" [(ngModel)]="opportunity.details" (ngModelChange)="onChange($event)"  #details="ngModel" required)
+        .item-info
+          .input-label
+            | APPLICATION LINK
+            .invalid-validation([hidden]="link.valid || (link.pristine && !opportunityForm.submitted)")
+              | Application link is required
+            .invalid-validation([hidden]="!opportunity.link || opportunity.link === '' || validURL(opportunity.link) || (link.pristine && !opportunityForm.submitted)")
+              | Application link is not correct
+          input.resources-input([(ngModel)]="opportunity.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required)
+        .item-info
+          .input-label
+              | CAREERS
+          angular2-multiselect(
+            name = 'careers'
+            [data]='careerList'
+            [(ngModel)]='selectedCareers'
+            [settings]='ktsMultiSettings'
+            (onSelect)='onCareerSelect($event)'
+            (onDeSelect)='onCareerDeSelect($event)'
+          )     
+        .item-info
+          input(type='checkbox' id='active' [(ngModel)]='opportunity.is_active' [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
+          label(for='active')
+            | Active  
+        .item-info   
+          button.resources-btn.secondary-button.delete-opportunity((click)='deleteOpportunity()') 
+            | Delete Opportunity  

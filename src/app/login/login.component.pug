@@ -1,0 +1,17 @@
+.login-page-wrapper
+  #login.login-content-wrapper
+    .header-logo
+      .logo-wrapper
+        img(src="../assets/logos/Logo_Full_Red.png")
+    h1.login-header
+      | Administrative Login
+    .login-form([formGroup]="loginForm") 
+      .username()
+        label.input-label(for="email")
+          | username
+        input.input(type="text" id="email" formControlName="email" autofocus)
+      .password
+        label.input-label(for="password")
+          | password
+        input.input(type="password" id="password" formControlName="password")
+      button.primary-button((click)='login()' ) Login

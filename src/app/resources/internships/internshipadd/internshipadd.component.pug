@@ -1,0 +1,66 @@
+.page-wrapper.resources
+  #internship.content-wrapper
+    form.form-group(#internshipForm="ngForm" (ngSubmit)="saveInternship(internshipForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+            button.resources-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
+              | Save
+            button.resources-btn.secondary-button(type="button" (click)="goBack()") 
+              | Cancel
+      .applicants-view(*ngIf="editFlag === true && internship.users" (click)="gotoApplicants(internship.id)")
+        | Applicants: {{internship.users.length}} 
+        img.link-arrow(src="../assets/imgs/link-arrow.svg") 
+      .wrapper-content 
+        .item-info
+          .input-label
+            | NAME
+            .invalid-validation([hidden]="name.valid || (name.pristine && !internshipForm.submitted)")
+              | Name is required
+          input.resources-input(type="text" name="name" [(ngModel)]="internship.title" (ngModelChange)="onChange($event)" #name="ngModel" required) 
+        .item-info
+          .input-label
+            | ORGANIZATION
+            .invalid-validation([hidden]="selectedOrganization.length > 0 || !internshipForm.submitted")
+              | Organization is required
+          angular2-multiselect(
+              name = 'organization'
+              [data]='organizationList'
+              [(ngModel)]='selectedOrganization'
+              [settings]='ktsSelectSettings'
+              (onSelect)='onOrganizationSelect($event)'
+              (onDeSelect)='onOrganizationDeSelect($event)'
+            )
+        .item-info
+          .input-label
+            | DESCRIPTION
+            .invalid-validation([hidden]="details.valid || (details.pristine && !internshipForm.submitted)")
+              | Description is required
+          textarea.resources-textarea(rows="6" name="details" [(ngModel)]="internship.details" (ngModelChange)="onChange($event)"  #details="ngModel" required)
+        .item-info
+          .input-label
+            | APPLICATION LINK
+            .invalid-validation([hidden]="link.valid || (link.pristine && !internshipForm.submitted)")
+              | Application link is required
+            .invalid-validation([hidden]="!internship.link || internship.link === '' || validURL(internship.link) || (link.pristine && !internshipForm.submitted)")
+              | Application link is not correct
+          input.resources-input([(ngModel)]="internship.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required)
+        .item-info
+          .input-label
+              | CAREERS
+          angular2-multiselect(
+            name = 'careers'
+            [data]='careerList'
+            [(ngModel)]='selectedCareers'
+            [settings]='ktsMultiSettings'
+            (onSelect)='onCareerSelect($event)'
+            (onDeSelect)='onCareerDeSelect($event)'
+          )     
+        .item-info
+          input(type='checkbox' id='active' [(ngModel)]='internship.is_active' [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
+          label(for='active')
+            | Active  
+        .item-info   
+          button.resources-btn.secondary-button.delete-internship((click)='deleteInternship()') 
+            | Delete Internship  

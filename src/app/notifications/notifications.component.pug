@@ -1,0 +1,12 @@
+.page-wrapper.notifications
+  #users.content-wrapper
+    .header-nav
+      h1.headers
+        | Notifications
+      .button-group
+          button.new-notification-button((click)='addNotification()')
+            | New Notification
+    .justify-start.newTabs.mb-4
+      .sub-nav-item.center.mr-4.newSubNav([ngClass]="{'sub-nav-item-selected': selectedTab === 'notifications'}")
+        | Notifications
+    app-notificationlist(*ngIf="selectedTab === 'notifications'")

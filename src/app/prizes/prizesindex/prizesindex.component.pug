@@ -1,0 +1,38 @@
+#prizesindex
+  .search-bar
+      i.fa.fa-search.search-icon
+      input.search-text(type="text" placeholder="Search prizes..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
+  .d-flex.space-between.py-1
+    .table-header.mx-4.col-prize
+      | Prize
+    .table-header.mx-4.col-sponsor
+      | Sponsor
+    .table-header.mx-4.col-delivery
+      | Delivery
+    .table-header.mx-4.col-quantity
+      | Quantity
+    .table-header.mx-4.col-redeemed
+      | Redeemed
+    .table-header.mx-4.col-period
+      | Period
+    .table-header.mx-4.col-edit
+      | &nbsp;
+  .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+    .list(*ngFor="let prize of prizes")
+      .d-flex.space-between.bg-white.py-1
+        .table-data-primary.mx-4.col-prize
+          | {{prize.title}}
+        .table-data.mx-4.col-sponsor
+          | Sponsor
+        .table-data.mx-4.col-delivery
+          | Delivery
+        .table-data.mx-4.col-quantity
+          | {{prize.points}}
+        .table-data.mx-4.col-redeemed
+          | Redeemed
+        .table-data.mx-4.col-period
+          | {{prize.created_at}}
+        .table-data.mx-4.col-edit
+          i.fa.fa-pencil.edit-row((click)='editInternship(internship.id)')
+    .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+      |Loading ...  

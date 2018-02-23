@@ -1,0 +1,18 @@
+#sponsors
+  .search-bar
+    i.fa.fa-search.search-icon
+    input.search-text(type="text" placeholder="Search sponsors..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
+  .d-flex.space-between.px-4.mb-1
+    .table-header
+      | Sponsor
+    .table-header
+      | Created date
+  .table-content-without-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+    .list(*ngFor="let organization of organizations")
+      .d-flex.space-between.bg-white.py-1
+        .table-data-primary.mx-4
+          | {{organization.name}}
+        .table-data.mx-4
+          | {{organization.created_at}}
+    .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+      | Loading ...

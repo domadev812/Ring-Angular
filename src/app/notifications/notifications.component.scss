@@ -1,0 +1,30 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+.header-nav {
+  @include space-between;
+  flex-wrap: wrap;
+  font-family: $font-primary;
+}
+
+.new-notification-button {
+  @extend .primary-button;
+  @extend .new-button-group;
+}
+
+.notifications {
+  position: relative;
+  .newBtn{
+      width: 180px;
+      margin: 0;
+  }
+  .newTabs{
+      border-bottom: 1px solid $color-nav-underline;
+  }
+  .newSubNav{
+      position: relative;
+      cursor: pointer;
+      width: 110px;
+      height: 40px;
+  }  
+}

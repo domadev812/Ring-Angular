@@ -1,0 +1,18 @@
+@import "~assets/stylesheets/style-guide";
+
+#organizations{
+    position: relative;
+    .newBtn{
+        width: 180px;
+        margin: 0;
+    }
+    .newTabs{
+        border-bottom: 1px solid $color-nav-underline;
+    }
+    .newSubNav{
+        position: relative;
+        cursor: pointer;
+        width: 110px;
+        height: 40px;
+    }
+}

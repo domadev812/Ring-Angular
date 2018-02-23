@@ -1,0 +1,62 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+.header-nav {  
+  display: flex;
+  align-items: center;
+  font-family: $font-primary;
+  justify-content: space-between;
+  padding-top: 8px;
+  padding-bottom: 45px;
+  
+}
+.button-group {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  @include space-between;
+  align-items: center;
+  font-family: $font-primary;
+}
+
+.notifications-btn {
+  margin: 10px 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.notification-input {
+  @extend .input;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  margin-left: 0;
+}
+
+.notification-input-dropdown { 
+  @extend .notification-input;
+  height: 46px;
+  padding-left: 18px;
+  padding-top: 14px;
+}
+
+.notification-input-dropdown::placeholder {
+  @extend .placeholder;
+}
+
+
+.notification-textarea {
+  @extend .notification-input;
+  height: auto;
+  width: 100%;
+}
+
+.item-info {
+  margin-bottom: 30px;
+}
+
+.input-label {
+  @extend .input-label;
+  margin-left: 0;
+}
+

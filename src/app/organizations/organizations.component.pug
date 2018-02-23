@@ -1,0 +1,16 @@
+.page-wrapper
+  #organizations.content-wrapper
+    .space-between.mb-3
+      h1.headers
+        | Organizations
+      .justify-end
+        .primary-button.center.newBtn
+          | New Organization
+    .justify-start.newTabs.mb-4
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('schools')" [ngClass]="{'sub-nav-item-selected': tab === 'schools'}")
+        | Schools
+      .sub-nav-item.center.newSubNav((click)="switchTab('sponsors')" [ngClass]="{'sub-nav-item-selected': tab === 'sponsors'}")
+        | Sponsors
+    app-schools-table(*ngIf="tab === 'schools'; else sponsorsTable")
+    ng-template(#sponsorsTable)
+      app-sponsors-table

@@ -1,0 +1,430 @@
+
+
+.page-wrapper{
+  position: relative;
+  top: $nav-height;
+  background: $color-background;
+  min-height: 100vh;
+  height: 100%;
+  @include center-y;
+}
+
+.content-wrapper{
+    //removes responsiveness
+  width: 990px;
+  max-width: 990px;
+  min-width: 990px;
+  overflow: hidden;
+  padding: 25px 80px 0 85px;
+  @include xl{
+  width: 1110px;
+  max-width: 1110px;
+  min-width: 1110px;
+  }  
+}
+
+.headers{
+  font-family: $font-primary;
+  font-size: 29px;
+  color: $color-text-primary;
+  font-weight: 500;
+  margin-bottom: 9px;
+}
+
+//Nav
+.nav-item{  
+  a{ 
+    font-family: $font-primary;
+    font-size: 17px;
+    font-weight: 400;
+    color: $color-text-main-nav;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a:hover{
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.nav-item-selected{
+  position: relative;
+  font-family: $font-primary;
+  font-size: 17px;
+  font-weight: 600;
+  color: $color-text-nav-selected;
+  a{
+    font-family: $font-primary;
+    font-size: 17px;
+    font-weight: 600;
+    color: $color-text-nav-selected;
+  }
+}
+
+.nav-item-selected:after {
+    content: "";
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: 0;
+    border: 1px solid $color-primary;
+}
+
+.sub-nav-item{
+  font-family: $font-primary;
+  font-size: 18px;
+  font-weight: 300;
+  color: $color-text-sub-nav;
+}
+
+.sub-nav-item-selected{
+  position: relative;
+  font-family: $font-primary;
+  font-size: 18px;
+  font-weight: 500;
+  color: $color-text-nav-selected;
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    border: 1px solid $color-primary;
+  }
+}
+
+//Search
+.kts-search{
+  width: 100%;
+  height: 35px;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 19px;
+  color: $color-text-input-placeholder;
+  border-radius: 25px;
+  background: url(/assets/imgs/ic_search_25px.svg) no-repeat scroll 18px;
+  background-color: white;
+  padding-left: 45px;
+  border: 1px solid $color-search-border;
+  outline: none;
+}
+
+.kts-search-not-found{
+  margin-top: 30px;
+  padding: 8px 0px;
+  border-radius: 20px;
+  text-align: center;
+  background-color: $color-search-not-found;
+}
+.sub-nav-item-selected:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    border: 1px solid $color-primary;
+}
+.sub-nav-item-selected:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    border: 1px solid $color-primary;
+}
+
+.search-text {
+  font-family: $font-primary;
+  color: $color-text-primary;
+  font-weight: 500;
+  border: 0;
+  outline: none;
+  flex: 1;
+  margin-left: 10px;
+  &::-webkit-input-placeholder {
+    color: #8F99B3 !important;
+    font-weight: 100 !important;
+    line-height: 19px !important;
+  }
+}
+
+//Form
+.primary-button{
+  margin: 0 0 0 10px;
+  color: #ffffff;
+  background: #E41C3D;
+  height: 29px;
+  min-width: 112px;
+  border-radius: 5px;
+  font-family: "Barlow", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: .5px;
+  -webkit-box-shadow: 0 2px 4px 0 #7F7F7F;
+  box-shadow: 0 2px 4px 0 #7F7F7F;
+  border: none;
+  cursor: pointer;
+}
+
+.secondary-button{
+  @extend .primary-button;
+  background: $color-secondary-button;
+}
+
+.new-button-group {
+  margin: 5px 3px;
+  outline: none;
+  cursor: pointer;
+  width: 140px;  
+}
+
+.input{
+  height: 40px; 
+  border: 1px solid $color-input-outline;
+  width: 300px;
+  // margin: 0 0 0 10px;
+  border-radius: 3px;
+  display: block;
+  padding: 0 0 0 10px;
+  font-family: $font-primary;
+}
+
+.input-label{
+  font-family: $font-primary;
+  color: $color-text-label;
+  font-weight: 300;
+  text-transform: uppercase;
+  font-size: 12px;
+  display: block;
+  margin: -13px 0 1px 0;
+  padding-left: 2px;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.input-label-top {
+  @extend .input-label;
+  margin: -27px 0 0 0;
+}
+
+.input-label-dropdown {
+  @extend .input-label-top;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 40px 0 0 0;
+  font-size: 12.1px;
+}
+
+.input-label-bold{
+  @extend .input-label-top;
+  font-weight: 700;
+  color: $color-text-primary;
+  font-size: 12.1px;
+  margin: -5px 0 0 0;
+}
+
+.placeholder {
+  margin: 20px 0 0 2px;
+  font-family: $font-primary;
+  font-size: 20px;
+  color: rgba(156, 156, 156, 0.212);
+  font-weight: 100;
+}
+
+//Table
+.table-header{
+  font-family: $font-primary;
+  font-size: 11px;
+  font-weight: 400;
+  color: $color-text-table-header;
+  text-transform: uppercase;
+}
+
+.table-data-primary{
+  font-family: $font-primary;
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-primary;
+}
+
+.table-data{
+  font-family: $font-primary;
+  font-size: 12px;
+  font-weight: 400;
+  color: $color-text-primary;
+}
+
+.edit-row {
+  padding: 5px;
+  background-color: #dde2ed;
+  color: #000;
+  cursor: pointer;
+  font-size: .8em;
+}
+
+.table-content-with-search{
+  height: calc(100vh - 280px);
+  overflow-y: auto;    
+}
+.table-content-without-search{
+  height: calc(100vh - 225px);
+  overflow-y: auto;    
+}
+
+.infinite-scroll-loading {
+  background-color: #FFF;
+  text-align: center;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #FFF;
+  padding: 5px 15px;
+  margin-bottom: 20px;
+  border-radius: 20px;  
+  border: 1px solid $color-input-outline;
+}
+
+.search-text {
+  font-family: $font-primary;
+  color: $color-text-primary;
+  font-weight: 500;
+  border: 0;
+  outline: none;
+  flex: 1;
+  margin-left: 10px;
+}
+
+.search-icon {
+  font-size: 20px;
+}
+.space-between {
+  margin: 0 0 0 .5px;
+}
+
+.list {
+  padding: 0 0 2px .5px;
+}
+
+
+//Modal Dialog
+.modal-dialog {
+  padding-top: 10% !important;
+  .active-modal-header{
+    font-weight: bold;
+    padding-top: 10px !important;
+    padding-bottom: 2px !important;
+  .modal-title {
+    font-family: "Barlow", sans-serif;
+    font-weight: 700;
+    font-size: .89em;
+    letter-spacing: -0.1px;
+  }  
+   
+    .close {
+      font-weight: 300;
+      opacity: 1;
+      outline: none;
+      color: gray;
+      &:hover {
+        color: black;
+      }
+    }
+  }
+} 
+
+
+//Layout
+.center {//this will center horizontal and vertical
+  @include center;
+}
+.center-y {//centers vertically
+  @include center-y;
+}
+.center-x {//centers horizontally
+  @include center-x;
+}
+.justify-end {
+  @include justify-end;
+}
+.justify-start {
+  @include justify-start;
+}
+.space-between {
+  @include space-between;
+}
+.space-around {
+  @include space-around;
+}
+.baseline {
+  @include baseline;
+}
+
+
+// Multi-select dropdown css
+.kts-multiselect {
+  font-family: $font-primary;
+  .c-btn {
+    @extend .input;
+    box-shadow: none !important;    
+    min-height: 36px  !important;
+    height: auto  !important;
+    border: 1px solid #E9E9F0 !important;
+  }
+
+  .c-token{
+    @extend .center-y;
+    height: 25px  !important;
+    border-radius: 18px!important;
+    .c-label {
+      font-size: 12px  !important;
+      font-weight: 500  !important;
+      line-height: 14px  !important;
+      margin: 5px 5px 0 7px  !important;
+      color: white;
+
+    }
+
+    .fa {
+      &.fa-remove {
+        color: transparent;
+        margin: 6px 4px 0px -8px !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        &::after {
+          color: #fff;
+          font-family: $font-primary;
+          content: 'X';
+        }
+      }
+    }
+  }
+  .pure-checkbox {
+    label::before {
+      border-color: #525E83 !important;
+    }
+  }
+  .pure-checkbox[_ngcontent-c3] input[type="checkbox"][_ngcontent-c3]:checked + label[_ngcontent-c3]:before {
+    background: #525E83 !important;
+  }
+
+  .selected-list[_ngcontent-c3] .c-list[_ngcontent-c3] .c-token[_ngcontent-c3]{
+    color: #525E83 !important;
+    background: #525E83  !important;
+  }
+  
+}
+
+//validations
+
+.invalid-validation {
+  font-size: 11px;
+  color: red;
+  position: relative;
+  font-weight: 100;
+  margin-left: 10px;
+  margin-top: 2px;
+}

@@ -1,0 +1,21 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+#internships {
+  .col-resource {
+    width: 20%
+  }
+  .col-organization {
+    width: 30%
+  }
+  .col-link {
+    width: 35%
+  }
+  .col-created {
+    width: 10%
+  }
+  .col-edit {
+    width: 5%;
+    text-align: right;
+  }
+}

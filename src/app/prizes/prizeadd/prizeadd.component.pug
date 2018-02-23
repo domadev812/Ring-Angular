@@ -1,0 +1,27 @@
+.page-wrapper
+  #prizes.content-wrapper
+    .header-nav
+      h1.headers
+        | {{title}}
+      .button-group
+        button.prizes-btn.primary-button((click)='savePrize()') 
+          | Save
+        button.prizes-btn.secondary-button() 
+          | Cancel   
+    .wrapper-content 
+      .item-info
+        .input-label
+            | NAME
+        input.prize-input([(ngModel)]='prize.title')
+      .item-info
+        .input-label
+            | DESCRIPTION
+        textarea.prize-textarea(rows='6')
+      .item-info
+        .input-label
+            | SPONSOR
+        input.prize-input([(ngModel)]='prize.points' type='number')
+      .item-info
+        .input-label
+            | DELIVERY
+        input.prize-input()

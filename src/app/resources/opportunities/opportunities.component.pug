@@ -1,0 +1,30 @@
+#opportunities
+  .search-bar
+    i.fa.fa-search.search-icon
+    input.search-text(type="text" placeholder="Search opportunities..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
+  .d-flex.space-between.py-1
+    .table-header.mx-4.col-resource
+      | Resource
+    .table-header.mx-4.col-organization
+      | Organization
+    .table-header.mx-4.col-link
+      | Link
+    .table-header.mx-4.col-created
+      | Created
+    .table-header.mx-4.col-edit
+      | &nbsp;
+  .table-content-without-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+    .list(*ngFor="let opportunity of opportunities")
+      .d-flex.space-between.bg-white.py-1
+        .table-data-primary.mx-4.col-resource
+          | {{opportunity.title}}
+        .table-data.mx-4.col-organization
+          | {{getOrganizationNameById(opportunity.organization_id)}}
+        .table-data.mx-4.col-link
+          | {{opportunity.link}}
+        .table-data.mx-4.col-created
+          | {{opportunity.created_at}}
+        .table-data.mx-4.col-edit
+          i.fa.fa-pencil.edit-row((click)='editOpportunity(opportunity.id)')
+    .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+      |Loading ...

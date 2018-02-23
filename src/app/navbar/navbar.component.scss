@@ -1,0 +1,20 @@
+@import "~assets/stylesheets/style-guide";
+
+
+#nav{
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 57px;
+  border-bottom: 1px solid $color-nav-underline;
+  z-index: 999;
+  background-color: white;
+}
+
+.nav-list{
+  padding: 26px 38px 0 0;
+  .nav-item{
+    height: 31px;
+    margin-left: 40px;
+  }
+}

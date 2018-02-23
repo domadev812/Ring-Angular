@@ -1,0 +1,23 @@
+.page-wrapper.resources
+  #users.content-wrapper
+    .header-nav
+      h1.headers
+        | Resources
+      .button-group
+          button.resource-button((click)='addNewScholarship()')
+            | New Scholarship
+          button.resource-button((click)='addNewResource("internshipadd")')
+            | New Internship
+          button.resource-button((click)='addNewResource("opportunityadd")')
+            | New Opportunities
+    .justify-start.newTabs.mb-4
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('scholarships')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'scholarships'}")
+        | Scholarships
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('internships')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'internships'}")
+        | Internships
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('opportunities')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'opportunities'}")
+        | Other Opportunities
+    app-scholarships(*ngIf="selectedTab === 'scholarships'")
+    app-internships(*ngIf="selectedTab === 'internships'")
+    app-opportunities(*ngIf="selectedTab === 'opportunities'")    
+

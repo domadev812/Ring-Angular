@@ -1,0 +1,81 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+
+.header-nav {  
+  @include space-between;
+  flex-wrap: wrap;
+  font-family: $font-primary;
+  margin-bottom: 10px;
+}
+.prizes-btn {
+  @extend .new-button-group;
+}
+.prizes {
+  position: relative;
+  .newBtn{
+      width: 180px;
+      margin: 0;
+  }
+  .newTabs{
+      border-bottom: 1px solid $color-nav-underline;
+  }
+  .newSubNav{
+      position: relative;
+      cursor: pointer;
+      width: auto;
+      height: 40px;
+      padding: 0 20px;
+  }
+}
+.active-modal-body{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  span{
+    color: gray;
+    font-weight: 100;
+    font-size: 0.8rem;
+  }
+  button {
+    margin-top: 10px;
+  }
+  .input {
+    height: 30px;
+    width: 100%;
+    outline: none;
+   
+  }
+  .custom {
+    padding-top: 10px;
+    width: 100%;
+    font-family: $font-primary;
+  }
+
+
+  .checkbox-wrapper{
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-bottom: 10px;
+
+    .checkbox-label {
+      font-family: $font-primary;
+      font-weight: 600;
+      font-size: 14px;
+      padding-top: 2px;
+      padding-left: 15px;
+    }
+  
+    }
+  .button-export {
+    margin-left: -5px;
+    width: 100%;
+    padding-top: 20px;
+    .csv {
+      width: 200px;
+    }
+  }
+}  
