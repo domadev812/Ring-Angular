@@ -54,10 +54,10 @@ input {
   border: none;
 }
 .current-status {
+  .d-flex {
+    background-color: #fafafc !important;
+  }
   div {
     font-weight: 600;
   }
-}
-.bs-datepicker-head {
-  background-color: $color-primary;
 }

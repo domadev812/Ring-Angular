@@ -44,12 +44,12 @@
           | START DATE
           .invalid-validation([hidden]="startDate")
             | Start Date is required      
-        input.form-control(name="start-date" [minDate]="minDate" [maxDate]="endDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" required)
+        input.form-control(name="start-date" [minDate]="minDate" [maxDate]="endDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red'}" required)
         .input-label
           | END DATE
           .invalid-validation([hidden]="endDate")
             | End Date is required
-        input.form-control(name="end-date" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }")
+        input.form-control(name="end-date" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red'}")
         .input-label([hidden]="campaignId === 0")
           | REDEEMED
         input.input.redeemed-input(name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0")      
