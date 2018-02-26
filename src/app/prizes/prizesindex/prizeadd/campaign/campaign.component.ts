@@ -14,6 +14,7 @@ import { Model } from '../../../../app.models-list';
   templateUrl: './campaign.component.html',
   styleUrls: ['./campaign.component.scss']
 })
+
 export class CampaignComponent implements OnInit {    
   @Input() prizeId;
   @Input() campaigns;
@@ -32,6 +33,7 @@ export class CampaignComponent implements OnInit {
   minDate: Date = new Date();  
   quantity: string;
   redeemed: string;
+  selectedIndex: number;
   today: any;
 
   constructor(private prizesService: PrizesService, 
@@ -46,11 +48,12 @@ export class CampaignComponent implements OnInit {
   openModal(template: TemplateRef<any>, index: number = -1): void {
     this.modalRef = this.modalService.show(template, this.config);
     this.campaignId = index === -1 ? 0 : this.campaigns[index].id;    
+    this.selectedIndex = index;
     if (this.campaignId === 0) {
       this.modalTitle = 'New Campaign';  
       this.startDate = new Date();    
       this.endDate = new Date();
-	  this.endDate.setDate(this.endDate.getDate() + 30);
+      this.endDate.setDate(this.endDate.getDate() + 30);
       this.quantity = '';      
     } else {
       this.modalTitle = 'Edit Campaign';      
@@ -85,6 +88,14 @@ export class CampaignComponent implements OnInit {
       this.prizesService.createCampaign(this.prizeId, new Model.Campaign(newCampaign)).subscribe( (res) => {                 
         alert('Campaign is created');          
         this.campaigns.push(res);
+        this.modalRef.hide();
+      }, (errors) => {              
+        alert(errors.message);
+      });
+    } else {
+      this.prizesService.updateCampaign(this.prizeId, this.campaignId, this.quantity).subscribe( (res) => {                 
+        alert('Campaign is updated');           
+        this.campaigns.splice(this.selectedIndex, 1, res);
         this.modalRef.hide();
       }, (errors) => {              
         alert(errors.message);

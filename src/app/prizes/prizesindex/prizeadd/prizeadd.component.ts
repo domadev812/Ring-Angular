@@ -94,19 +94,20 @@ export class PrizeAddComponent implements OnInit {
         this.disableFlag = false;
         return;
       }      
+      
       if (this.prize.details !== this.originalPrize.details) {
         this.disableFlag = false;
         return;
       }
-
+      
       if (this.selectedSponsor.length === 0) {
-        this.disableFlag = false;
+        this.disableFlag = false;        
         return;
       } else if (this.selectedSponsor[0].id !== this.originalPrize.sponsor_id) {
-        this.disableFlag = false;
+        this.disableFlag = false;        
         return;
       }
-
+      
       if (this.selectedDelivery.length === 0) {
         this.disableFlag = false;
         return;
@@ -114,7 +115,7 @@ export class PrizeAddComponent implements OnInit {
         this.disableFlag = false;
         return;
       }
-
+      
       this.disableFlag = true;
     } else {
       this.disableFlag = false;

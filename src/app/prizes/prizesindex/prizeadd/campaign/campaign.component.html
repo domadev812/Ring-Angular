@@ -33,7 +33,7 @@
         <div class="input-label">START DATE
           <div class="invalid-validation" [hidden]="startDate">Start Date is required      </div>
         </div>
-        <input class="form-control" name="start-date" [minDate]="minDate" [maxDate]="endDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red'}" required>
+        <input class="form-control" name="start-date" [minDate]="minDate" [maxDate]="endDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red'}">
         <div class="input-label">END DATE
           <div class="invalid-validation" [hidden]="endDate">End Date is required</div>
         </div>
