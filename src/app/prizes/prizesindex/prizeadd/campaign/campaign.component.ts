@@ -50,6 +50,7 @@ export class CampaignComponent implements OnInit {
       this.modalTitle = 'New Campaign';  
       this.startDate = new Date();    
       this.endDate = new Date();
+	  this.endDate.setDate(this.endDate.getDate() + 30);
       this.quantity = '';      
     } else {
       this.modalTitle = 'Edit Campaign';      
