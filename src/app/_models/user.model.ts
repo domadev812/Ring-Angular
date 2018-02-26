@@ -8,6 +8,7 @@ export class User extends BaseUser {
   organization: Organization;
   created_at: any;
   updated_at: any;
+  
   constructor(data) {
     super();
     this.setData(data);

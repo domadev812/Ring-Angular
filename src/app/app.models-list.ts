@@ -1,5 +1,6 @@
 import { BaseUser as ApiBaseUser } from './_models/base-user.model';
 import { Prize as ApiPrize } from './_models/prize.model';
+import { Campaign as ApiCampaign } from './_models/campaign.model';
 import { Resource as ApiResource } from './_models/resource.model';
 import { Career as ApiCareer } from './_models/career.model';
 import { Organization as ApiOrganization } from './_models/organization.model';
@@ -16,6 +17,8 @@ export module Model {
     export const BaseUser = ApiBaseUser;
     export type Prize = ApiPrize;
     export const Prize = ApiPrize;
+    export type Campaign = ApiCampaign;
+    export const Campaign = ApiCampaign;
     export type Resource = ApiResource;
     export const Resource = ApiResource;
     export type Career = ApiCareer;

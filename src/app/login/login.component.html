@@ -1,0 +1,20 @@
+
+<div class="login-page-wrapper">
+  <div class="login-content-wrapper" id="login">
+    <div class="header-logo">
+      <div class="logo-wrapper"><img src="../assets/logos/Logo_Full_Red.png"></div>
+    </div>
+    <h1 class="login-header">Administrative Login</h1>
+    <div class="login-form" [formGroup]="loginForm"> 
+      <div class="username">
+        <label class="input-label" for="email">username</label>
+        <input class="input" type="text" id="email" formControlName="email" autofocus>
+      </div>
+      <div class="password">
+        <label class="input-label" for="password">password</label>
+        <input class="input" type="password" id="password" formControlName="password">
+      </div>
+      <button class="primary-button" (click)="login()">Login</button>
+    </div>
+  </div>
+</div>

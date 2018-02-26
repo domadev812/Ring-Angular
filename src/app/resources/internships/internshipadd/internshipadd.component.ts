@@ -149,7 +149,6 @@ export class InternshipAddComponent implements OnInit {
   }
 
   saveInternship(valid: boolean): void {
-
     if (!valid) {
       return;
     }
@@ -161,6 +160,7 @@ export class InternshipAddComponent implements OnInit {
     if (this.selectedOrganization.length === 0) {
       return;
     }
+
     if (!this.internship.is_active) {
       this.internship.is_active = false;
     }

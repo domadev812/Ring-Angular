@@ -8,6 +8,7 @@ export class PrizeItem {
   created_at: any;
   updated_at: any;
   deleted_at: any;
+  
   constructor(data) {
     this.setData(data);
   }
@@ -27,7 +28,6 @@ export class PrizeItem {
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');
     this.deleted_at = data.deleted_at ? moment(data.deleted_at, moment.ISO_8601)
-    .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
-      .format('DD  MMM  YYYY');        
+    .format('DD  MMM  YYYY') : null;       
   }
 }

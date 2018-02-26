@@ -1,0 +1,44 @@
+
+<div class="page-wrapper">
+  <div class="content-wrapper" id="prizes">
+    <form class="form-group" #prizeForm="ngForm" (ngSubmit)="savePrize(prizeForm.valid)" novalidate>
+      <div class="header-nav">
+        <h1 class="headers">{{title}}</h1>
+        <div class="button-group">
+          <button class="prizes-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">Save</button>
+          <button class="prizes-btn secondary-button" type="button" (click)="goBack()">
+             Cancel   </button>
+        </div>
+      </div>
+      <div class="wrapper-content"> 
+        <div class="item-info">
+          <div class="input-label">NAME
+            <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !prizeForm.submitted)">Name is required</div>
+          </div>
+          <input class="prize-input" type="text" name="name" [(ngModel)]="prize.title" (ngModelChange)="onChange($event)" #name="ngModel" required>
+        </div>
+        <div class="item-info">
+          <div class="input-label">DESCRIPTION
+            <div class="invalid-validation" [hidden]="details.valid || (details.pristine &amp;&amp; !prizeForm.submitted)">Description is required</div>
+          </div>
+          <textarea class="prize-textarea" rows="6" name="details" [(ngModel)]="prize.details" (ngModelChange)="onChange($event)" #details="ngModel" required>                 </textarea>
+        </div>
+        <div class="item-info">
+          <div class="input-label">SPONSOR
+            <div class="invalid-validation" [hidden]="selectedSponsor.length &gt; 0 || !prizeForm.submitted">Sponsor is required</div>
+          </div>
+          <angular2-multiselect name="sponsor" [data]="sponsorList" [(ngModel)]="selectedSponsor" [settings]="ktsSelectSettings" (onSelect)="onSponsorSelect($event)" (onDeSelect)="onSponsorDeSelect($event)"></angular2-multiselect>
+        </div>
+        <div class="item-info">
+          <div class="input-label">DELIVERY
+            <div class="invalid-validation" [hidden]="selectedDelivery.length &gt; 0 || !prizeForm.submitted">Delivery is required</div>
+          </div>
+          <angular2-multiselect name="delivery" [data]="deliveryList" [(ngModel)]="selectedDelivery" [settings]="ktsSelectSettings" (onSelect)="onDeliverySelect($event)" (onDeSelect)="onDeliveryDeSelect($event)"> </angular2-multiselect>
+        </div>
+      </div>
+    </form>
+    <div class="campaign-content">
+      <app-campaign [prizeId]="prize.id" [campaigns]="prize.prize_campaigns">      </app-campaign>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+.header-nav
+  .input-label.campaign-title
+    | CAMPAIGNS
+  button.primary-button.prizes-btn.campaign-btn(type = "button" [ngClass]="{'btn-disabled': !prizeId}" [disabled]="!prizeId" (click)='openModal(template)') 
+    | New campaign 
+.d-flex.space-between.py-1
+    .table-header.mx-4.col-start-date
+      | Start Date
+    .table-header.mx-4.col-end-date
+      | End Date
+    .table-header.mx-4.col-quantity
+      | Quantity    
+    .table-header.mx-4.col-redeemed
+      | Redeemed
+    .table-header.mx-4.col-status
+      | Status
+    .table-header.mx-4.col-edit
+      | &nbsp;
+.table-content-with-search
+  .list(*ngFor="let campaign of campaigns; let ind = index")
+    .d-flex.space-between.bg-white.py-1
+      .table-data.mx-4.col-start-date
+        | {{formatDate(campaign.activation_start)}}
+      .table-data.mx-4.col-end-date
+        | {{formatDate(campaign.activation_end)}}
+      .table-data.mx-4.col-quantity
+        | {{campaign.number_available}}
+      .table-data.mx-4.col-redeemed
+        | Redeemed
+      .table-data.mx-4.col-status
+        | Status
+      .table-data.mx-4.col-edit
+        i.fa.fa-pencil.edit-row((click)='openModal(template, ind)')
+  ng-template(#template)
+    .modal-header.active-modal-header
+      h6.modal-title
+        | {{modalTitle}}
+      button.close((click)='modalRef.hide()',aria-label='close')
+        span(aria-hidden='true')
+          | &times;
+    .modal-body.active-modal-body
+      form.form-group(#campaignForm="ngForm" (ngSubmit)="saveCampaign(campaignForm.valid)" novalidate)
+        .input-label
+          | START DATE
+          .invalid-validation([hidden]="startDate")
+            | Start Date is required      
+        input.form-control(name="start-date" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" required)
+        .input-label
+          | END DATE
+          .invalid-validation([hidden]="endDate")
+            | End Date is required
+        input.form-control(name="end-date" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }")
+        .input-label([hidden]="campaignId === 0")
+          | REDEEMED
+        input.input.redeemed-input(name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0")      
+        .input-label
+          | QUANTITY
+          .invalid-validation([hidden]="qty.valid || (qty.pristine && !campaignForm.submitted)")
+            | Quantity is required
+        input.input(type="number" name="qty" [(ngModel)]='quantity' #qty="ngModel" required)           
+        button.prizes-btn.primary-button(type = "submit")
+          | Save
+        button.prizes-btn.secondary-button(type = "button" (click)='modalRef.hide()')
+          | Cancel

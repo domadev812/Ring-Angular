@@ -17,7 +17,8 @@ export class ResourcesComponent implements OnInit {
       this.selectedTab = 'scholarships';    
     } else {
       this.selectedTab = this.global.selectedTab;
-    }    
+    }
+    this.global.selectedTab = '';    
   }
 
   addNewResource(pathName): void {

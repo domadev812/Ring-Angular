@@ -1,0 +1,25 @@
+
+<div class="page-wrapper resources">
+  <div class="content-wrapper" id="appliedusers">
+    <div class="header-nav">
+      <h1 class="headers">Applicants</h1>
+    </div>
+    <div class="resource-name">{{resource.title}}</div>
+    <div class="d-flex space-between py-1">
+      <div class="table-header mx-4 col-student">Student</div>
+      <div class="table-header mx-4 col-school">School</div>
+      <div class="table-header mx-4 col-grade">Grade</div>
+      <div class="table-header mx-4 col-email">Email</div>
+    </div>
+    <div class="table-content-without-search" *ngIf="resource.users">
+      <div class="list" *ngFor="let user of resource.users">
+        <div class="d-flex space-between bg-white py-1">
+          <div class="table-data-primary mx-4 col-student">Name</div>
+          <div class="table-data mx-4 col-school">{{user.organization.name}}</div>
+          <div class="table-data mx-4 col-grade">Grade</div>
+          <div class="table-data mx-4 col-email">{{user.email}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

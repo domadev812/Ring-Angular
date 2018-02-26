@@ -1,0 +1,55 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+@import "../../../prizes.component";
+
+.campaign-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: black;
+  margin-top: 0px;
+}
+.campaign-btn {
+  margin: -1px 3px;
+  width: 120px;
+  height: 25px;
+  font-size: 12px;
+}
+.btn-disabled{
+  background: #E8BDC4;
+  box-shadow: none;
+  cursor: default;
+}
+form{
+  width: 100%;
+}
+input {
+  margin-bottom: 15px;
+}
+.input-label {
+  margin: 0;
+}
+.table-content-with-search {
+  height: 200px;
+}
+.col-start-date {
+  width: 20%;
+}
+.col-end-date {
+  width: 20%;
+}
+.col-quantity {
+  width: 18%;
+}
+.col-redeemed {
+  width: 18%;
+}
+.col-status {
+  width: 19%;
+}
+.col-edit {
+  width: 5%;
+}
+.redeemed-input {
+  border: none;
+}

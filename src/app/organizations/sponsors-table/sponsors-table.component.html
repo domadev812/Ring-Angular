@@ -1,0 +1,19 @@
+
+<div id="sponsors">
+  <div class="search-bar"><i class="fa fa-search search-icon"></i>
+    <input class="search-text" type="text" placeholder="Search sponsors..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+  </div>
+  <div class="d-flex space-between px-4 mb-1">
+    <div class="table-header">Sponsor</div>
+    <div class="table-header">Created date</div>
+  </div>
+  <div class="table-content-without-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
+    <div class="list" *ngFor="let organization of organizations">
+      <div class="d-flex space-between bg-white py-1">
+        <div class="table-data-primary mx-4">{{organization.name}}</div>
+        <div class="table-data mx-4">{{organization.created_at}}</div>
+      </div>
+    </div>
+    <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>
+  </div>
+</div>

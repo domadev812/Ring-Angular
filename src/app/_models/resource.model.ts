@@ -22,6 +22,7 @@ export class Resource {
   schools: Array<Organization>;
   scolarship: Scholarship;
   career_titles: Array<number>;
+  
   constructor(data) {
     this.setData(data);
   }

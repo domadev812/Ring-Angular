@@ -26,7 +26,7 @@ export class PrizesService {
 
 
   activateCardNumber(cardNumber: string): Observable<boolean> {
-    let url = environment.apiUrl + '/keycard/' + cardNumber + '/activate';        
+    let url = environment.apiUrl + '/api/keycard/' + cardNumber + '/activate';        
     return this.http.patch(url, {})
     .map((response: Response) => {
       const json = response.json();
@@ -39,7 +39,7 @@ export class PrizesService {
   }
 
   createPrize(prize: Model.Prize): Observable<Model.Prize> {
-    let url = environment.apiUrl + '/prizes/';    
+    let url = `${environment.apiUrl}/api/prizes`;       
     return this.http.post(url, prize)
     .map((response: Response) => {
       const json = response.json();      
@@ -52,7 +52,7 @@ export class PrizesService {
   }
 
   getPrize(prizeId: string): Observable<Model.Prize> {
-    let url = environment.apiUrl + '/prizes/' + prizeId;        
+    let url = `${environment.apiUrl}/api/prizes/${prizeId}`;           
     return this.http.get(url)
     .map((response: Response) => {      
       const json = response.json();
@@ -65,7 +65,7 @@ export class PrizesService {
   }
 
   updatePrize(prize: Model.Prize): Observable<boolean> {
-    let url = environment.apiUrl + '/prizes/';       
+    let url = `${environment.apiUrl}/api/prizes`;             
     return this.http.post(url, prize)
     .map((response: Response) => {
       const json = response.json();
@@ -75,5 +75,19 @@ export class PrizesService {
         Observable.throw({ messages: 'Internal Server Error', response });
       }
     });
-  }  
+  }
+  
+  createCampaign(prizeId: string, campaign: Model.Campaign): Observable<Model.Campaign> {
+    let url = `${environment.apiUrl}/api/prizes/${prizeId}/campaign`;      
+    return this.http.post(url, campaign)
+    .map((response: Response) => {
+      const json = response.json();      
+      if (json && json.data) {
+        console.log(json.data);
+        return new Model.Campaign(json.data);
+      } else {
+        Observable.throw({ messages: 'Internal Server Error', response });
+      }
+    });
+  }
 }

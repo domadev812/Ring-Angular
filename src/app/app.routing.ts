@@ -10,7 +10,7 @@ import { AppliedUserComponent } from './resources/appliedusers/appliedusers.comp
 import { InternshipAddComponent } from './resources/internships/internshipadd/internshipadd.component';
 import { OpportunityAddComponent } from './resources/opportunities/opportunityadd/opportunityadd.component';
 import { ScholarshipAddComponent } from './resources/scholarships/scholarshipadd/scholarshipadd.component';
-import { PrizeAddComponent } from './prizes/prizeadd/prizeadd.component';
+import { PrizeAddComponent } from './prizes/prizesindex/prizeadd/prizeadd.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationAddComponent } from './notifications/notificationadd/notificationadd.component';
 import { RoleGuard } from './_guards/role.guard';
@@ -25,7 +25,7 @@ const appRoutes: Routes = [
 
   { path: 'prizeadd', component: PrizeAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'prizeedit/:prizeid', component: PrizeAddComponent, canActivate: [AuthGuard] },
+  { path: 'prizeedit/:prizeId', component: PrizeAddComponent, canActivate: [AuthGuard] },
 
   { path: 'internshipadd', component: InternshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 

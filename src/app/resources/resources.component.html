@@ -1,0 +1,21 @@
+
+<div class="page-wrapper resources">
+  <div class="content-wrapper" id="users">
+    <div class="header-nav">
+      <h1 class="headers">Resources</h1>
+      <div class="button-group">
+        <button class="resource-button" (click)="addNewScholarship()">New Scholarship</button>
+        <button class="resource-button" (click)="addNewResource(&quot;internshipadd&quot;)">New Internship</button>
+        <button class="resource-button" (click)="addNewResource(&quot;opportunityadd&quot;)">New Opportunities</button>
+      </div>
+    </div>
+    <div class="justify-start newTabs mb-4">
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('scholarships')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'scholarships'}">Scholarships</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('internships')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'internships'}">Internships</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('opportunities')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'opportunities'}">Other Opportunities</div>
+    </div>
+    <app-scholarships *ngIf="selectedTab === 'scholarships'"></app-scholarships>
+    <app-internships *ngIf="selectedTab === 'internships'"></app-internships>
+    <app-opportunities *ngIf="selectedTab === 'opportunities'">   </app-opportunities>
+  </div>
+</div>

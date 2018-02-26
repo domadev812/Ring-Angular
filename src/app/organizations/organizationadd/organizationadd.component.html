@@ -1,0 +1,49 @@
+
+<div class="page-wrapper organizations">
+  <div class="content-wrapper" id="organization">
+    <form class="form-group" #organizationForm="ngForm" (ngSubmit)="saveOrganization(organizationForm.valid)" novalidate>
+      <div class="header-nav">
+        <h1 class="headers">{{title}}</h1>
+        <div class="button-group">
+          <button class="organization-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">
+             Save</button>
+          <button class="organization-btn secondary-button" type="button" (click)="goBack()">
+             Cancel</button>
+        </div>
+      </div>
+      <div class="wrapper-content">
+        <div class="logo-image"> 
+          <div class="well my-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader" (onFileDrop)="selectedFile($event)">           <img class="preview" [ngStyle]="{'background-image': 'url(' + filePreviewPath.changingThisBreaksApplicationSecurity + ')'}" *ngIf="filePreviewPath">
+            <div class="empty-logo" *ngIf="!filePreviewPath">Upload Logo  </div>
+          </div>
+          <input class="file-chooser" type="file" ng2FileSelect [uploader]="uploader" (onFileSelected)="selectedFile($event)">
+        </div>
+        <div class="content">
+          <div class="item-info">
+            <div class="input-label">NAME
+              <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !organizationForm.submitted)">Name is required</div>
+            </div>
+            <input class="organization-input" type="text" name="name" [(ngModel)]="organization.name" (ngModelChange)="onChange($event)" #name="ngModel" required>
+          </div>
+          <div class="item-info">
+            <div class="input-label">DESCRIPTION
+              <div class="invalid-validation" [hidden]="details.valid || (details.pristine &amp;&amp; !organizationForm.submitted)">Description is required</div>
+            </div>
+            <textarea class="organization-textarea" rows="6" name="details" [(ngModel)]="organization.details" (ngModelChange)="onChange($event)" #details="ngModel" required></textarea>
+          </div>
+          <div class="item-info">
+            <div class="input-label">WEBSITE
+              <div class="invalid-validation" [hidden]="link.valid || (link.pristine &amp;&amp; !organizationForm.submitted)">Website link is required</div>
+              <div class="invalid-validation" [hidden]="!organization.url || organization.url === '' || validURL(organization.url) || (link.pristine &amp;&amp; !organizationForm.submitted)">Website link is not correct</div>
+            </div>
+            <input class="organization-input" [(ngModel)]="organization.url" (ngModelChange)="onChange($event)" name="link" #link="ngModel" required>
+          </div>
+          <div class="item-info">
+            <input type="checkbox" id="active" [(ngModel)]="organization.is_active" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)">
+            <label for="active">Active  </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

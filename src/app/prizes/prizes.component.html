@@ -1,0 +1,54 @@
+
+<div class="page-wrapper prizes">
+  <div class="content-wrapper" id="prizes">
+    <div class="header-nav">
+      <h1 class="headers">Prizes</h1>
+      <div class="button-group">
+        <button class="prizes-btn primary-button" (click)="addPrize()">
+           New Prizes</button>
+        <button class="prizes-btn primary-button" (click)="openModal(template)">
+           Activate Key Cards</button>
+        <button class="prizes-btn primary-button" (click)="openCsv(csv)">Recipients CSV</button>
+      </div>
+    </div>
+    <div class="justify-start newTabs mb-4">
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('prizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'prizes'}">Prizes</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('keycards')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'keycards'}">Key Card Recipients</div>
+    </div>
+    <app-prizesindex *ngIf="selectedTab === 'prizes'">     </app-prizesindex>
+    <ng-template #template>
+      <div class="modal-header active-modal-header">
+        <h6 class="modal-title">ACTIVATE KEY CARDS</h6>
+        <button class="close" (click)="modalRef.hide()" aria-label="close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body active-modal-body">
+        <div class="input-label">KEY CARD NUMBER</div>
+        <input class="input" [(ngModel)]="cardNumber">
+        <button class="prizes-btn primary-button" (click)="activate()">Activate</button>
+      </div>
+    </ng-template>
+    <ng-template #csv>
+      <div class="modal-header active-modal-header">
+        <h6 class="modal-title">RECIPIENTS CSV</h6>
+        <button class="close" (click)="modalRef.hide()" aria-label="close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body active-modal-body">
+        <div class="checkbox-wrapper">
+          <div class="checkbox-prizes"> 
+            <input class="large-checkbox" type="checkbox" [(ngModel)]="newPrizes">
+          </div>
+          <div class="checkbox-label">Print All New Prizes</div>
+        </div>
+        <p class="custom">Or Select Custom Date Range Below</p>
+        <div class="input-label">
+           START DATE</div>
+        <input class="input" [(ngModel)]="startDate">
+        <div class="input-label">END DATE</div>
+        <input class="input" [(ngModel)]="endDate">
+        <div class="button-export">
+          <button class="prizes-btn primary-button csv" (click)="export()">Export csv</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

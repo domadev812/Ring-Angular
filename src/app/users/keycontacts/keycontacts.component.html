@@ -1,0 +1,25 @@
+
+<div id="keycontacts">
+  <div class="search-bar"><i class="fa fa-search search-icon"></i>
+    <input class="search-text" type="text" placeholder="Search key contacts..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+  </div>
+  <div class="d-flex space-between py-1">
+    <div class="table-header mx-4 col-name">NAME</div>
+    <div class="table-header mx-4 col-school">School</div>
+    <div class="table-header mx-4 col-email">Email</div>
+    <div class="table-header mx-4 col-created">Created</div>
+    <div class="table-header mx-4 col-edit">&nbsp;</div>
+  </div>
+  <div class="table-content-with-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
+    <div class="list" *ngFor="let keycontact of keycontacts">
+      <div class="d-flex space-between bg-white py-1">
+        <div class="table-data-primary mx-4 col-name">{{keycontact.getName()}}</div>
+        <div class="table-data mx-4 col-school">{{keycontact.organization.name}}</div>
+        <div class="table-data mx-4 col-email">{{keycontact.email}}</div>
+        <div class="table-data mx-4 col-created">{{keycontact.created_at}}</div>
+        <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="editKeyContact(keycontact.id)"></i></div>
+      </div>
+    </div>
+    <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>
+  </div>
+</div>

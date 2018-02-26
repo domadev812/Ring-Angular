@@ -1,0 +1,25 @@
+
+<div id="scholarships">
+  <div class="search-bar"><i class="fa fa-search search-icon"></i>
+    <input class="search-text" type="text" placeholder="Search scholarships..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+  </div>
+  <div class="d-flex space-between py-1">
+    <div class="table-header mx-4 col-resource">Resource</div>
+    <div class="table-header mx-4 col-organization">Organization</div>
+    <div class="table-header mx-4 col-link">Link</div>
+    <div class="table-header mx-4 col-created">Created</div>
+    <div class="table-header mx-4 col-edit">&nbsp;</div>
+  </div>
+  <div class="table-content-with-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
+    <div class="list" *ngFor="let scholarship of scholarships">
+      <div class="d-flex space-between bg-white py-1">
+        <div class="table-data-primary mx-4 col-resource">{{scholarship.title}}</div>
+        <div class="table-data mx-4 col-organization">{{getOrganizationNameById(scholarship.organization_id)}}</div>
+        <div class="table-data mx-4 col-link">{{scholarship.link}}</div>
+        <div class="table-data mx-4 col-created">{{scholarship.created_at}}</div>
+        <div class="table-data mx-3 col-edit"><i class="fa fa-pencil edit-row"></i></div>
+      </div>
+    </div>
+    <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>
+  </div>
+</div>

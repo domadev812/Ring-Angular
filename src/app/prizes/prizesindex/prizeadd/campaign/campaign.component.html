@@ -1,0 +1,52 @@
+
+<div class="header-nav">
+  <div class="input-label campaign-title">CAMPAIGNS</div>
+  <button class="primary-button prizes-btn campaign-btn" type="button" [ngClass]="{'btn-disabled': !prizeId}" [disabled]="!prizeId" (click)="openModal(template)">
+     New campaign </button>
+</div>
+<div class="d-flex space-between py-1">
+  <div class="table-header mx-4 col-start-date">Start Date</div>
+  <div class="table-header mx-4 col-end-date">End Date</div>
+  <div class="table-header mx-4 col-quantity">Quantity    </div>
+  <div class="table-header mx-4 col-redeemed">Redeemed</div>
+  <div class="table-header mx-4 col-status">Status</div>
+  <div class="table-header mx-4 col-edit">&nbsp;</div>
+</div>
+<div class="table-content-with-search">
+  <div class="list" *ngFor="let campaign of campaigns; let ind = index">
+    <div class="d-flex space-between bg-white py-1">
+      <div class="table-data mx-4 col-start-date">{{formatDate(campaign.activation_start)}}</div>
+      <div class="table-data mx-4 col-end-date">{{formatDate(campaign.activation_end)}}</div>
+      <div class="table-data mx-4 col-quantity">{{campaign.number_available}}</div>
+      <div class="table-data mx-4 col-redeemed">Redeemed</div>
+      <div class="table-data mx-4 col-status">Status</div>
+      <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="openModal(template, ind)"></i></div>
+    </div>
+  </div>
+  <ng-template #template>
+    <div class="modal-header active-modal-header">
+      <h6 class="modal-title">{{modalTitle}}</h6>
+      <button class="close" (click)="modalRef.hide()" aria-label="close"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="modal-body active-modal-body">
+      <form class="form-group" #campaignForm="ngForm" (ngSubmit)="saveCampaign(campaignForm.valid)" novalidate>
+        <div class="input-label">START DATE
+          <div class="invalid-validation" [hidden]="startDate">Start Date is required      </div>
+        </div>
+        <input class="form-control" name="start-date" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" required>
+        <div class="input-label">END DATE
+          <div class="invalid-validation" [hidden]="endDate">End Date is required</div>
+        </div>
+        <input class="form-control" name="end-date" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">
+        <div class="input-label" [hidden]="campaignId === 0">REDEEMED</div>
+        <input class="input redeemed-input" name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0">
+        <div class="input-label">QUANTITY
+          <div class="invalid-validation" [hidden]="qty.valid || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity is required</div>
+        </div>
+        <input class="input" type="number" name="qty" [(ngModel)]="quantity" #qty="ngModel" required>
+        <button class="prizes-btn primary-button" type="submit">Save</button>
+        <button class="prizes-btn secondary-button" type="button" (click)="modalRef.hide()">Cancel</button>
+      </form>
+    </div>
+  </ng-template>
+</div>

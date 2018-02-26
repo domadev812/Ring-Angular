@@ -1,0 +1,34 @@
+
+<div class="page-wrapper">
+  <div class="content-wrapper" id="notification">
+    <form class="form-group" #notificationForm="ngForm" (ngSubmit)="saveNotification(notificationForm.valid)" novalidate>
+      <div class="header-nav">
+        <h1 class="headers">New Notification</h1>
+        <div class="button-group">
+          <button class="resources-btn primary-button" type="submit">
+             Save</button>
+          <button class="resources-btn secondary-button" type="button" (click)="cancelNotification()">
+             Cancel  </button>
+        </div>
+      </div>
+      <div class="wrapper-content"> 
+        <div class="item-info">
+          <div class="input-label-top">SUBJECT
+            <div class="invalid-validation" [hidden]="subject.valid || (subject.pristine &amp;&amp; !notificationForm.submitted)">Subject is required</div>
+          </div>
+          <input class="notification-input" type="text" name="subject" [(ngModel)]="notification.subject" #subject="ngModel" required>
+        </div>
+        <div class="item-info">
+          <div class="input-label">MESSAGE
+            <div class="invalid-validation" [hidden]="message.valid || (message.pristine &amp;&amp; !notificationForm.submitted)">Message is required</div>
+          </div>
+          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.message" (ngModelChange)="onChange($event)" #message="ngModel" required></textarea>
+        </div>
+        <div class="item-info">
+          <div class="input-label-dropdown">CAREERS</div>
+          <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)"></angular2-multiselect>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

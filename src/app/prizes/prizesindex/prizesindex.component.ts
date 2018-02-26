@@ -27,6 +27,10 @@ export class PrizesIndexComponent implements OnInit {
     this.getPrizes();
   }
 
+  editPrize(id) {
+    this.router.navigate(['prizeedit/' + id]);
+  }
+
   searchItems(event): void {    
     this.offset = 0;
     this.moreContentAvailable = true;

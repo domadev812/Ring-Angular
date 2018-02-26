@@ -1,0 +1,15 @@
+
+<div class="page-wrapper notifications">
+  <div class="content-wrapper" id="users">
+    <div class="header-nav">
+      <h1 class="headers">Notifications</h1>
+      <div class="button-group">
+        <button class="new-notification-button" (click)="addNotification()">New Notification</button>
+      </div>
+    </div>
+    <div class="justify-start newTabs mb-4">
+      <div class="sub-nav-item center mr-4 newSubNav" [ngClass]="{'sub-nav-item-selected': selectedTab === 'notifications'}">Notifications</div>
+    </div>
+    <app-notificationlist *ngIf="selectedTab === 'notifications'"></app-notificationlist>
+  </div>
+</div>
