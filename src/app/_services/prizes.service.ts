@@ -82,20 +82,8 @@ export class PrizesService {
     return this.http.post(url, campaign)
     .map((response: Response) => {
       const json = response.json();      
-      if (json && json.data) {        
-        return new Model.Campaign(json.data);
-      } else {
-        Observable.throw({ messages: 'Internal Server Error', response });
-      }
-    });
-  }
-
-  updateCampaign(prizeId: string, campaignId: number, quantity: string) {
-    let url = `${environment.apiUrl}/api/prizes/${prizeId}/campaign/${campaignId}`;      
-    return this.http.patch(url, {qty: quantity})
-    .map((response: Response) => {
-      const json = response.json();      
-      if (json && json.data) {        
+      if (json && json.data) {
+        console.log(json.data);
         return new Model.Campaign(json.data);
       } else {
         Observable.throw({ messages: 'Internal Server Error', response });

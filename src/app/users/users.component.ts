@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, Routes, RouterModule } from '@angular/router';
 import * as Services from '../app.services-list';
 
 @Component({
@@ -12,7 +11,6 @@ export class UsersComponent implements OnInit {
   public selectedTab: String = ''; 
 
   constructor(
-    private router: Router,
     private currentUserService: Services.CurrentUserService
   ) { }
 
@@ -20,8 +18,7 @@ export class UsersComponent implements OnInit {
     this.selectedTab = 'students';
   }
 
-  addNewUser(event): void {        
-    this.router.navigate(['useradd']);
+  addNewUser(event): void {    
   }
 
   switchTab(selectedTab: String): void {

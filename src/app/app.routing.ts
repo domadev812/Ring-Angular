@@ -4,7 +4,6 @@ import { AuthGuard } from './_guards/auth.guard';
 
 import * as Components from './app.components-list';
 import { UsersComponent } from './users/users.component';
-import { UserAddComponent } from './users/useradd/useradd.component';
 import { PrizesComponent } from './prizes/prizes.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { AppliedUserComponent } from './resources/appliedusers/appliedusers.component';
@@ -21,8 +20,6 @@ const appRoutes: Routes = [
   { path: 'login', component: Components.LoginComponent },
 
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard, RoleGuard] },
-
-  { path: 'useradd', component: UserAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'prizes', component: PrizesComponent, canActivate: [AuthGuard, RoleGuard] },
 

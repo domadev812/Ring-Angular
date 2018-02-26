@@ -14,7 +14,6 @@ import { Model } from '../../../../app.models-list';
   templateUrl: './campaign.component.html',
   styleUrls: ['./campaign.component.scss']
 })
-
 export class CampaignComponent implements OnInit {    
   @Input() prizeId;
   @Input() campaigns;
@@ -33,19 +32,20 @@ export class CampaignComponent implements OnInit {
   minDate: Date = new Date();  
   quantity: string;
   redeemed: string;
-  selectedIndex: number;
+  today: any;
+
   constructor(private prizesService: PrizesService, 
               private modalService: BsModalService) { }
 
   ngOnInit() {      
     this.modalType = 0;
-    this.modalTitle = 'New Campaign';        
+    this.modalTitle = 'New Campaign';   
+    this.today = moment().format('YYYY-MM-DD');         
   } 
 
   openModal(template: TemplateRef<any>, index: number = -1): void {
     this.modalRef = this.modalService.show(template, this.config);
     this.campaignId = index === -1 ? 0 : this.campaigns[index].id;    
-    this.selectedIndex = index;
     if (this.campaignId === 0) {
       this.modalTitle = 'New Campaign';  
       this.startDate = new Date();    
@@ -88,14 +88,18 @@ export class CampaignComponent implements OnInit {
       }, (errors) => {              
         alert(errors.message);
       });
-    } else {
-      this.prizesService.updateCampaign(this.prizeId, this.campaignId, this.quantity).subscribe( (res) => {                 
-        alert('Campaign is updated');           
-        this.campaigns.splice(this.selectedIndex, 1, res);
-        this.modalRef.hide();
-      }, (errors) => {              
-        alert(errors.message);
-      });
     }
+  }
+
+  getStatus(activationStart: Date, activationEnd: Date) {
+    const start = moment(activationStart);
+    const end = moment(activationEnd);
+    if (start.isAfter(moment(this.today))) {
+      return 'Future';
+    }
+    if (moment(this.today).isAfter(end)) {
+      return 'Past';
+    }
+    return 'Current';
   }
 }

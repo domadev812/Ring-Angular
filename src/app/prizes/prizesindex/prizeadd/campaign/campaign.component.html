@@ -13,14 +13,14 @@
   <div class="table-header mx-4 col-edit">&nbsp;</div>
 </div>
 <div class="table-content-with-search">
-  <div class="list" *ngFor="let campaign of campaigns; let ind = index">
+  <div class="list" *ngFor="let campaign of campaigns; let ind = index" [ngClass]="{'current-status': getStatus(campaign.activation_start, campaign.activation_end) === 'Current'}">
     <div class="d-flex space-between bg-white py-1">
       <div class="table-data mx-4 col-start-date">{{formatDate(campaign.activation_start)}}</div>
       <div class="table-data mx-4 col-end-date">{{formatDate(campaign.activation_end)}}</div>
       <div class="table-data mx-4 col-quantity">{{campaign.number_available}}</div>
       <div class="table-data mx-4 col-redeemed">Redeemed</div>
-      <div class="table-data mx-4 col-status">Status</div>
-      <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="openModal(template, ind)"></i></div>
+      <div class="table-data mx-4 col-status">{{getStatus(campaign.activation_start, campaign.activation_end)}}</div>
+      <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="openModal(template, ind)" [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'"></i></div>
     </div>
   </div>
   <ng-template #template>
@@ -33,11 +33,11 @@
         <div class="input-label">START DATE
           <div class="invalid-validation" [hidden]="startDate">Start Date is required      </div>
         </div>
-        <input class="form-control" name="start-date" [disabled]="campaignId &gt; 0" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" required>
+        <input class="form-control" name="start-date" [minDate]="minDate" [maxDate]="endDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" required>
         <div class="input-label">END DATE
           <div class="invalid-validation" [hidden]="endDate">End Date is required</div>
         </div>
-        <input class="form-control" name="end-date" [disabled]="campaignId &gt; 0" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">
+        <input class="form-control" name="end-date" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }">
         <div class="input-label" [hidden]="campaignId === 0">REDEEMED</div>
         <input class="input redeemed-input" name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0">
         <div class="input-label">QUANTITY

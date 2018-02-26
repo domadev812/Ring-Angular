@@ -53,3 +53,11 @@ input {
 .redeemed-input {
   border: none;
 }
+.current-status {
+  div {
+    font-weight: 600;
+  }
+}
+.bs-datepicker-head {
+  background-color: $color-primary;
+}
