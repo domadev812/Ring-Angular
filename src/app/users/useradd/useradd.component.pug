@@ -21,7 +21,20 @@
             | LAST NAME
             .invalid-validation([hidden]="lastName.valid || (lastName.pristine && !userForm.submitted)")
               | Last Name is required
-          input.user-input(type="text" name="lastName" [(ngModel)]='user.last_name' (ngModelChange)="onChange($event)" #lastName="ngModel" required)                               
+          input.user-input(type="text" name="lastName" [(ngModel)]='user.last_name' (ngModelChange)="onChange($event)" #lastName="ngModel" required)    
+        .item-info
+          .input-label
+            | USER TYPE
+            .invalid-validation([hidden]="selectedType.length > 0 || !userForm.submitted")
+              | Type is required
+          angular2-multiselect(
+            name = 'type'
+            [data]='typeList'
+            [(ngModel)]='selectedType'
+            [settings]='ktsSelectSettings'
+            (onSelect)='onTypeSelect($event)'
+            (onDeSelect)='onTypeDeSelect($event)'
+          )                           
         .item-info
           .input-label
             | SCHOOL
