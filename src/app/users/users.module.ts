@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 import { apiFactory } from '../_factories/api.factory';
 import { AuthGuard } from '../_guards/auth.guard';
@@ -14,6 +15,7 @@ import { StudentsComponent } from './students/students.component';
 import { KeyContactsComponent } from './keycontacts/keycontacts.component';
 import { CounselorsComponent } from './counselors/counselors.component';
 import { BusinessOwnersComponent } from './businessowners/businessowners.component';
+import { UserAddComponent } from './useradd/useradd.component';
 import { SharedModule } from '../shared.module';
 
 @NgModule({
@@ -22,11 +24,13 @@ import { SharedModule } from '../shared.module';
     StudentsComponent,
     KeyContactsComponent,
     CounselorsComponent,
-    BusinessOwnersComponent
+    BusinessOwnersComponent,
+    UserAddComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    AngularMultiSelectModule,
     SharedModule
   ],
   providers: [

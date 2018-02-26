@@ -1,0 +1,38 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+.header-nav {  
+  @include space-between;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  font-family: $font-primary;
+  margin-bottom: 30px;
+}
+.users-btn {
+  margin: 10px 3px;
+  outline: none;
+  cursor: pointer;
+}
+.btn-disabled{
+  background: #E8BDC4;
+  box-shadow: none;
+  cursor: default;
+}
+.user-input {
+  @extend .input;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  margin-left: 0;
+}
+.user-textarea {
+  @extend .user-input;
+  height: auto;
+}
+.item-info {
+  margin-bottom: 30px;
+}
+.input-label {
+  @extend .input-label;
+  margin-left: 0;
+}

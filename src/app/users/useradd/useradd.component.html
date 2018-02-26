@@ -1,0 +1,42 @@
+
+<div class="page-wrapper">
+  <div class="content-wrapper" id="users">
+    <form class="form-group" #userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate>
+      <div class="header-nav">
+        <h1 class="headers">{{title}}</h1>
+        <div class="button-group">
+          <button class="users-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">Save</button>
+          <button class="users-btn secondary-button" type="button" (click)="goBack()">
+             Cancel   </button>
+        </div>
+      </div>
+      <div class="wrapper-content"> 
+        <div class="item-info">
+          <div class="input-label">FIRST NAME
+            <div class="invalid-validation" [hidden]="firstName.valid || (firstName.pristine &amp;&amp; !userForm.submitted)">First Name is required</div>
+          </div>
+          <input class="user-input" type="text" name="firstName" [(ngModel)]="user.first_name" (ngModelChange)="onChange($event)" #firstName="ngModel" required>
+        </div>
+        <div class="item-info">
+          <div class="input-label">LAST NAME
+            <div class="invalid-validation" [hidden]="lastName.valid || (lastName.pristine &amp;&amp; !userForm.submitted)">Last Name is required</div>
+          </div>
+          <input class="user-input" type="text" name="lastName" [(ngModel)]="user.last_name" (ngModelChange)="onChange($event)" #lastName="ngModel" required>
+        </div>
+        <div class="item-info">
+          <div class="input-label">SCHOOL
+            <div class="invalid-validation" [hidden]="selectedSchool.length &gt; 0 || !userForm.submitted">School is required</div>
+          </div>
+          <angular2-multiselect name="school" [data]="schoolList" [(ngModel)]="selectedSchool" [settings]="ktsSelectSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)"></angular2-multiselect>
+        </div>
+        <div class="item-info">
+          <div class="input-label">EMAIL
+            <div class="invalid-validation" [hidden]="email.valid || (email.pristine &amp;&amp; !userForm.submitted)">Email link is required</div>
+            <div class="invalid-validation" [hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine &amp;&amp; !userForm.submitted)">Email is not correct</div>
+          </div>
+          <input class="user-input" [(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

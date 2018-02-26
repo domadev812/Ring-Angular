@@ -10,7 +10,7 @@ export class AccessService {
 
   private roles: Model.RolesAccess[] = [
     // tslint:disable-next-line:max-line-length
-    { role: 'admin', routeAccess: ['/users', '/organizations', '/resources', '/prizes', '/prizeadd', '/notifications', '/notificationadd', '/internshipadd', '/opportunityadd'], functionAccess: [''] },
+    { role: 'admin', routeAccess: ['/users', '/useradd', '/organizations', '/resources', '/prizes', '/prizeadd', '/notifications', '/notificationadd', '/internshipadd', '/opportunityadd'], functionAccess: [''] },
     { role: 'keyContact', routeAccess: ['/users', '/resources', '/prizes', '/notifications'], functionAccess: [''] },
     { role: 'counselor', routeAccess: ['/users', '/resources', '/prizes', '/notifications'], functionAccess: [''] },
     { role: 'businessOwner', routeAccess: ['/organizations', '/resources', '/prizes'], functionAccess: [''] },

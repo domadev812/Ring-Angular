@@ -1,0 +1,46 @@
+.page-wrapper
+  #users.content-wrapper
+    form.form-group(#userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+          button.users-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag")
+            | Save
+          button.users-btn.secondary-button(type="button" (click)="goBack()") 
+            | Cancel   
+      .wrapper-content 
+        .item-info
+          .input-label
+            | FIRST NAME
+            .invalid-validation([hidden]="firstName.valid || (firstName.pristine && !userForm.submitted)")
+              | First Name is required
+          input.user-input(type="text" name="firstName" [(ngModel)]='user.first_name' (ngModelChange)="onChange($event)" #firstName="ngModel" required) 
+        .item-info
+          .input-label
+            | LAST NAME
+            .invalid-validation([hidden]="lastName.valid || (lastName.pristine && !userForm.submitted)")
+              | Last Name is required
+          input.user-input(type="text" name="lastName" [(ngModel)]='user.last_name' (ngModelChange)="onChange($event)" #lastName="ngModel" required)                               
+        .item-info
+          .input-label
+            | SCHOOL
+            .invalid-validation([hidden]="selectedSchool.length > 0 || !userForm.submitted")
+              | School is required
+          angular2-multiselect(
+            name = 'school'
+            [data]='schoolList'
+            [(ngModel)]='selectedSchool'
+            [settings]='ktsSelectSettings'
+            (onSelect)='onSchoolSelect($event)'
+            (onDeSelect)='onSchoolDeSelect($event)'
+          )
+        .item-info
+          .input-label
+            | EMAIL
+            .invalid-validation([hidden]="email.valid || (email.pristine && !userForm.submitted)")
+              | Email link is required
+            .invalid-validation([hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine && !userForm.submitted)")
+              | Email is not correct
+          input.user-input([(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required) 
+                      
