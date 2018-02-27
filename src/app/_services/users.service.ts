@@ -27,9 +27,35 @@ export class UsersService {
       });
   }
 
-  createUser(resource: Model.User): Observable<Model.User> {
+  createUser(user: Model.User): Observable<Model.User> {
     let url = `${environment.apiUrl}/api/users`;
-    return this.http.post(url, resource)
+    return this.http.post(url, user)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.User(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
+  updateUser(user: Model.User): Observable<Model.User> {
+    let url = `${environment.apiUrl}/api/users/${user.id}`;
+    return this.http.patch(url, user)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.User(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
+  getUser(id: string): Observable<Model.User> {
+    let url = `${environment.apiUrl}/api/users/${id}`;
+    return this.http.get(url)
       .map((response: Response) => {
         const json = response.json();
         if (json && json.data) {

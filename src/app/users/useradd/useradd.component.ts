@@ -72,59 +72,68 @@ export class UserAddComponent implements OnInit {
   }
 
   getUser(id): void {
-    // this.prizesService.getPrize(id).subscribe( (res) => {          
-    //   this.prize = res;
-    //   this.prize.details = 'Detail';
-    //   this.prize.sponsor_id = '1212';
-    //   this.prize.delivery_type = 'Third Party';
-    //   this.originalPrize = Object.assign({}, this.prize);
-    //   if (this.sponsorList.length > 0) {
-    //     let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.sponsor_id, 0));
-    //     if (org) {
-    //       this.selectedSponsor.push(org);
-    //     }
-    //   }
-    //   let delivery = this.deliveryList.find(deliveryType => deliveryType.itemName === this.prize.delivery_type);
-    //   if (delivery) {
-    //     this.selectedDelivery.push(delivery);
-    //   }
-    // }, (errors) => {      
-    //   alert('Server error');
-    // });
+    this.usersService.getUser(id).subscribe( (res) => {          
+      this.user = res;
+      this.user.type = 'key_contact';
+      this.user.password = 'password';
+      this.originalUser = Object.assign({}, this.user);                  
+      if (this.schoolList.length > 0) {
+        let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
+        if (org) {
+          this.selectedSchool.push(org);
+        }
+      }
+      let userType = this.typeList.find(type => type.id === this.user.type);
+      if (userType) {
+        this.selectedType.push(userType);
+      }
+    }, (errors) => {      
+      alert('Server error');
+    });
   }
 
   onChange(event): void {
-    // if (this.editFlag) {      
-    //   if (this.prize.title !== this.originalPrize.title) {
-    //     this.disableFlag = false;
-    //     return;
-    //   }      
+    if (this.editFlag) {      
+      if (this.user.first_name !== this.originalUser.first_name) {
+        this.disableFlag = false;
+        return;
+      }      
       
-    //   if (this.prize.details !== this.originalPrize.details) {
-    //     this.disableFlag = false;
-    //     return;
-    //   }
+      if (this.user.last_name !== this.originalUser.last_name) {
+        this.disableFlag = false;
+        return;
+      }
       
-    //   if (this.selectedSponsor.length === 0) {
-    //     this.disableFlag = false;        
-    //     return;
-    //   } else if (this.selectedSponsor[0].id !== this.originalPrize.sponsor_id) {
-    //     this.disableFlag = false;        
-    //     return;
-    //   }
+      if (this.selectedSchool.length === 0) {
+        this.disableFlag = false;        
+        return;
+      } else if (this.selectedSchool[0].id !== this.originalUser.organization_id) {
+        this.disableFlag = false;        
+        return;
+      }
       
-    //   if (this.selectedDelivery.length === 0) {
-    //     this.disableFlag = false;
-    //     return;
-    //   } else if (this.selectedDelivery[0].itemName !== this.originalPrize.delivery_type) {
-    //     this.disableFlag = false;
-    //     return;
-    //   }
+      if (this.selectedType.length === 0) {
+        this.disableFlag = false;
+        return;
+      } else if (this.selectedType[0].id !== this.originalUser.type) {
+        this.disableFlag = false;
+        return;
+      }
       
-    //   this.disableFlag = true;
-    // } else {
-    //   this.disableFlag = false;
-    // }
+      if (this.user.email !== this.originalUser.email) {
+        this.disableFlag = false;
+        return;
+      }
+
+      if (this.user.password !== this.originalUser.password) {
+        this.disableFlag = false;
+        return;
+      }
+
+      this.disableFlag = true;
+    } else {
+      this.disableFlag = false;
+    }
   }
 
   saveUser(valid): void { 
@@ -139,6 +148,8 @@ export class UserAddComponent implements OnInit {
     if (!this.user.roles) {
       this.user.roles = [];
       this.user.roles.push(this.selectedType[0].id);
+    } else {
+      this.user.roles.push(this.selectedType[0].id);
     }
     
     if (!this.user.id) {      
@@ -148,9 +159,15 @@ export class UserAddComponent implements OnInit {
       }, (errors) => {      
         alert(errors.message);
       });
-    } else {            
-      alert('User is updated');       
-      // this.router.navigate(['prizes']);  
+    } else { 
+      let updatedUser = Object.assign({}, this.user);
+      delete updatedUser.password;             
+      this.usersService.updateUser(updatedUser).subscribe( (res) => {            
+        alert('User is updated');          
+        this.router.navigate(['users']);       
+      }, (errors) => {      
+        alert(errors.message);
+      });             
     }
   }
 

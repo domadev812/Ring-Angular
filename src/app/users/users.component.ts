@@ -17,7 +17,7 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.selectedTab = 'students';
+    this.selectedTab = 'student';
   }
 
   addNewUser(event): void {        
