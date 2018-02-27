@@ -72,7 +72,7 @@ export class PrizeAddComponent implements OnInit {
       this.prize.details = 'Detail';
       this.prize.sponsor_id = '1212';
       this.prize.delivery_type = 'Third Party';
-      this.originalPrize = Object.assign({}, this.prize);
+      this.originalPrize = Object.assign({}, this.prize);      
       if (this.sponsorList.length > 0) {
         let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.sponsor_id, 0));
         if (org) {

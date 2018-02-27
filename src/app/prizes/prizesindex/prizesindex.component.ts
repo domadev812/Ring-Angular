@@ -37,9 +37,9 @@ export class PrizesIndexComponent implements OnInit {
     this.getPrizes();         
   }
 
-  getPrizes(): void {
+  getPrizes(): void {    
     this.prizesService.getPrizes(this.offset, this.searchText).subscribe((res) => {
-      this.prizes = res.map(prize => prize);
+      this.prizes = res.map(prize => prize);      
       this.offset += res.length;      
     }, (errors) => {
       alert('Server error');

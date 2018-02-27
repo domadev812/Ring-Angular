@@ -18,7 +18,7 @@
       <div class="table-data mx-4 col-start-date">{{formatDate(campaign.activation_start)}}</div>
       <div class="table-data mx-4 col-end-date">{{formatDate(campaign.activation_end)}}</div>
       <div class="table-data mx-4 col-quantity">{{campaign.number_available}}</div>
-      <div class="table-data mx-4 col-redeemed">Redeemed</div>
+      <div class="table-data mx-4 col-redeemed">{{campaign.redeemed}}</div>
       <div class="table-data mx-4 col-status">{{getStatus(campaign.activation_start, campaign.activation_end)}}</div>
       <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="openModal(template, ind)" [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'"></i></div>
     </div>
@@ -42,6 +42,7 @@
         <input class="input redeemed-input" name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0">
         <div class="input-label">QUANTITY
           <div class="invalid-validation" [hidden]="qty.valid || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity is required</div>
+          <div class="invalid-validation" [hidden]="!qty.valid || checkValue() || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity cannot be less than redeemed.</div>
         </div>
         <input class="input" type="number" name="qty" [(ngModel)]="quantity" #qty="ngModel" required>
         <button class="prizes-btn primary-button" type="submit">Save</button>

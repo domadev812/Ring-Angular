@@ -49,5 +49,5 @@
             (onDeSelect)='onDeliveryDeSelect($event)'
           )  
     .campaign-content
-      app-campaign([prizeId]="prize.id" [campaigns]="prize.prize_campaigns")       
+      app-campaign([prizeId]="prize.id" (refreshPage)="getPrize(prize.id)" [campaigns]="prize.prize_campaigns")       
                       

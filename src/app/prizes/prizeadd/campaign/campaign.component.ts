@@ -1,6 +1,6 @@
 import 'rxjs/add/observable/throw';
 import * as moment from 'moment';
-import { Component, OnInit, TemplateRef, Input} from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -18,6 +18,7 @@ import { Model } from '../../../app.models-list';
 export class CampaignComponent implements OnInit {    
   @Input() prizeId;
   @Input() campaigns;
+  @Output() refreshPage = new EventEmitter();
   modalRef: BsModalRef;
   config = {
     animated: true,
@@ -32,7 +33,7 @@ export class CampaignComponent implements OnInit {
   endDate: Date = new Date();
   minDate: Date = new Date();  
   quantity: string;
-  redeemed: string;
+  redeemed: number;
   selectedIndex: number;
   today: any;
 
@@ -59,8 +60,8 @@ export class CampaignComponent implements OnInit {
       this.modalTitle = 'Edit Campaign';      
       this.startDate = new Date(this.campaigns[index].activation_start);    
       this.endDate = new Date(this.campaigns[index].activation_end);
-      this.quantity = this.campaigns[index].number_available;
-      this.redeemed = '';
+      this.quantity = this.campaigns[index].number_available;      
+      this.redeemed = this.campaigns[index].redeemed;
     }   
   }
 
@@ -69,6 +70,10 @@ export class CampaignComponent implements OnInit {
       .format('DD  MMM  YYYY') : '';    
   }
   
+  checkValue(): boolean {
+    return (parseInt(this.quantity, 0) >= this.redeemed) ? true : false;
+  }
+
   saveCampaign(valid): void {    
     if (!valid) {
       return;
@@ -89,14 +94,20 @@ export class CampaignComponent implements OnInit {
         alert('Campaign is created');          
         this.campaigns.push(res);
         this.modalRef.hide();
+        this.refreshPage.emit();
       }, (errors) => {              
         alert(errors.message);
       });
     } else {
+      if (!this.checkValue()) {
+        return;
+      }
+
       this.prizesService.updateCampaign(this.prizeId, this.campaignId, this.quantity).subscribe( (res) => {                 
         alert('Campaign is updated');           
         this.campaigns.splice(this.selectedIndex, 1, res);
         this.modalRef.hide();
+        this.refreshPage.emit();
       }, (errors) => {              
         alert(errors.message);
       });

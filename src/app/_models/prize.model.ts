@@ -28,7 +28,10 @@ export class Prize {
     this.sponsor_id = data.sponsor_id || this.sponsor_id;
     this.points = data.points || this.points;
     this.images = data.images || this.images;    
-    this.prize_campaigns = data.prize_campaigns || this.prize_campaigns;
+    if (data.prize_campaigns) {
+      this.prize_campaigns = [];
+      this.prize_campaigns = data.prize_campaigns.map(campaign => new Campaign(campaign));
+    }     
     this.created_at = data.created_at ? moment(data.created_at, moment.ISO_8601)
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');
