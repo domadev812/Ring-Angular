@@ -19,7 +19,6 @@ import { Api } from './_providers/api.provider';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { GlobalState } from './global.state';
-import { OrganizationService  } from './_services/organization.service';
 
 
 @NgModule({
@@ -53,9 +52,10 @@ import { OrganizationService  } from './_services/organization.service';
     Services.AuthService,
     Services.CurrentUserService,
     Services.AccessService,
+    Services.OrganizationService,
+    Services.MultiSelectService,
+    Services.NavbarService,
     GlobalState,
-    OrganizationService,
-    Services.MultiSelectService
   ],
   bootstrap: [Components.AppComponent]
 })

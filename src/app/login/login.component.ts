@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AuthService } from '../_services/auth.service';
+import { NavbarService } from '../app.services-list';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +17,12 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
+    private navBarService: NavbarService,
   ) { 
   }
 
   ngOnInit() {
+    this.navBarService.hide();
     this.loginForm = new FormGroup({
       email: new FormControl(),
       password: new FormControl()

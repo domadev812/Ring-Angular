@@ -1,4 +1,4 @@
-#nav
+#nav( *ngIf="navBarService.visible")
   ul.nav-list.justify-end
     li.nav-item((click)="switchTab('Users')" [ngClass]="{'nav-item-selected': tab === 'Users'}")
       a([routerLink]="['/users']" ) Users

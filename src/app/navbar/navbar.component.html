@@ -1,5 +1,5 @@
 
-<div id="nav">
+<div id="nav" *ngIf="navBarService.visible">
   <ul class="nav-list justify-end">
     <li class="nav-item" (click)="switchTab('Users')" [ngClass]="{'nav-item-selected': tab === 'Users'}"><a [routerLink]="['/users']">Users</a></li>
     <li class="nav-item" (click)="switchTab('Resources')" [ngClass]="{'nav-item-selected': tab === 'Resources'}"><a [routerLink]="['/resources']">Resources</a></li>

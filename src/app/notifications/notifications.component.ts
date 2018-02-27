@@ -1,6 +1,7 @@
 import 'rxjs/add/observable/throw';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
+import { NavbarService } from '../app.services-list';
 
 @Component({
   selector: 'app-notifications',
@@ -11,9 +12,13 @@ export class NotificationsComponent implements OnInit {
 
   selectedTab: String;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private navBarService: NavbarService,
+  ) { }
 
   ngOnInit() {
+    this.navBarService.show();
     this.selectedTab = 'notifications';
   }
 

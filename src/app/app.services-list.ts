@@ -6,4 +6,6 @@ export * from './_services/notifications.service';
 export * from './_services/access.service';
 export * from './_services/users.service';
 export * from './_services/multiselect.service';
+export * from './_services/navbar-service.service';
+export * from './_services/organization.service';
 

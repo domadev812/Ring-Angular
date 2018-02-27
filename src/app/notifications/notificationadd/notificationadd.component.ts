@@ -7,6 +7,7 @@ import { NotificationsService, MultiSelectService } from '../../app.services-lis
 import { error } from 'util';
 import { Model } from '../../app.models-list';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
+import { NavbarService } from '../../app.services-list';
 
 @Component({
   selector: 'app-notificationadd',
@@ -25,10 +26,13 @@ export class NotificationAddComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private notificationsService: NotificationsService,
     private router: Router,
-    private multiSelectService: MultiSelectService) {
+    private multiSelectService: MultiSelectService,
+    private navBarService: NavbarService,
+  ) {
   }
 
   ngOnInit() {
+    this.navBarService.show();
     this.notification = new Model.Notification({});
     this.careers = new Array<Model.Career>();
     this.getCareers();

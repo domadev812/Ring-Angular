@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { OrganizationService  } from '../../_services/organization.service';
+import { OrganizationService  } from '../../app.services-list';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 import { Observable } from 'rxjs/Observable';

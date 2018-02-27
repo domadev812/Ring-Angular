@@ -8,6 +8,7 @@ import { MultiSelectService, ResourcesService } from '../../../app.services-list
 import { Model } from '../../../app.models-list';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { FormsModule } from '@angular/forms';
+import { NavbarService } from '../../../app.services-list';
 
 @Component({
   selector: 'app-scholarshipadd',
@@ -35,9 +36,12 @@ export class ScholarshipAddComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private multiSelectService: MultiSelectService,
-    private resourcesService: ResourcesService) {
+    private resourcesService: ResourcesService,
+    private navBarSerice: NavbarService,
+  ) {
   }
   ngOnInit() {
+    this.navBarSerice.show();
     this.scholarship = new Model.Scholarship({});
     this.schools = new Array<Model.Organization>();
     this.ethnicities = new Array<Model.Ethnicity>();

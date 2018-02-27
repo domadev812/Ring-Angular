@@ -7,6 +7,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Model } from '../app.models-list';
 import { error } from 'util';
 import { PrizesService } from '../app.services-list';
+import { NavbarService } from '../app.services-list';
 import { GlobalState } from '../global.state';
 
 @Component({
@@ -29,9 +30,12 @@ export class PrizesComponent implements OnInit {
   constructor(private router: Router,
               private modalService: BsModalService,
               private prizesService: PrizesService,
-              private global: GlobalState) { }
+              private global: GlobalState,
+              private navBarService: NavbarService,
+            ) { }
 
   ngOnInit() { 
+    this.navBarService.show();
     if (this.global.selectedTab === '') {      
       this.selectedTab = 'prizes';    
     } else {

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { OrganizationService  } from '../_services/organization.service';
+import { OrganizationService  } from '../app.services-list';
 import { SchoolsTableComponent } from './schools-table/schools-table.component';
 import { SponsorsTableComponent } from './sponsors-table/sponsors-table.component';
+import { NavbarService } from '../app.services-list';
 
 @Component({
   selector: 'app-organizations',
@@ -15,9 +16,12 @@ export class OrganizationsComponent implements OnInit {
   
   tab: String;
 
-  constructor() { }
+  constructor(
+    private navBarService: NavbarService
+  ) { }
 
   ngOnInit() {
+    this.navBarService.show();
     this.tab = 'schools';
   }
 

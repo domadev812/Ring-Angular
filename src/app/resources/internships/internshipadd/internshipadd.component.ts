@@ -8,6 +8,7 @@ import { MultiSelectService, ResourcesService } from '../../../app.services-list
 import { Model } from '../../../app.models-list';
 import { GlobalState } from '../../../global.state';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
+import { NavbarService } from '../../../app.services-list';
 
 @Component({
   selector: 'app-internshipadd',
@@ -32,9 +33,12 @@ export class InternshipAddComponent implements OnInit {
     private route: ActivatedRoute,
     private resourcesService: ResourcesService,
     private multiSelectService: MultiSelectService,
-    public global: GlobalState) { }
+    public global: GlobalState,
+    public navBarService: NavbarService,
+  ) { }
 
   ngOnInit() {
+    this.navBarService.show();
     this.internship = new Model.Resource({});
     this.originalInternship = new Model.Resource({});
     this.careers = new Array<Model.Career>();

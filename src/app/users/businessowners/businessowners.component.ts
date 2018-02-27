@@ -21,8 +21,8 @@ export class BusinessOwnersComponent implements OnInit {
   public businessowners: Array<ApiUser>;
   public organizations: Array<Model.Organization>;  
 
-  constructor(private usersService: UsersService, 
-              private resourcesService: ResourcesService) { }
+  constructor(private router: Router,
+              private usersService: UsersService) { }
 
   ngOnInit() {
     this.businessowners = new Array<ApiUser>();
@@ -33,6 +33,7 @@ export class BusinessOwnersComponent implements OnInit {
   }
 
   editBusinessOwner(id) {
+    this.router.navigate(['useredit/' + id]);
   }
 
   searchItems(event): void {

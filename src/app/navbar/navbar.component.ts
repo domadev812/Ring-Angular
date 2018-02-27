@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavbarService } from '../app.services-list';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,9 @@ export class NavbarComponent implements OnInit {
 
   tab: String;
 
-  constructor() { }
+  constructor(
+    private navBarService: NavbarService
+  ) { }
 
   ngOnInit() {
     this.tab = 'Users';
