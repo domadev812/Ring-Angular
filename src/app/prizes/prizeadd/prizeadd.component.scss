@@ -6,14 +6,18 @@
   flex-wrap: wrap;
   align-items: flex-end;
   font-family: $font-primary;
+  margin-bottom: 30px;
 }
-
 .prizes-btn {
   margin: 10px 3px;
   outline: none;
   cursor: pointer;
 }
-
+.btn-disabled{
+  background: #E8BDC4;
+  box-shadow: none;
+  cursor: default;
+}
 .prize-input {
   @extend .input;
   padding: 10px;
@@ -21,17 +25,17 @@
   width: 100%;
   margin-left: 0;
 }
-
 .prize-textarea {
   @extend .prize-input;
   height: auto;
 }
-
 .item-info {
   margin-bottom: 30px;
 }
-
 .input-label {
   @extend .input-label;
   margin-left: 0;
+}
+.campaign-content {
+  margin-top: 50px;
 }

@@ -13,7 +13,7 @@ export class UsersService {
   }
 
   getUsers(type: string, offset: number, search: string = '', limit: number = 50): Observable<Model.User[]> {    
-    let paramType = type !== '' ? `type=${type}` : '';
+    let paramType = type !== '' ? `role=${type}` : '';
     let paramTitle = search !== '' ? `search=${search}` : '';    
     let url = `${environment.apiUrl}/api/users?offset=${offset}&limit=${limit}&${paramType}&${paramTitle}`;      
     return this.http.get(url)

@@ -6,7 +6,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  
+
   constructor(
     private authService: Services.AuthService,
     private currentUserService: Services.CurrentUserService,
@@ -16,14 +16,14 @@ export class RoleGuard implements CanActivate {
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     try {
       let user = await this.currentUserService.getCurrentUser(this.authService, true);
-      for (let role of user.roles ){
+      for (let role of user.roles) {
         let userRoles = this.accessService.getRoleAccess(role);
-        if (userRoles.routeAccess.find(x => x === state.url)) {
+        if (userRoles.routeAccess.find(x => x === state.url.split('/')[1])) {
           return true;
         }
         return false;
       }
-    }catch (err) {
+    } catch (err) {
       if (err) {
         console.log('ERROR');
       }

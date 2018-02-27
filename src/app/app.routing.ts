@@ -10,7 +10,7 @@ import { AppliedUserComponent } from './resources/appliedusers/appliedusers.comp
 import { InternshipAddComponent } from './resources/internships/internshipadd/internshipadd.component';
 import { OpportunityAddComponent } from './resources/opportunities/opportunityadd/opportunityadd.component';
 import { ScholarshipAddComponent } from './resources/scholarships/scholarshipadd/scholarshipadd.component';
-import { PrizeAddComponent } from './prizes/prizesindex/prizeadd/prizeadd.component';
+import { PrizeAddComponent } from './prizes/prizeadd/prizeadd.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationAddComponent } from './notifications/notificationadd/notificationadd.component';
 import { RoleGuard } from './_guards/role.guard';
@@ -25,23 +25,19 @@ const appRoutes: Routes = [
 
   { path: 'prizeadd', component: PrizeAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'prizeedit/:prizeId', component: PrizeAddComponent, canActivate: [AuthGuard] },
+  { path: 'prizeedit/:prizeId', component: PrizeAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'internshipadd', component: InternshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'internshipedit/:internshipId', component: InternshipAddComponent, canActivate: [AuthGuard] },
+  { path: 'internshipedit/:internshipId', component: InternshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'applicants/:resourceId', component: AppliedUserComponent, canActivate: [AuthGuard] },
+  { path: 'applicants/:resourceId', component: AppliedUserComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'opportunityadd', component: OpportunityAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'opportunityedit/:opportunityId', component: OpportunityAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'scholarshipadd', component: ScholarshipAddComponent, canActivate: [AuthGuard] },
-
-  { path: 'internshipadd', component: InternshipAddComponent, canActivate: [AuthGuard] },
-
-  { path: 'internshipedit/:internshipId', component: InternshipAddComponent, canActivate: [AuthGuard] },
+  { path: 'scholarshipadd', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'resources', component: ResourcesComponent, canActivate: [AuthGuard, RoleGuard] },
 
@@ -49,9 +45,9 @@ const appRoutes: Routes = [
 
   { path: 'notificationadd', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'organizations', component: OrganizationsComponent, canActivate: [AuthGuard] },
+  { path: 'organizations', component: OrganizationsComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: '**', redirectTo: '/login'}
+  { path: '**', redirectTo: '/login' }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

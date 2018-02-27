@@ -11,8 +11,8 @@ import { PrizesComponent } from './prizes.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { PrizeAddComponent } from './prizesindex/prizeadd/prizeadd.component';
-import { CampaignComponent } from './prizesindex/prizeadd/campaign/campaign.component';
+import { PrizeAddComponent } from './prizeadd/prizeadd.component';
+import { CampaignComponent } from './prizeadd/campaign/campaign.component';
 import { PrizesIndexComponent } from './prizesindex/prizesindex.component';
 import { SharedModule } from '../shared.module';
 
