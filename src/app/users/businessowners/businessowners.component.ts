@@ -53,7 +53,7 @@ export class BusinessOwnersComponent implements OnInit {
   myScrollCallBack() {
     if (this.moreContentAvailable) {
       this.infiniteScrollLoading = true;      
-      return this.usersService.getUsers('key_contact', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
+      return this.usersService.getUsers('business_owner', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
