@@ -12,7 +12,7 @@ import { MultiSelectUtil } from '../../_utils/multiselect.util';
   styleUrls: ['./useradd.component.scss']
 })
 export class UserAddComponent implements OnInit { 
-  newUser: Model.User; 
+  user: Model.User; 
   originalUser: Model.User;
   title: string;
   public editFlag: boolean;
@@ -30,7 +30,7 @@ export class UserAddComponent implements OnInit {
 
   ngOnInit() { 
     this.title = 'New User';
-    this.newUser = new Model.User({});        
+    this.user = new Model.User({});        
     this.editFlag = false;
     this.disableFlag = false;
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;    
@@ -50,7 +50,7 @@ export class UserAddComponent implements OnInit {
   }
 
   onSchoolSelect(item: any) {
-    this.newUser.organization_id = item.id;    
+    this.user.organization_id = item.id;    
     this.onChange(item);
   }
 
@@ -59,7 +59,7 @@ export class UserAddComponent implements OnInit {
   }
 
   onTypeSelect(item: any) {
-    this.newUser.type = item.id;    
+    this.user.type = item.id;    
     this.onChange(item);
   }
 
@@ -128,34 +128,37 @@ export class UserAddComponent implements OnInit {
   }
 
   saveUser(valid): void { 
-    // if (!valid) {
-    //   return;
-    // } 
+    if (!valid) {
+      return;
+    } 
     
-    // if (this.selectedSponsor.length === 0 || this.selectedDelivery.length === 0) {
-    //   return;
-    // }    
+    if (this.selectedSchool.length === 0 || this.selectedType.length === 0) {
+      return;
+    }    
+    this.user.organization_id = this.selectedSchool[0].id;
+    if (!this.user.roles) {
+      this.user.roles = [];
+      this.user.roles.push(this.selectedType[0].id);
+    }
     
-    // if (!this.prize.id) {      
-    //   this.prizesService.createPrize(this.prize).subscribe( (res) => {            
-    //     alert('Prize is created');  
-    //     this.global.selectedTab = 'prizes';
-    //     this.router.navigate(['prizes']);       
-    //   }, (errors) => {      
-    //     alert('Server error');
-    //   });
-    // } else {            
-    //   alert('Prize is updated'); 
-    //   this.global.selectedTab = 'prizes';
-    //   this.router.navigate(['prizes']);  
-    // }
+    if (!this.user.id) {      
+      this.usersService.createUser(this.user).subscribe( (res) => {            
+        alert('User is created');          
+        this.router.navigate(['users']);       
+      }, (errors) => {      
+        alert(errors.message);
+      });
+    } else {            
+      alert('User is updated');       
+      // this.router.navigate(['prizes']);  
+    }
   }
 
   getSchools(): void {
     this.multiSelectService.getDropdownSchools().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.schoolList = res;      
-      if (this.editFlag && this.newUser.organization_id && this.schoolList.length > 0) {        
-        let org = this.schoolList.find(organization => organization.id === parseInt(this.newUser.organization_id, 0));                
+      if (this.editFlag && this.user.organization_id && this.schoolList.length > 0) {        
+        let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));                
         if (org) {
           this.selectedSchool.push(org);
         }
@@ -165,7 +168,9 @@ export class UserAddComponent implements OnInit {
     });
   }
 
-  validEmail(): boolean {
-    return true;
+  validEmail(email: string): boolean {
+    // tslint:disable-next-line:max-line-length
+    const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return pattern.test(email);
   }
 }

@@ -1,6 +1,6 @@
 import 'rxjs/add/observable/throw';
 import * as moment from 'moment';
-import { Component, OnInit, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input} from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -18,7 +18,6 @@ import { Model } from '../../../app.models-list';
 export class CampaignComponent implements OnInit {    
   @Input() prizeId;
   @Input() campaigns;
-  @Output() refreshPage = new EventEmitter();
   modalRef: BsModalRef;
   config = {
     animated: true,
@@ -33,7 +32,7 @@ export class CampaignComponent implements OnInit {
   endDate: Date = new Date();
   minDate: Date = new Date();  
   quantity: string;
-  redeemed: number;
+  redeemed: string;
   selectedIndex: number;
   today: any;
 
@@ -61,7 +60,7 @@ export class CampaignComponent implements OnInit {
       this.startDate = new Date(this.campaigns[index].activation_start);    
       this.endDate = new Date(this.campaigns[index].activation_end);
       this.quantity = this.campaigns[index].number_available;
-      this.redeemed = this.campaigns[index].total_prizes - this.campaigns[index].number_available;
+      this.redeemed = '';
     }   
   }
 
@@ -90,7 +89,6 @@ export class CampaignComponent implements OnInit {
         alert('Campaign is created');          
         this.campaigns.push(res);
         this.modalRef.hide();
-        this.refreshPage.emit();
       }, (errors) => {              
         alert(errors.message);
       });
@@ -99,7 +97,6 @@ export class CampaignComponent implements OnInit {
         alert('Campaign is updated');           
         this.campaigns.splice(this.selectedIndex, 1, res);
         this.modalRef.hide();
-        this.refreshPage.emit();
       }, (errors) => {              
         alert(errors.message);
       });

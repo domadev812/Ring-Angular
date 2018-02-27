@@ -26,7 +26,7 @@
       .table-data.mx-4.col-quantity
         | {{campaign.number_available}}
       .table-data.mx-4.col-redeemed
-        | {{campaign.total_prizes - campaign.number_available}}
+        | Redeemed
       .table-data.mx-4.col-status
         | {{getStatus(campaign.activation_start, campaign.activation_end)}}
       .table-data.mx-4.col-edit

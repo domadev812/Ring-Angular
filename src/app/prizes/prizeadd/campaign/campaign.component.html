@@ -18,7 +18,7 @@
       <div class="table-data mx-4 col-start-date">{{formatDate(campaign.activation_start)}}</div>
       <div class="table-data mx-4 col-end-date">{{formatDate(campaign.activation_end)}}</div>
       <div class="table-data mx-4 col-quantity">{{campaign.number_available}}</div>
-      <div class="table-data mx-4 col-redeemed">{{campaign.total_prizes - campaign.number_available}}</div>
+      <div class="table-data mx-4 col-redeemed">Redeemed</div>
       <div class="table-data mx-4 col-status">{{getStatus(campaign.activation_start, campaign.activation_end)}}</div>
       <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="openModal(template, ind)" [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'"></i></div>
     </div>

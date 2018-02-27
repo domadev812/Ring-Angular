@@ -13,7 +13,7 @@ export class UsersService {
   }
 
   getUsers(type: string, offset: number, search: string = '', limit: number = 50): Observable<Model.User[]> {    
-    let paramType = type !== '' ? `role=${type}` : '';
+    let paramType = type !== '' ? `type=${type}` : '';
     let paramTitle = search !== '' ? `search=${search}` : '';    
     let url = `${environment.apiUrl}/api/users?offset=${offset}&limit=${limit}&${paramType}&${paramTitle}`;      
     return this.http.get(url)
@@ -21,6 +21,19 @@ export class UsersService {
         const json = response.json();        
         if (json && json.data) {
           return Model.initializeArray(json.data, 'User');
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
+  createUser(resource: Model.User): Observable<Model.User> {
+    let url = `${environment.apiUrl}/api/users`;
+    return this.http.post(url, resource)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.User(json.data);
         } else {
           Observable.throw({ messages: 'Internal Server Error', response });
         }

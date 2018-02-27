@@ -16,13 +16,13 @@
             <div class="input-label">FIRST NAME
               <div class="invalid-validation" [hidden]="firstName.valid || (firstName.pristine &amp;&amp; !userForm.submitted)">First Name is required</div>
             </div>
-            <input class="user-input" type="text" name="firstName" [(ngModel)]="newUser.first_name" (ngModelChange)="onChange($event)" #firstName="ngModel" required>
+            <input class="user-input" type="text" name="firstName" [(ngModel)]="user.first_name" (ngModelChange)="onChange($event)" #firstName="ngModel" required>
           </div>
           <div class="item-info">
             <div class="input-label">LAST NAME
               <div class="invalid-validation" [hidden]="lastName.valid || (lastName.pristine &amp;&amp; !userForm.submitted)">Last Name is required</div>
             </div>
-            <input class="user-input" type="text" name="lastName" [(ngModel)]="newUser.last_name" (ngModelChange)="onChange($event)" #lastName="ngModel" required>
+            <input class="user-input" type="text" name="lastName" [(ngModel)]="user.last_name" (ngModelChange)="onChange($event)" #lastName="ngModel" required>
           </div>
         </div>
         <div class="item-info">
@@ -39,16 +39,16 @@
         </div>
         <div class="item-info">
           <div class="input-label">EMAIL
-            <div class="invalid-validation" [hidden]="email.valid || (email.pristine &amp;&amp; !userForm.submitted)">Email link is required</div>
-            <div class="invalid-validation" [hidden]="!newUser.email || newUser.email === '' || validEmail(newUser.email) || (email.pristine &amp;&amp; !userForm.submitted)">Email is not correct</div>
+            <div class="invalid-validation" [hidden]="email.valid || (email.pristine &amp;&amp; !userForm.submitted)">Email is required</div>
+            <div class="invalid-validation" [hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine &amp;&amp; !userForm.submitted)">Email is not correct</div>
           </div>
-          <input class="user-input" [(ngModel)]="newUser.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required>
+          <input class="user-input" [(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required>
         </div>
         <div class="item-info">
           <div class="input-label">PASSWORD
             <div class="invalid-validation" [hidden]="psw.valid || (psw.pristine &amp;&amp; !userForm.submitted)">Password is required</div>
           </div>
-          <input class="user-input" type="password" name="psw" #psw="ngModel" [(ngModel)]="newUser.password" (ngModelChange)="onChange($event)" required>
+          <input class="user-input" type="password" name="psw" #psw="ngModel" [(ngModel)]="user.password" (ngModelChange)="onChange($event)" required>
         </div>
         <div class="item-info">  
           <button class="users-btn secondary-button delete-user" (click)="deleteUser()">

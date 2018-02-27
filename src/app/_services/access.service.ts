@@ -9,48 +9,11 @@ import { Model } from '../app.models-list';
 export class AccessService {
 
   private roles: Model.RolesAccess[] = [
-    {
-      role: 'admin',
-      routeAccess: ['users',
-        'organizations',
-        'organizationadd',
-        'resources',
-        'prizes',
-        'prizeadd',
-        'prizeedit',
-        'notifications',
-        'notificationadd',
-        'internshipadd',
-        'internshipedit',
-        'opportunityadd',
-        'opportunityedit',
-        'scholarshipadd',
-        'scholarshipedit'],
-      functionAccess: ['']
-    },
-    {
-      role: 'keyContact',
-      routeAccess: ['users',
-        'resources',
-        'prizes',
-        'notifications'],
-      functionAccess: ['']
-    },
-    {
-      role: 'counselor',
-      routeAccess: ['users',
-        'resources',
-        'prizes',
-        'notifications'],
-      functionAccess: ['']
-    },
-    {
-      role: 'businessOwner',
-      routeAccess: ['organizations',
-        'resources',
-        'prizes'],
-      functionAccess: ['']
-    },
+    // tslint:disable-next-line:max-line-length
+    { role: 'admin', routeAccess: ['/users', '/useradd', '/organizations', '/resources', '/prizes', '/prizeadd', '/notifications', '/notificationadd', '/internshipadd', '/opportunityadd'], functionAccess: [''] },
+    { role: 'keyContact', routeAccess: ['/users', '/resources', '/prizes', '/notifications'], functionAccess: [''] },
+    { role: 'counselor', routeAccess: ['/users', '/resources', '/prizes', '/notifications'], functionAccess: [''] },
+    { role: 'businessOwner', routeAccess: ['/organizations', '/resources', '/prizes'], functionAccess: [''] },
   ];
 
   constructor(public http: Http,
