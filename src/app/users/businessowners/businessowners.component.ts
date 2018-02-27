@@ -42,7 +42,7 @@ export class BusinessOwnersComponent implements OnInit {
   }
 
   getBusinessOwners(): void {
-    this.usersService.getUsers('business_owner', this.offset, this.searchText).subscribe((res) => {
+    this.usersService.getUsers('businessowner', this.offset, this.searchText).subscribe((res) => {
       this.businessowners = res.map(businessowner => businessowner);
       this.offset += res.length;      
     }, (errors) => {

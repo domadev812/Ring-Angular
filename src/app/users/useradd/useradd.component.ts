@@ -12,7 +12,7 @@ import { MultiSelectUtil } from '../../_utils/multiselect.util';
   styleUrls: ['./useradd.component.scss']
 })
 export class UserAddComponent implements OnInit { 
-  user: Model.User; 
+  newUser: Model.User; 
   originalUser: Model.User;
   title: string;
   public editFlag: boolean;
@@ -30,7 +30,7 @@ export class UserAddComponent implements OnInit {
 
   ngOnInit() { 
     this.title = 'New User';
-    this.user = new Model.User({});        
+    this.newUser = new Model.User({});        
     this.editFlag = false;
     this.disableFlag = false;
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;    
@@ -50,19 +50,23 @@ export class UserAddComponent implements OnInit {
   }
 
   onSchoolSelect(item: any) {
-    this.user.organization_id = item.id;    
+    this.newUser.organization_id = item.id;    
     this.onChange(item);
   }
+
   onSchoolDeSelect(item: any) {
     this.onChange(item);
   }
+
   onTypeSelect(item: any) {
-    this.user.type = item.id;    
+    this.newUser.type = item.id;    
     this.onChange(item);
   }
+
   onTypeDeSelect(item: any) {
     this.onChange(item);
   }
+
   goBack(event): void {
     this.router.navigate(['users']);
   }
@@ -123,7 +127,7 @@ export class UserAddComponent implements OnInit {
     // }
   }
 
-  savePrize(valid): void { 
+  saveUser(valid): void { 
     // if (!valid) {
     //   return;
     // } 
@@ -150,8 +154,8 @@ export class UserAddComponent implements OnInit {
   getSchools(): void {
     this.multiSelectService.getDropdownSchools().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.schoolList = res;      
-      if (this.editFlag && this.user.organization_id && this.schoolList.length > 0) {        
-        let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));                
+      if (this.editFlag && this.newUser.organization_id && this.schoolList.length > 0) {        
+        let org = this.schoolList.find(organization => organization.id === parseInt(this.newUser.organization_id, 0));                
         if (org) {
           this.selectedSchool.push(org);
         }
@@ -159,5 +163,9 @@ export class UserAddComponent implements OnInit {
     }, err => {
       console.log('err', err);
     });
+  }
+
+  validEmail(): boolean {
+    return true;
   }
 }

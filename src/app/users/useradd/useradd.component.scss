@@ -31,8 +31,25 @@
 }
 .item-info {
   margin-bottom: 30px;
+  width: 100%;
 }
 .input-label {
   @extend .input-label;
   margin-left: 0;
+}
+.delete-user {
+  padding-left: 60px;
+  padding-right: 60px;
+  margin-top: 50px;
+}
+.names{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+  .item-info:nth-child(odd) {
+    margin-right: 5px;
+  }
+  .item-info:nth-child(even) {
+    margin-left: 5px;
+  }
 }

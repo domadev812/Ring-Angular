@@ -10,18 +10,19 @@
           button.users-btn.secondary-button(type="button" (click)="goBack()") 
             | Cancel   
       .wrapper-content 
-        .item-info
-          .input-label
-            | FIRST NAME
-            .invalid-validation([hidden]="firstName.valid || (firstName.pristine && !userForm.submitted)")
-              | First Name is required
-          input.user-input(type="text" name="firstName" [(ngModel)]='user.first_name' (ngModelChange)="onChange($event)" #firstName="ngModel" required) 
-        .item-info
-          .input-label
-            | LAST NAME
-            .invalid-validation([hidden]="lastName.valid || (lastName.pristine && !userForm.submitted)")
-              | Last Name is required
-          input.user-input(type="text" name="lastName" [(ngModel)]='user.last_name' (ngModelChange)="onChange($event)" #lastName="ngModel" required)    
+        .item-info.names
+          .item-info
+            .input-label
+              | FIRST NAME
+              .invalid-validation([hidden]="firstName.valid || (firstName.pristine && !userForm.submitted)")
+                | First Name is required
+            input.user-input(type="text" name="firstName" [(ngModel)]='newUser.first_name' (ngModelChange)="onChange($event)" #firstName="ngModel" required) 
+          .item-info
+            .input-label
+              | LAST NAME
+              .invalid-validation([hidden]="lastName.valid || (lastName.pristine && !userForm.submitted)")
+                | Last Name is required
+            input.user-input(type="text" name="lastName" [(ngModel)]='newUser.last_name' (ngModelChange)="onChange($event)" #lastName="ngModel" required)    
         .item-info
           .input-label
             | USER TYPE
@@ -53,7 +54,16 @@
             | EMAIL
             .invalid-validation([hidden]="email.valid || (email.pristine && !userForm.submitted)")
               | Email link is required
-            .invalid-validation([hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine && !userForm.submitted)")
+            .invalid-validation([hidden]="!newUser.email || newUser.email === '' || validEmail(newUser.email) || (email.pristine && !userForm.submitted)")
               | Email is not correct
-          input.user-input([(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required) 
+          input.user-input([(ngModel)]="newUser.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required) 
+        .item-info
+          .input-label
+            | PASSWORD
+            .invalid-validation([hidden]="psw.valid || (psw.pristine && !userForm.submitted)")
+                | Password is required
+          input.user-input(type="password" name="psw" #psw="ngModel"  [(ngModel)]='newUser.password' (ngModelChange)="onChange($event)" required)
+        .item-info   
+          button.users-btn.secondary-button.delete-user((click)='deleteUser()') 
+            | Delete User  
                       
