@@ -22,7 +22,7 @@ export class NotificationsComponent implements OnInit {
     this.selectedTab = 'notifications';
   }
 
-  addNotification(event): void {
+  addNotification(): void {
     this.router.navigate(['notificationadd']);
   }
 }

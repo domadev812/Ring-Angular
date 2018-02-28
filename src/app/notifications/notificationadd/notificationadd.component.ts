@@ -81,7 +81,7 @@ export class NotificationAddComponent implements OnInit {
       });
     }
   }
-  cancelNotification(event): void {
+  cancelNotification(): void {
     this.router.navigate(['notifications']);
   }
 }

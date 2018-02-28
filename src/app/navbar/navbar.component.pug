@@ -1,16 +1,23 @@
 #nav( *ngIf="navBarService.visible")
+  .logo-img
   ul.nav-list.justify-end
-    li.nav-item((click)="switchTab('Users')" [ngClass]="{'nav-item-selected': tab === 'Users'}")
+    li.nav-item((click)="switchTab('users')" [ngClass]="{'nav-item-selected': tab === 'users'}")
       a([routerLink]="['/users']" ) Users
 
-    li.nav-item((click)="switchTab('Resources')" [ngClass]="{'nav-item-selected': tab === 'Resources'}")
-      a([routerLink]="['/resources']" ) Resources
-
-    li.nav-item((click)="switchTab('Notifications')" [ngClass]="{'nav-item-selected': tab === 'Notifications'}")
-      a([routerLink]="['/notifications']" ) Notifications
-
-    li.nav-item((click)="switchTab('Organizations')" [ngClass]="{'nav-item-selected': tab === 'Organizations'}")
+    li.nav-item((click)="switchTab('organizations')" [ngClass]="{'nav-item-selected': tab === 'organizations'}")
       a([routerLink]="['/organizations']" ) Organizations
 
-    li.nav-item((click)="switchTab('Prizes')" [ngClass]="{'nav-item-selected': tab === 'Prizes'}")
+    li.nav-item((click)="switchTab('resources')" [ngClass]="{'nav-item-selected': tab === 'resources'}")
+      a([routerLink]="['/resources']" ) Resources
+
+    li.nav-item((click)="switchTab('prizes')" [ngClass]="{'nav-item-selected': tab === 'prizes'}")
       a([routerLink]="['/prizes']" ) Prizes
+
+    li.nav-item((click)="switchTab('notifications')" [ngClass]="{'nav-item-selected': tab === 'notifications'}")
+      a([routerLink]="['/notifications']" ) Notifications
+
+    li.nav-item.fa.fa-cog((click)="active=!active" )
+      .triangle(*ngIf="active")
+      .dropdown(*ngIf="active") 
+        a((click)="logout()") Logout
+

@@ -11,29 +11,29 @@ import { NavbarService } from '../app.services-list';
 
 export class ResourcesComponent implements OnInit {
 
-  selectedTab: String = '';  
+  selectedTab: String = '';
 
   constructor(
-    private router: Router, 
+    private router: Router,
     public global: GlobalState,
     private navBarService: NavbarService,
   ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.navBarService.show();
-    if (this.global.selectedTab === '') {      
-      this.selectedTab = 'scholarships';    
+    if (this.global.selectedTab === '') {
+      this.selectedTab = 'scholarships';
     } else {
       this.selectedTab = this.global.selectedTab;
     }
-    this.global.selectedTab = '';    
+    this.global.selectedTab = '';
   }
 
   addNewResource(pathName): void {
     this.router.navigate([pathName]);
   }
 
-  addNewScholarship(event): void {
+  addNewScholarship(): void {
     this.router.navigate(['scholarshipadd']);
   }
 

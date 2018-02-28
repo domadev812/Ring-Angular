@@ -14,15 +14,15 @@ import { User as ApiUser } from '../../_models/user.model';
 export class KeyContactsComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
+  public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
   public searchText: string;
   public keycontacts: Array<ApiUser>;
-  public organizations: Array<Model.Organization>;  
+  public organizations: Array<Model.Organization>;
 
-  constructor(private router: Router,
-              private usersService: UsersService) { }
+  constructor(private usersService: UsersService,
+    private resourcesService: ResourcesService) { }
 
   ngOnInit() {
     this.keycontacts = new Array<ApiUser>();
@@ -33,19 +33,18 @@ export class KeyContactsComponent implements OnInit {
   }
 
   editKeyContact(id) {
-    this.router.navigate(['useredit/' + id]);
   }
 
-  searchItems(event): void {
+  searchItems(): void {
     this.offset = 0;
     this.moreContentAvailable = true;
-    this.getKeyContacts();    
+    this.getKeyContacts();
   }
 
   getKeyContacts(): void {
     this.usersService.getUsers('key_contact', this.offset, this.searchText).subscribe((res) => {
       this.keycontacts = res.map(keycontact => keycontact);
-      this.offset += res.length;      
+      this.offset += res.length;
     }, (errors) => {
       alert('Server error');
     });
@@ -60,7 +59,7 @@ export class KeyContactsComponent implements OnInit {
 
   infiniteScrollCallBack(res) {
     res.map(keycontact => {
-      this.keycontacts.push(keycontact);      
+      this.keycontacts.push(keycontact);
     });
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);

@@ -12,11 +12,11 @@ import { Model } from '../../app.models-list';
 export class PrizesIndexComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
-  private prizes: Array<Model.Prize>; // We need to pass this as a input to prizes-table Module
+  public infiniteScrollLoading: boolean;
+  public prizes: Array<Model.Prize>; // We need to pass this as a input to prizes-table Module
   private limit: number;
   private offset: number;
-  private searchText: string;
+  public searchText: string;
 
   constructor(private router: Router, private prizesService: PrizesService) { }
 
@@ -31,16 +31,16 @@ export class PrizesIndexComponent implements OnInit {
     this.router.navigate(['prizeedit/' + id]);
   }
 
-  searchItems(event): void {    
+  searchItems(): void {
     this.offset = 0;
     this.moreContentAvailable = true;
-    this.getPrizes();         
+    this.getPrizes();
   }
 
-  getPrizes(): void {    
+  getPrizes(): void {
     this.prizesService.getPrizes(this.offset, this.searchText).subscribe((res) => {
-      this.prizes = res.map(prize => prize);      
-      this.offset += res.length;      
+      this.prizes = res.map(prize => prize);
+      this.offset += res.length;
     }, (errors) => {
       alert('Server error');
     });
@@ -48,14 +48,14 @@ export class PrizesIndexComponent implements OnInit {
 
   myScrollCallBack() {
     if (this.moreContentAvailable) {
-      this.infiniteScrollLoading = true;      
+      this.infiniteScrollLoading = true;
       return this.prizesService.getPrizes(this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
   infiniteScrollCallBack(res) {
     res.map(prize => {
-      this.prizes.push(prize);      
+      this.prizes.push(prize);
     });
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarService } from '../app.services-list';
+import * as Services from '../app.services-list';
 
 @Component({
   selector: 'app-navbar',
@@ -9,17 +10,23 @@ import { NavbarService } from '../app.services-list';
 export class NavbarComponent implements OnInit {
 
   tab: String;
+  active: boolean;
 
   constructor(
-    private navBarService: NavbarService
+    public navBarService: NavbarService,
+    private authService: Services.AuthService
   ) { }
 
   ngOnInit() {
-    this.tab = 'Users';
+    this.tab = window.location.pathname.substring(1);
   }
 
   switchTab(tab: String): void {
     this.tab = tab;
+  }
+
+  logout(event) {
+    this.authService.logout();
   }
 
 }

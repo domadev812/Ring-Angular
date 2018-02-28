@@ -14,12 +14,12 @@ export class ScholarshipsComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
 
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
+  public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
   public searchText: string;
   public scholarships: Array<Model.Resource>;
-  public organizations: Array<Model.Organization>;  
+  public organizations: Array<Model.Organization>;
 
   constructor(private resourcesService: ResourcesService) { }
 
@@ -32,10 +32,10 @@ export class ScholarshipsComponent implements OnInit {
     this.getOrganizationSize();
   }
 
-  searchItems(event): void {    
+  searchItems(): void {
     this.offset = 0;
     this.moreContentAvailable = true;
-    this.getScholarships();    
+    this.getScholarships();
   }
 
   getScholarships(): void {
@@ -57,7 +57,7 @@ export class ScholarshipsComponent implements OnInit {
 
   infiniteScrollCallBack(res) {
     res.map(scholarship => {
-      this.scholarships.push(scholarship);      
+      this.scholarships.push(scholarship);
     });
     this.offset += res.length;
     //Stops getting content if there is no content

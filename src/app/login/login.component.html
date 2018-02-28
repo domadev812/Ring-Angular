@@ -12,7 +12,7 @@
       </div>
       <div class="password">
         <label class="input-label" for="password">password</label>
-        <input class="input" type="password" id="password" formControlName="password">
+        <input class="input" type="password" id="password" (keyup)="$event.keyCode == 13 &amp;&amp; login()" formControlName="password">
       </div>
       <button class="primary-button" (click)="login()">Login</button>
     </div>

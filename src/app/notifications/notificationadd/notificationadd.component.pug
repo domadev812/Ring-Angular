@@ -21,7 +21,7 @@
             | MESSAGE
             .invalid-validation([hidden]="message.valid || (message.pristine && !notificationForm.submitted)")
               | Message is required
-          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.message" (ngModelChange)="onChange($event)"  #message="ngModel" required)
+          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.message" #message="ngModel" required)
         .item-info
           .input-label-dropdown
               | CAREERS

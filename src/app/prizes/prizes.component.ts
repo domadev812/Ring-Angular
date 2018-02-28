@@ -16,7 +16,7 @@ import { GlobalState } from '../global.state';
   styleUrls: ['./prizes.component.scss']
 })
 export class PrizesComponent implements OnInit {
-  private selectedTab: String = '';   
+  public selectedTab: String = '';
   private cardNumber: string;
   private modalRef: BsModalRef;
   private isActivated: boolean;
@@ -28,27 +28,27 @@ export class PrizesComponent implements OnInit {
   };
 
   constructor(private router: Router,
-              private modalService: BsModalService,
-              private prizesService: PrizesService,
-              private global: GlobalState,
-              private navBarService: NavbarService,
-            ) { }
+    private modalService: BsModalService,
+    private prizesService: PrizesService,
+    private global: GlobalState,
+    private navBarService: NavbarService,
+  ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.navBarService.show();
-    if (this.global.selectedTab === '') {      
-      this.selectedTab = 'prizes';    
+    if (this.global.selectedTab === '') {
+      this.selectedTab = 'prizes';
     } else {
       this.selectedTab = this.global.selectedTab;
     }
-    this.global.selectedTab = '';     
+    this.global.selectedTab = '';
   }
 
   switchTab(selectedTab: String): void {
     this.selectedTab = selectedTab;
   }
 
-  addPrize(event): void {    
+  addPrize(): void {
     this.router.navigate(['prizeadd']);
   }
 
@@ -70,5 +70,5 @@ export class PrizesComponent implements OnInit {
         alert('There was a problem. They card was not activated.');
       });
     }
-  }  
+  }
 }

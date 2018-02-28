@@ -1,10 +1,15 @@
 
 <div id="nav" *ngIf="navBarService.visible">
+  <div class="logo-img"></div>
   <ul class="nav-list justify-end">
-    <li class="nav-item" (click)="switchTab('Users')" [ngClass]="{'nav-item-selected': tab === 'Users'}"><a [routerLink]="['/users']">Users</a></li>
-    <li class="nav-item" (click)="switchTab('Resources')" [ngClass]="{'nav-item-selected': tab === 'Resources'}"><a [routerLink]="['/resources']">Resources</a></li>
-    <li class="nav-item" (click)="switchTab('Notifications')" [ngClass]="{'nav-item-selected': tab === 'Notifications'}"><a [routerLink]="['/notifications']">Notifications</a></li>
-    <li class="nav-item" (click)="switchTab('Organizations')" [ngClass]="{'nav-item-selected': tab === 'Organizations'}"><a [routerLink]="['/organizations']">Organizations</a></li>
-    <li class="nav-item" (click)="switchTab('Prizes')" [ngClass]="{'nav-item-selected': tab === 'Prizes'}"><a [routerLink]="['/prizes']">Prizes</a></li>
+    <li class="nav-item" (click)="switchTab('users')" [ngClass]="{'nav-item-selected': tab === 'users'}"><a [routerLink]="['/users']">Users</a></li>
+    <li class="nav-item" (click)="switchTab('organizations')" [ngClass]="{'nav-item-selected': tab === 'organizations'}"><a [routerLink]="['/organizations']">Organizations</a></li>
+    <li class="nav-item" (click)="switchTab('resources')" [ngClass]="{'nav-item-selected': tab === 'resources'}"><a [routerLink]="['/resources']">Resources</a></li>
+    <li class="nav-item" (click)="switchTab('prizes')" [ngClass]="{'nav-item-selected': tab === 'prizes'}"><a [routerLink]="['/prizes']">Prizes</a></li>
+    <li class="nav-item" (click)="switchTab('notifications')" [ngClass]="{'nav-item-selected': tab === 'notifications'}"><a [routerLink]="['/notifications']">Notifications</a></li>
+    <li class="nav-item fa fa-cog" (click)="active=!active">
+      <div class="triangle" *ngIf="active"></div>
+      <div class="dropdown" *ngIf="active"> <a (click)="logout()">Logout</a></div>
+    </li>
   </ul>
 </div>

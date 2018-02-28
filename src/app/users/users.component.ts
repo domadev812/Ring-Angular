@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, Routes, RouterModule } from '@angular/router';
 import * as Services from '../app.services-list';
 
 @Component({
@@ -9,21 +8,19 @@ import * as Services from '../app.services-list';
 })
 export class UsersComponent implements OnInit {
 
-  public selectedTab: String = ''; 
+  public selectedTab: String = '';
 
   constructor(
-    private router: Router,
     private currentUserService: Services.CurrentUserService,
     private navBarService: Services.NavbarService,
   ) { }
 
   ngOnInit() {
     this.navBarService.show();
-    this.selectedTab = 'student';
+    this.selectedTab = 'students';
   }
 
-  addNewUser(event): void {        
-    this.router.navigate(['useradd']);
+  addNewUser(): void {
   }
 
   switchTab(selectedTab: String): void {

@@ -13,5 +13,5 @@
       .password
         label.input-label(for="password")
           | password
-        input.input(type="password" id="password" formControlName="password")
+        input.input(type="password" id="password" (keyup)="$event.keyCode == 13 && login()" formControlName="password")
       button.primary-button((click)='login()' ) Login

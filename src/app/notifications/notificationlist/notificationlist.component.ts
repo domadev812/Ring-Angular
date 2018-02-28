@@ -11,7 +11,7 @@ import { Model } from '../../app.models-list';
 export class NotificationlistComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
+  public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
   notifications: Array<Model.Notification>;

@@ -14,15 +14,15 @@ import { User as ApiUser } from '../../_models/user.model';
 export class BusinessOwnersComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
+  public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
   public searchText: string;
   public businessowners: Array<ApiUser>;
-  public organizations: Array<Model.Organization>;  
+  public organizations: Array<Model.Organization>;
 
-  constructor(private router: Router,
-              private usersService: UsersService) { }
+  constructor(private usersService: UsersService,
+    private resourcesService: ResourcesService) { }
 
   ngOnInit() {
     this.businessowners = new Array<ApiUser>();
@@ -33,19 +33,18 @@ export class BusinessOwnersComponent implements OnInit {
   }
 
   editBusinessOwner(id) {
-    this.router.navigate(['useredit/' + id]);
   }
 
-  searchItems(event): void {
+  searchItems(): void {
     this.offset = 0;
     this.moreContentAvailable = true;
-    this.getBusinessOwners();    
+    this.getBusinessOwners();
   }
 
   getBusinessOwners(): void {
     this.usersService.getUsers('business_owner', this.offset, this.searchText).subscribe((res) => {
       this.businessowners = res.map(businessowner => businessowner);
-      this.offset += res.length;      
+      this.offset += res.length;
     }, (errors) => {
       alert('Server error');
     });
@@ -53,14 +52,14 @@ export class BusinessOwnersComponent implements OnInit {
 
   myScrollCallBack() {
     if (this.moreContentAvailable) {
-      this.infiniteScrollLoading = true;      
+      this.infiniteScrollLoading = true;
       return this.usersService.getUsers('business_owner', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
   infiniteScrollCallBack(res) {
     res.map(businessowner => {
-      this.businessowners.push(businessowner);      
+      this.businessowners.push(businessowner);
     });
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);

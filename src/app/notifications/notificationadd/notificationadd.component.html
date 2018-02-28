@@ -22,7 +22,7 @@
           <div class="input-label">MESSAGE
             <div class="invalid-validation" [hidden]="message.valid || (message.pristine &amp;&amp; !notificationForm.submitted)">Message is required</div>
           </div>
-          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.message" (ngModelChange)="onChange($event)" #message="ngModel" required></textarea>
+          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.message" #message="ngModel" required></textarea>
         </div>
         <div class="item-info">
           <div class="input-label-dropdown">CAREERS</div>

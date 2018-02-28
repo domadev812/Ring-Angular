@@ -12,12 +12,12 @@ import { Model } from '../../app.models-list';
 export class InternshipsComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
+  public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
   public searchText: string;
   public internships: Array<Model.Resource>;
-  public organizations: Array<Model.Organization>;  
+  public organizations: Array<Model.Organization>;
 
   constructor(private router: Router, private resourcesService: ResourcesService) { }
 
@@ -33,10 +33,10 @@ export class InternshipsComponent implements OnInit {
     this.router.navigate(['internshipedit/' + id]);
   }
 
-  searchItems(event): void {
+  searchItems(): void {
     this.offset = 0;
     this.moreContentAvailable = true;
-    this.getInternships();    
+    this.getInternships();
   }
 
   getInternships(): void {
@@ -50,14 +50,14 @@ export class InternshipsComponent implements OnInit {
 
   myScrollCallBack() {
     if (this.moreContentAvailable) {
-      this.infiniteScrollLoading = true;      
+      this.infiniteScrollLoading = true;
       return this.resourcesService.getResources('Internship', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
   infiniteScrollCallBack(res) {
     res.map(internship => {
-      this.internships.push(internship);      
+      this.internships.push(internship);
     });
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);

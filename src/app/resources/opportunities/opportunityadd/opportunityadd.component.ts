@@ -186,7 +186,7 @@ export class OpportunityAddComponent implements OnInit {
     }
   }
 
-  goBack(event): void {
+  goBack(): void {
     this.router.navigate(['resources']);
   }
 
@@ -194,7 +194,7 @@ export class OpportunityAddComponent implements OnInit {
     this.router.navigate(['applicants/' + id]);
   }
 
-  deleteOpportunity(event): void {
+  deleteOpportunity(): void {
 
   }
 

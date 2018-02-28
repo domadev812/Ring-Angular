@@ -84,7 +84,7 @@ export class ScholarshipAddComponent implements OnInit {
 
   onEthnicitySelect(item: any) {
   }
-  onEthnicitDeSelect(item: any) {
+  onEthnicityDeSelect(item: any) {
   }
 
   getEthnicities(): void {
@@ -152,11 +152,11 @@ export class ScholarshipAddComponent implements OnInit {
     }
   }
 
-  goBack(event): void {
+  goBack(): void {
     this.router.navigate(['resources']);
   }
 
-  deleteInternship(event): void {
+  deleteScholarship(): void {
 
   }
 

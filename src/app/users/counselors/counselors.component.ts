@@ -14,15 +14,15 @@ import { User as ApiUser } from '../../_models/user.model';
 export class CounselorsComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
+  public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
   public searchText: string;
   public counselors: Array<ApiUser>;
-  public organizations: Array<Model.Organization>;  
+  public organizations: Array<Model.Organization>;
 
-  constructor(private router: Router,
-              private usersService: UsersService) { }
+  constructor(private usersService: UsersService,
+    private resourcesService: ResourcesService) { }
 
   ngOnInit() {
     this.counselors = new Array<ApiUser>();
@@ -33,19 +33,18 @@ export class CounselorsComponent implements OnInit {
   }
 
   editCounselor(id) {
-    this.router.navigate(['useredit/' + id]);
   }
 
-  searchItems(event): void {
+  searchItems(): void {
     this.offset = 0;
     this.moreContentAvailable = true;
-    this.getCounselors();    
+    this.getCounselors();
   }
 
   getCounselors(): void {
     this.usersService.getUsers('counselor', this.offset, this.searchText).subscribe((res) => {
       this.counselors = res.map(counselor => counselor);
-      this.offset += res.length;      
+      this.offset += res.length;
     }, (errors) => {
       alert('Server error');
     });
@@ -53,14 +52,14 @@ export class CounselorsComponent implements OnInit {
 
   myScrollCallBack() {
     if (this.moreContentAvailable) {
-      this.infiniteScrollLoading = true;      
+      this.infiniteScrollLoading = true;
       return this.usersService.getUsers('counselor', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
   infiniteScrollCallBack(res) {
     res.map(counselor => {
-      this.counselors.push(counselor);      
+      this.counselors.push(counselor);
     });
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);

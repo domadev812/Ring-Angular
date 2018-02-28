@@ -14,15 +14,15 @@ import { Model } from '../../app.models-list';
 export class StudentsComponent implements OnInit {
   @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
   private moreContentAvailable = true;
-  private infiniteScrollLoading: boolean;
+  public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
   public searchText: string;
   public students: Array<Model.User>;
-  public organizations: Array<Model.Organization>;  
+  public organizations: Array<Model.Organization>;
 
-  constructor(private router: Router,
-              private usersService: UsersService) { }
+  constructor(private usersService: UsersService,
+    resourcesService: ResourcesService) { }
 
   ngOnInit() {
     this.students = new Array<Model.User>();
@@ -33,19 +33,18 @@ export class StudentsComponent implements OnInit {
   }
 
   editStudent(id) {
-    this.router.navigate(['useredit/' + id]);
   }
 
-  searchItems(event): void { 
+  searchItems(): void {
     this.offset = 0;
     this.moreContentAvailable = true;
-    this.getStudents();    
+    this.getStudents();
   }
 
   getStudents(): void {
     this.usersService.getUsers('student', this.offset, this.searchText).subscribe((res) => {
-      this.students = res.map(student => student);      
-      this.offset += res.length;      
+      this.students = res.map(student => student);
+      this.offset += res.length;
     }, (errors) => {
       alert('Server error');
     });
@@ -60,10 +59,10 @@ export class StudentsComponent implements OnInit {
 
   infiniteScrollCallBack(res) {
     res.map(student => {
-      this.students.push(student);      
+      this.students.push(student);
     });
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);
     this.infiniteScrollLoading = false;
-  }  
+  }
 }

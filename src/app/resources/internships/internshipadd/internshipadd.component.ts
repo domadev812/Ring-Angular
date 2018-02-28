@@ -194,7 +194,7 @@ export class InternshipAddComponent implements OnInit {
     }
   }
 
-  goBack(event): void {
+  goBack(): void {
     this.router.navigate(['resources']);
   }
 
@@ -202,7 +202,7 @@ export class InternshipAddComponent implements OnInit {
     this.router.navigate(['applicants/' + id]);
   }
 
-  deleteInternship(event): void {
+  deleteInternship(): void {
 
   }
 
