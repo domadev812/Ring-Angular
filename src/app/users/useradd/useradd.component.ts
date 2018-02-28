@@ -12,16 +12,19 @@ import { MultiSelectUtil } from '../../_utils/multiselect.util';
   styleUrls: ['./useradd.component.scss']
 })
 export class UserAddComponent implements OnInit { 
-  user: Model.User; 
-  originalUser: Model.User;
-  title: string;
-  public editFlag: boolean;
-  public disableFlag: boolean;
-  public schoolList = [];
-  public selectedSchool = [];
-  public typeList = [];
-  public selectedType = [];
-  public ktsSelectSettings = {};
+  private user: Model.User; 
+  private originalUser: Model.User;
+  private title: string;
+  private organizationTitle: string;
+  private editFlag: boolean;
+  private disableFlag: boolean;
+  private schoolList = [];
+  private sponsorList = [];
+  private organizationList = [];
+  private selectedOrganization = [];
+  private typeList = [];
+  private selectedType = [];
+  private ktsSelectSettings = {};
 
   constructor(private route: ActivatedRoute, 
               private router: Router,
@@ -30,6 +33,7 @@ export class UserAddComponent implements OnInit {
 
   ngOnInit() { 
     this.title = 'New User';
+    this.organizationTitle = 'School';
     this.user = new Model.User({});        
     this.editFlag = false;
     this.disableFlag = false;
@@ -47,6 +51,7 @@ export class UserAddComponent implements OnInit {
       this.getUser(id);
     }
     this.getSchools();
+    this.getSponsors();
   }
 
   onSchoolSelect(item: any) {
@@ -59,11 +64,13 @@ export class UserAddComponent implements OnInit {
   }
 
   onTypeSelect(item: any) {
-    this.user.type = item.id;    
+    this.user.type = item.id; 
+    this.changeOrganizationList();       
     this.onChange(item);
   }
 
   onTypeDeSelect(item: any) {
+    this.changeOrganizationList();
     this.onChange(item);
   }
 
@@ -80,7 +87,7 @@ export class UserAddComponent implements OnInit {
       if (this.schoolList.length > 0) {
         let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
         if (org) {
-          this.selectedSchool.push(org);
+          this.selectedOrganization.push(org);
         }
       }
       let userType = this.typeList.find(type => type.id === this.user.type);
@@ -104,10 +111,10 @@ export class UserAddComponent implements OnInit {
         return;
       }
       
-      if (this.selectedSchool.length === 0) {
+      if (this.selectedOrganization.length === 0) {
         this.disableFlag = false;        
         return;
-      } else if (this.selectedSchool[0].id !== this.originalUser.organization_id) {
+      } else if (this.selectedOrganization[0].id !== this.originalUser.organization_id) {
         this.disableFlag = false;        
         return;
       }
@@ -141,10 +148,10 @@ export class UserAddComponent implements OnInit {
       return;
     } 
     
-    if (this.selectedSchool.length === 0 || this.selectedType.length === 0) {
+    if (this.selectedOrganization.length === 0 || this.selectedType.length === 0) {
       return;
     }    
-    this.user.organization_id = this.selectedSchool[0].id;
+    this.user.organization_id = this.selectedOrganization[0].id;
     if (!this.user.roles) {
       this.user.roles = [];
       this.user.roles.push(this.selectedType[0].id);
@@ -177,12 +184,39 @@ export class UserAddComponent implements OnInit {
       if (this.editFlag && this.user.organization_id && this.schoolList.length > 0) {        
         let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));                
         if (org) {
-          this.selectedSchool.push(org);
+          this.selectedOrganization.push(org);
         }
       }
+      this.changeOrganizationList();
     }, err => {
       console.log('err', err);
     });
+  }
+
+  getSponsors(): void {
+    this.multiSelectService.getDropdownSponsors().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+      this.sponsorList = res;      
+      if (this.editFlag && this.user.organization_id && this.sponsorList.length > 0) {        
+        let org = this.sponsorList.find(organization => organization.id === parseInt(this.user.organization_id, 0));                
+        if (org) {
+          this.selectedOrganization.push(org);
+        }
+      }
+      this.changeOrganizationList();      
+    }, err => {
+      console.log('err', err);
+    });
+  }
+
+  changeOrganizationList(): void {
+    if (this.selectedType.length > 0 && this.selectedType[0].id === 'business_owner') {
+      this.organizationTitle = 'Organization';
+      this.organizationList = this.sponsorList.map(sponsor => sponsor);      
+    } else {
+      this.organizationTitle = 'School';
+      this.organizationList = this.schoolList.map(school => school);
+    }
+    this.selectedOrganization = [];
   }
 
   validEmail(email: string): boolean {

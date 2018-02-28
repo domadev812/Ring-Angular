@@ -38,13 +38,13 @@
           )                           
         .item-info
           .input-label
-            | SCHOOL
-            .invalid-validation([hidden]="selectedSchool.length > 0 || !userForm.submitted")
-              | School is required
+            | {{organizationTitle}}
+            .invalid-validation([hidden]="selectedOrganization.length > 0 || !userForm.submitted")
+              | {{organizationTitle}} is required
           angular2-multiselect(
-            name = 'school'
-            [data]='schoolList'
-            [(ngModel)]='selectedSchool'
+            name = 'organization'
+            [data]='organizationList'
+            [(ngModel)]='selectedOrganization'
             [settings]='ktsSelectSettings'
             (onSelect)='onSchoolSelect($event)'
             (onDeSelect)='onSchoolDeSelect($event)'
