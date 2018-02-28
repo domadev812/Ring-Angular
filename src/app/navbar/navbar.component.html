@@ -1,5 +1,6 @@
 
 <div id="nav" *ngIf="navBarService.visible">
+  <div class="logo-img"><img class="logo" src="../assets/logos/Logo_Full_Red.png"></div>
   <ul class="nav-list justify-end">
     <li class="nav-item" (click)="switchTab('users')" [ngClass]="{'nav-item-selected': tab === 'users'}"><a [routerLink]="['/users']">Users</a></li>
     <li class="nav-item" (click)="switchTab('organizations')" [ngClass]="{'nav-item-selected': tab === 'organizations'}"><a [routerLink]="['/organizations']">Organizations</a></li>

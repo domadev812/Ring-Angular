@@ -1,4 +1,6 @@
 #nav( *ngIf="navBarService.visible")
+  .logo-img
+    img.logo(src='../assets/logos/Logo_Full_Red.png')
   ul.nav-list.justify-end
     li.nav-item((click)="switchTab('users')" [ngClass]="{'nav-item-selected': tab === 'users'}")
       a([routerLink]="['/users']" ) Users
