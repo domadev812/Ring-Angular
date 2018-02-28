@@ -57,7 +57,7 @@
           | QUANTITY
           .invalid-validation([hidden]="qty.valid || (qty.pristine && !campaignForm.submitted)")
             | Quantity is required
-          .invalid-validation([hidden]="!qty.valid || checkValue() || (qty.pristine && !campaignForm.submitted)")
+          .invalid-validation([hidden]="!editFlag || !qty.valid || checkValue() || (qty.pristine && !campaignForm.submitted)")
             | Quantity cannot be less than redeemed.
         input.input(type="number" name="qty" [(ngModel)]='quantity' #qty="ngModel" required)           
         button.prizes-btn.primary-button(type = "submit")

@@ -53,7 +53,7 @@ export class PrizeAddComponent implements OnInit {
   }
 
   onSponsorSelect(item: any) {
-    this.prize.sponsor_id = item.id;
+    this.prize.organization_id = item.id;
     this.onChange(item);
   }
   onSponsorDeSelect(item: any) {
@@ -73,12 +73,11 @@ export class PrizeAddComponent implements OnInit {
   getPrize(id): void {
     this.prizesService.getPrize(id).subscribe((res) => {
       this.prize = res;
-      this.prize.details = 'Detail';
-      this.prize.sponsor_id = '1212';
+      this.prize.details = 'Detail';      
       this.prize.delivery_type = 'Third Party';
       this.originalPrize = Object.assign({}, this.prize);
       if (this.sponsorList.length > 0) {
-        let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.sponsor_id, 0));
+        let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.organization_id, 0));
         if (org) {
           this.selectedSponsor.push(org);
         }
@@ -107,7 +106,7 @@ export class PrizeAddComponent implements OnInit {
       if (this.selectedSponsor.length === 0) {
         this.disableFlag = false;
         return;
-      } else if (this.selectedSponsor[0].id !== this.originalPrize.sponsor_id) {
+      } else if (this.selectedSponsor[0].id !== this.originalPrize.organization_id) {
         this.disableFlag = false;
         return;
       }
@@ -135,6 +134,7 @@ export class PrizeAddComponent implements OnInit {
       return;
     }
 
+    this.prize.organization_id = this.selectedSponsor[0].id;
     if (!this.prize.id) {
       this.prizesService.createPrize(this.prize).subscribe((res) => {
         alert('Prize is created');
@@ -160,8 +160,8 @@ export class PrizeAddComponent implements OnInit {
   getSponsors(): void {
     this.multiSelectService.getDropdownSponsors().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.sponsorList = res;
-      if (this.editFlag && this.prize.sponsor_id && this.sponsorList.length > 0) {
-        let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.sponsor_id, 0));
+      if (this.editFlag && this.prize.organization_id && this.sponsorList.length > 0) {
+        let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.organization_id, 0));
         if (org) {
           this.selectedSponsor.push(org);
         }

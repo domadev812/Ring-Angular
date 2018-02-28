@@ -8,7 +8,7 @@ export class Prize {
   details: string;
   delivery_type: string;
   sponsor: string;
-  sponsor_id: string;
+  organization_id: string;
   images: Array<string>;  
   prize_campaigns: Array<Campaign>;  
   current_campaign: Campaign;
@@ -26,7 +26,7 @@ export class Prize {
     this.details = data.details || this.details;
     this.delivery_type = data.delivery_type || this.delivery_type;
     this.sponsor = data.sponsor || this.sponsor;
-    this.sponsor_id = data.sponsor_id || this.sponsor_id;
+    this.organization_id = data.organization_id || this.organization_id;
     this.points = data.points || this.points;
     this.images = data.images || this.images;    
     if (data.prize_campaigns) {

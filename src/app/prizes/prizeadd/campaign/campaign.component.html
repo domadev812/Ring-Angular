@@ -42,7 +42,7 @@
         <input class="input redeemed-input" name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0">
         <div class="input-label">QUANTITY
           <div class="invalid-validation" [hidden]="qty.valid || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity is required</div>
-          <div class="invalid-validation" [hidden]="!qty.valid || checkValue() || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity cannot be less than redeemed.</div>
+          <div class="invalid-validation" [hidden]="!editFlag || !qty.valid || checkValue() || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity cannot be less than redeemed.</div>
         </div>
         <input class="input" type="number" name="qty" [(ngModel)]="quantity" #qty="ngModel" required>
         <button class="prizes-btn primary-button" type="submit">Save</button>
