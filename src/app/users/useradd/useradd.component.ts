@@ -24,8 +24,8 @@ export class UserAddComponent implements OnInit {
   private selectedOrganization = [];
   private typeList = [];
   private selectedType = [];
-  private ktsSelectSettings = {};
-
+  private ktsTypeSettings = {};
+  private ktsOrganizationSettings = {};
   constructor(private route: ActivatedRoute, 
               private router: Router,
               private usersService: UsersService,
@@ -35,19 +35,20 @@ export class UserAddComponent implements OnInit {
     this.title = 'New User';
     this.organizationTitle = 'School';
     this.user = new Model.User({});        
+    this.originalUser = new Model.User({});    
     this.editFlag = false;
     this.disableFlag = false;
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;    
+    this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);    
+    this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);     
     this.typeList.push({itemName: 'Student', id: 'student'});
     this.typeList.push({itemName: 'Key Contact', id: 'key_contact'});
     this.typeList.push({itemName: 'Counselor', id: 'counselor'});
-    this.typeList.push({itemName: 'Business Owner', id: 'business_owner'});
-
+    this.typeList.push({itemName: 'Business Owner', id: 'business_owner'});    
     const id = this.route.snapshot.paramMap.get('userId');
     if (id !== null) {
       this.title = 'Edit User';
-      this.editFlag = true;
-      this.disableFlag = true;
+      this.editFlag = true;            
+      this.ktsTypeSettings['disabled'] = true;      
       this.getUser(id);
     }
     this.getSchools();
@@ -89,18 +90,23 @@ export class UserAddComponent implements OnInit {
         if (org) {
           this.selectedOrganization.push(org);
         }
+        org = this.sponsorList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
+        if (org) {
+          this.selectedOrganization.push(org);
+        }
       }
       let userType = this.typeList.find(type => type.id === this.user.type);
       if (userType) {
         this.selectedType.push(userType);
       }
+      this.disableFlag = true;
     }, (errors) => {      
       alert('Server error');
     });
   }
 
   onChange(event): void {
-    if (this.editFlag) {      
+    if (this.editFlag && this.user) {     
       if (this.user.first_name !== this.originalUser.first_name) {
         this.disableFlag = false;
         return;
@@ -216,7 +222,7 @@ export class UserAddComponent implements OnInit {
       this.organizationTitle = 'School';
       this.organizationList = this.schoolList.map(school => school);
     }
-    this.selectedOrganization = [];
+    // this.selectedOrganization = [];
   }
 
   validEmail(email: string): boolean {

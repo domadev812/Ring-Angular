@@ -29,13 +29,13 @@
           <div class="input-label">USER TYPE
             <div class="invalid-validation" [hidden]="selectedType.length &gt; 0 || !userForm.submitted">Type is required</div>
           </div>
-          <angular2-multiselect name="type" [data]="typeList" [(ngModel)]="selectedType" [settings]="ktsSelectSettings" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)">                          </angular2-multiselect>
+          <angular2-multiselect name="type" [data]="typeList" [(ngModel)]="selectedType" [settings]="ktsTypeSettings" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)">                          </angular2-multiselect>
         </div>
         <div class="item-info">
           <div class="input-label">{{organizationTitle}}
             <div class="invalid-validation" [hidden]="selectedOrganization.length &gt; 0 || !userForm.submitted">{{organizationTitle}} is required</div>
           </div>
-          <angular2-multiselect name="organization" [data]="organizationList" [(ngModel)]="selectedOrganization" [settings]="ktsSelectSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)"></angular2-multiselect>
+          <angular2-multiselect name="organization" [data]="organizationList" [(ngModel)]="selectedOrganization" [settings]="ktsOrganizationSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)"></angular2-multiselect>
         </div>
         <div class="item-info">
           <div class="input-label">EMAIL

@@ -32,7 +32,7 @@
             name = 'type'
             [data]='typeList'
             [(ngModel)]='selectedType'
-            [settings]='ktsSelectSettings'
+            [settings]='ktsTypeSettings'
             (onSelect)='onTypeSelect($event)'
             (onDeSelect)='onTypeDeSelect($event)'
           )                           
@@ -45,7 +45,7 @@
             name = 'organization'
             [data]='organizationList'
             [(ngModel)]='selectedOrganization'
-            [settings]='ktsSelectSettings'
+            [settings]='ktsOrganizationSettings'
             (onSelect)='onSchoolSelect($event)'
             (onDeSelect)='onSchoolDeSelect($event)'
           )
