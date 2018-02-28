@@ -24,7 +24,6 @@ export class PrizesService {
       });
   }
 
-
   activateCardNumber(cardNumber: string): Observable<boolean> {
     let url = environment.apiUrl + '/api/keycard/' + cardNumber + '/activate';        
     return this.http.patch(url, {})

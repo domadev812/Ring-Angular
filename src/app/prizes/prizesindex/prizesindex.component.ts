@@ -3,6 +3,8 @@ import { PrizesService } from '../../_services/prizes.service';
 import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
+import * as moment from 'moment';
+import { Campaign } from '../../_models/campaign.model';
 
 @Component({
   selector: 'app-prizesindex',
@@ -39,7 +41,8 @@ export class PrizesIndexComponent implements OnInit {
 
   getPrizes(): void {
     this.prizesService.getPrizes(this.offset, this.searchText).subscribe((res) => {
-      this.prizes = res.map(prize => prize);
+      this.prizes = res.map(prize => prize);      
+      console.log(this.prizes);
       this.offset += res.length;
     }, (errors) => {
       alert('Server error');
@@ -60,5 +63,17 @@ export class PrizesIndexComponent implements OnInit {
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);
     this.infiniteScrollLoading = false;
+  }
+
+  formatDate(date: any): string {
+    return date ? moment(date, moment.ISO_8601)
+      .format('DD  MMM  YYYY') : '';    
+  }
+
+  getKeyValue(campaign: Model.Campaign, key: string): any {
+    if (campaign) {
+      return campaign[key];
+    }
+    return null;
   }
 }

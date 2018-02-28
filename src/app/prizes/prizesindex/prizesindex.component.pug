@@ -27,11 +27,11 @@
         .table-data.mx-4.col-delivery
           | Delivery
         .table-data.mx-4.col-quantity
-          | {{prize.points}}
+          | {{getKeyValue(prize.current_campaign, 'number_available')}}
         .table-data.mx-4.col-redeemed
-          | Redeemed
+          | {{getKeyValue(prize.current_campaign, 'redeemed')}}
         .table-data.mx-4.col-period
-          | {{prize.created_at}}
+          | {{formatDate(getKeyValue(prize.current_campaign, 'activation_start'))}}
         .table-data.mx-4.col-edit
           i.fa.fa-pencil.edit-row((click)='editPrize(prize.id)')
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
