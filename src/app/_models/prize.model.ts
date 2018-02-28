@@ -41,7 +41,7 @@ export class Prize {
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');
     this.deleted_at = data.deleted_at ? moment(data.deleted_at, moment.ISO_8601)
-    .format('DD  MMM  YYYY') : null;
+      .format('DD  MMM  YYYY') : null;
   }
 
   getCurrentCampaign(): void {

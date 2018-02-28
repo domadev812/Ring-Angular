@@ -21,8 +21,8 @@ export class StudentsComponent implements OnInit {
   public students: Array<Model.User>;
   public organizations: Array<Model.Organization>;
 
-  constructor(private usersService: UsersService,
-    resourcesService: ResourcesService) { }
+  constructor(private router: Router,
+              private usersService: UsersService) { }
 
   ngOnInit() {
     this.students = new Array<Model.User>();
@@ -33,6 +33,7 @@ export class StudentsComponent implements OnInit {
   }
 
   editStudent(id) {
+    this.router.navigate(['useredit/' + id]);
   }
 
   searchItems(): void {
