@@ -2,7 +2,7 @@
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="internship">
     <form class="form-group" #internshipForm="ngForm" (ngSubmit)="saveInternship(internshipForm.valid)" novalidate>
-      <div class="header-nav">
+      <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
           <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">

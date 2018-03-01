@@ -7,7 +7,22 @@
   font-family: $font-primary;  
   margin-bottom: 10px;
 }
-
+.fixed-header{
+  position: fixed;
+  width: 990px;
+  max-width: 990px;
+  min-width: 990px;
+  overflow: hidden;
+  padding-right: 165px;
+  padding-top: 40px;
+  background-color: #f5f6fa;
+  top: $nav-height;  
+  @include xl{
+    width: 1110px;
+    max-width: 1110px;
+    min-width: 1110px;
+  }  
+}
 .resource-button {
   @extend .primary-button;
   @extend .new-button-group;
@@ -38,9 +53,9 @@
   width: 5%;
   text-align: right;
 }
-.form-content {
-  margin-top: 40px;
+.form-content {  
   width: 100%;
+  margin-top: 110px;
 }
 .applicants-view {
   margin-top: -20px;  

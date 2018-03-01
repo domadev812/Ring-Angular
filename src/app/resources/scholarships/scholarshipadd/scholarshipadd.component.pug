@@ -1,7 +1,7 @@
 .page-wrapper.resources
   #scholarshipadd.content-wrapper
     form.form-group(#scholarshipForm='ngForm' (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate)
-      .header-nav
+      .header-nav.fixed-header
         h1.headers
           | {{title}}
         .button-group
