@@ -21,8 +21,8 @@ export class CounselorsComponent implements OnInit {
   public counselors: Array<ApiUser>;
   public organizations: Array<Model.Organization>;
 
-  constructor(private router: Router,
-              private usersService: UsersService) { }
+  constructor(private usersService: UsersService,
+    private resourcesService: ResourcesService) { }
 
   ngOnInit() {
     this.counselors = new Array<ApiUser>();
@@ -33,7 +33,6 @@ export class CounselorsComponent implements OnInit {
   }
 
   editCounselor(id) {
-    this.router.navigate(['useredit/' + id]);
   }
 
   searchItems(): void {
