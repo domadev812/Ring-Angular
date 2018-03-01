@@ -39,7 +39,7 @@
           <input class="resources-input" [(ngModel)]="internship.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required>
         </div>
         <div class="item-info">
-          <div class="input-label">CAREERS</div>
+          <div class="input-label-dropdown">CAREERS</div>
           <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)">    </angular2-multiselect>
         </div>
         <div class="item-info">
@@ -47,7 +47,7 @@
           <label for="active">Active  </label>
         </div>
         <div class="item-info">  
-          <button class="resources-btn secondary-button delete-button" (click)="deleteInternship()">
+          <button class="delete-button" (click)="deleteInternship()">
              Delete Internship  </button>
         </div>
       </div>

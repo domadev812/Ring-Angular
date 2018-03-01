@@ -5,14 +5,14 @@
         h1.headers
           | {{title}}
         .button-group
-            button.resources-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
+            button.save-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
               | Save
-            button.resources-btn.secondary-button(type="button" (click)="goBack()") 
+            button.cancel-button(type="button" (click)="goBack()") 
               | Cancel
       .applicants-view(*ngIf="editFlag === true && opportunity.users" (click)="gotoApplicants(opportunity.id)")
         | Applicants: {{opportunity.users.length}} 
         img.link-arrow(src="../assets/imgs/link-arrow.svg") 
-      .wrapper-content 
+      .form-content 
         .item-info
           .input-label
             | NAME
@@ -47,7 +47,7 @@
               | Application link is not correct
           input.resources-input([(ngModel)]="opportunity.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required)
         .item-info
-          .input-label
+          .input-label-dropdown
               | CAREERS
           angular2-multiselect(
             name = 'careers'
@@ -62,5 +62,5 @@
           label(for='active')
             | Active  
         .item-info   
-          button.resources-btn.secondary-button.delete-opportunity((click)='deleteOpportunity()') 
+          button.delete-button((click)='deleteOpportunity()') 
             | Delete Opportunity  

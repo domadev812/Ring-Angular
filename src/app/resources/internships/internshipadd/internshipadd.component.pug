@@ -47,7 +47,7 @@
               | Application link is not correct
           input.resources-input([(ngModel)]="internship.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required)
         .item-info
-          .input-label
+          .input-label-dropdown
               | CAREERS
           angular2-multiselect(
             name = 'careers'
@@ -62,5 +62,5 @@
           label(for='active')
             | Active  
         .item-info   
-          button.resources-btn.secondary-button.delete-button((click)='deleteInternship()') 
+          button.delete-button((click)='deleteInternship()') 
             | Delete Internship  
