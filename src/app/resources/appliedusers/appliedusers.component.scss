@@ -1,38 +1,21 @@
-@import "~assets/stylesheets/style-guide";
-@import "~assets/stylesheets/mixins";
-@import "~assets/stylesheets/shared-classes";
-.header-nav {  
-  @include space-between;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  font-family: $font-primary;
-}
-
+@import "../resources.component.scss";
 .resource-name {
-  margin-top: 5px;  
+  margin-top: -15px;  
   margin-bottom: 30px;
   font-family: $font-primary;    
   font-size: 18px;  
   color: $color-text-sub-nav;
   font-weight: 300;
 }
-
-.wrapper-content {
-  margin-top: 40px;
-}
-
 .col-student {
   width: 20%;
 }
-
 .col-school {
   width: 30%;
 }
-
 .col-grade {
   width: 20%;
 }
-
 .col-email {
   width: 30%;
 }
