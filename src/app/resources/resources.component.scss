@@ -42,6 +42,17 @@
   margin-top: 40px;
   width: 100%;
 }
+.applicants-view {
+  margin-top: 10px;  
+  font-family: $font-primary;
+  color: $color-primary;
+  font-size: 20px;
+  cursor: pointer;
+}
+.link-arrow {
+  margin-top:-3px;
+  margin-left: 3px;
+}
 .resources-input {
   @extend .input;
   padding: 10px;

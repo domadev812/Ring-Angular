@@ -5,14 +5,14 @@
         h1.headers
           | {{title}}
         .button-group
-            button.resources-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
+            button.save-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
               | Save
-            button.resources-btn.secondary-button(type="button" (click)="goBack()") 
+            button.cancel-button(type="button" (click)="goBack()") 
               | Cancel
       .applicants-view(*ngIf="editFlag === true && internship.users" (click)="gotoApplicants(internship.id)")
         | Applicants: {{internship.users.length}} 
         img.link-arrow(src="../assets/imgs/link-arrow.svg") 
-      .wrapper-content 
+      .form-content 
         .item-info
           .input-label
             | NAME
@@ -62,5 +62,5 @@
           label(for='active')
             | Active  
         .item-info   
-          button.resources-btn.secondary-button.delete-internship((click)='deleteInternship()') 
+          button.resources-btn.secondary-button.delete-button((click)='deleteInternship()') 
             | Delete Internship  
