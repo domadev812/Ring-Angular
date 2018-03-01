@@ -5,11 +5,11 @@
         h1.headers
           | {{title}}
         .button-group
-          button.resources-btn.primary-button(type='submit')
+          button.save-button(type='submit')
             | Save
-          button.resources-btn.secondary-button((click)='goBack()' type='button') 
+          button.cancel-button((click)='goBack()' type='button') 
             | Cancel  
-      .wrapper-content 
+      .form-content 
           .item-info
             .input-label-top
               | NAME
@@ -89,5 +89,5 @@
             label(for='active')
               | Active  
           .item-info   
-            button.resources-btn.secondary-button.delete-internship((click)='deleteScholarship()') 
+            button.resources-btn.secondary-button.delete-button((click)='deleteScholarship()') 
               | Delete Scholarship  

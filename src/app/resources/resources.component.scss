@@ -12,7 +12,105 @@
   @extend .primary-button;
   @extend .new-button-group;
 }
+.save-button {
+  @extend .primary-button;
+  @extend .new-button-group;
+  width: auto;
+}
+.cancel-button{
+  @extend .secondary-button;
+  @extend .new-button-group;
+  width: auto;
+}
+.col-resource {
+  width: 20%
+}
+.col-organization {
+  width: 30%
+}
+.col-link {
+  width: 35%
+}
+.col-created {
+  width: 10%
+}
+.col-edit {
+  width: 5%;
+  text-align: right;
+}
+.form-content {
+  margin-top: 40px;
+  width: 100%;
+}
+.resources-input {
+  @extend .input;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  margin-left: 0;
+}
+.resources-textarea {
+  @extend .resources-input;
+  height: auto;
+}
+.item-info {
+  margin-bottom: 30px;
+}
+.input-label {
+  @extend .input-label;
+  margin-left: 0;
+}
+.delete-button {
+  padding-left: 60px;
+  padding-right: 60px;
+  margin-top: 50px;
+}
+// Custom Checkbox Style
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 1.95em;
+  cursor: pointer;
+}
 
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 1.25em; height: 1.25em;
+  border: 2px solid #ccc;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content: '✔';
+  position: absolute;
+  top: .4em; left: .215em;
+  font-size: 1em;
+  line-height: 0.8;
+  color: #000;
+  transition: all .2s;
+  font-family: Helvetica, Arial, sans-serif;
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
 .resources {
   position: relative;
   .newBtn{
