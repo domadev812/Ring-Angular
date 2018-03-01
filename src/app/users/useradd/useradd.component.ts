@@ -81,24 +81,23 @@ export class UserAddComponent implements OnInit {
 
   getUser(id): void {
     this.usersService.getUser(id).subscribe( (res) => {          
-      this.user = res;
-      this.user.type = 'key_contact';
+      this.user = res;            
       this.user.password = 'password';
       this.originalUser = Object.assign({}, this.user);                  
-      if (this.schoolList.length > 0) {
-        let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
-        if (org) {
-          this.selectedOrganization.push(org);
-        }
-        org = this.sponsorList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
-        if (org) {
-          this.selectedOrganization.push(org);
-        }
-      }
-      let userType = this.typeList.find(type => type.id === this.user.type);
+      let userType = this.typeList.find(type => {
+        let role = this.user.roles.find(roleItem => roleItem === type.id);
+        return role ? true : false;        
+      });
       if (userType) {
         this.selectedType.push(userType);
+        this.changeOrganizationList();
       }
+      if (this.organizationList.length > 0) {
+        let org = this.organizationList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
+        if (org) {
+          this.selectedOrganization.push(org);
+        }        
+      }      
       this.disableFlag = true;
     }, (errors) => {      
       alert('Server error');
@@ -106,7 +105,7 @@ export class UserAddComponent implements OnInit {
   }
 
   onChange(event): void {
-    if (this.editFlag && this.user) {     
+    if (this.editFlag && this.user && this.originalUser) {           
       if (this.user.first_name !== this.originalUser.first_name) {
         this.disableFlag = false;
         return;
@@ -123,16 +122,8 @@ export class UserAddComponent implements OnInit {
       } else if (this.selectedOrganization[0].id !== this.originalUser.organization_id) {
         this.disableFlag = false;        
         return;
-      }
-      
-      if (this.selectedType.length === 0) {
-        this.disableFlag = false;
-        return;
-      } else if (this.selectedType[0].id !== this.originalUser.type) {
-        this.disableFlag = false;
-        return;
-      }
-      
+      } 
+     
       if (this.user.email !== this.originalUser.email) {
         this.disableFlag = false;
         return;

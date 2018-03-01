@@ -21,8 +21,8 @@ export class KeyContactsComponent implements OnInit {
   public keycontacts: Array<ApiUser>;
   public organizations: Array<Model.Organization>;
 
-  constructor(private usersService: UsersService,
-    private resourcesService: ResourcesService) { }
+  constructor(private router: Router,
+              private usersService: UsersService) { }
 
   ngOnInit() {
     this.keycontacts = new Array<ApiUser>();
@@ -33,6 +33,7 @@ export class KeyContactsComponent implements OnInit {
   }
 
   editKeyContact(id) {
+    this.router.navigate(['useredit/' + id]);
   }
 
   searchItems(): void {
