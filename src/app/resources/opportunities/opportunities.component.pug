@@ -13,7 +13,7 @@
       | Created
     .table-header.mx-4.col-edit
       | &nbsp;
-  .table-content-without-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+  .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let opportunity of opportunities")
       .d-flex.space-between.bg-white.py-1
         .table-data-primary.mx-4.col-resource

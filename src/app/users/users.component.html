@@ -8,14 +8,14 @@
       </div>
     </div>
     <div class="justify-start newTabs mb-4">
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('student')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'student'}">Students</div>
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('key_contact')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'key_contact'}">Key Contacts</div>
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('counselor')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselor'}">Counselors</div>
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('business_owner')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'business_owner'}">Business Owners</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('students')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'students'}">Students</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('keycontacts')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'keycontacts'}">Key Contacts</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('counselors')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselors'}">Counselors</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('businessowners')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'businessowners'}">Business Owners</div>
     </div>
-    <app-students *ngIf="selectedTab === 'student'"></app-students>
-    <app-keycontacts *ngIf="selectedTab === 'key_contact'"></app-keycontacts>
-    <app-counselors *ngIf="selectedTab === 'counselor'"></app-counselors>
-    <app-businessowners *ngIf="selectedTab === 'business_owner'"></app-businessowners>
+    <app-students *ngIf="selectedTab === 'students'"></app-students>
+    <app-keycontacts *ngIf="selectedTab === 'keycontacts'"></app-keycontacts>
+    <app-counselors *ngIf="selectedTab === 'counselors'"></app-counselors>
+    <app-businessowners *ngIf="selectedTab === 'businessowners'"></app-businessowners>
   </div>
 </div>
