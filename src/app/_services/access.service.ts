@@ -25,7 +25,8 @@ export class AccessService {
         'opportunityadd',
         'opportunityedit',
         'scholarshipadd',
-        'scholarshipedit'],
+        'scholarshipedit',
+        'applicants'],
       functionAccess: ['']
     },
     {
