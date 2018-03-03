@@ -1,0 +1,47 @@
+.page-wrapper.organizations
+  #organization.content-wrapper
+    form.form-group(#organizationForm="ngForm" (ngSubmit)="saveOrganization(organizationForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+            button.organization-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
+              | Save
+            button.organization-btn.secondary-button(type="button" (click)="goBack()") 
+              | Cancel
+      .wrapper-content
+        .logo-image 
+          .well.my-drop-zone(ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader" (onFileDrop)="selectedFile($event)")            
+            img.preview([ngStyle]="{'background-image': 'url(' + filePreviewPath.changingThisBreaksApplicationSecurity + ')'}" *ngIf="filePreviewPath" for='file' (click)='file.click()')
+            .empty-logo(*ngIf="!filePreviewPath")
+              label.add-logo(for="file")
+                | Add Logo  
+            .change-logo(*ngIf="filePreviewPath")
+              label.add-logo(for="file")
+                | Change Logo  
+          input.file-chooser(#file type="file" id="file" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" (onFileSelected)="selectedFile($event)")
+        .content
+          .item-info
+            .input-label
+              | NAME
+              .invalid-validation([hidden]="name.valid || (name.pristine && !organizationForm.submitted)")
+                | Name is required
+            input.organization-input(type="text" name="name" [(ngModel)]="organization.name" (ngModelChange)="onChange($event)" #name="ngModel" required) 
+          .item-info
+            .input-label
+              | DESCRIPTION
+              .invalid-validation([hidden]="details.valid || (details.pristine && !organizationForm.submitted)")
+                | Description is required
+            textarea.organization-textarea(rows="6" name="details" [(ngModel)]="organization.details" (ngModelChange)="onChange($event)" #details="ngModel" required)
+          .item-info
+            .input-label
+              | WEBSITE
+              .invalid-validation([hidden]="link.valid || (link.pristine && !organizationForm.submitted)")
+                | Website link is required
+              .invalid-validation([hidden]="!organization.url || organization.url === '' || validURL(organization.url) || (link.pristine && !organizationForm.submitted)")
+                | Website link is not correct
+            input.organization-input([(ngModel)]="organization.url" (ngModelChange)="onChange($event)" name="link" #link="ngModel" required)        
+          .item-info
+            input(type='checkbox' id='active' [(ngModel)]='organization.is_active' [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
+            label(for='active')
+              | Active  

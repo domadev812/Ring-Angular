@@ -19,6 +19,7 @@ export class InternshipAddComponent implements OnInit {
   public internship: Model.Resource;
   public originalInternship: Model.Resource;
   public careers: Array<Model.Career>;
+  public career_ids: Array<Model.Career>;
   public organizationList = [];
   public selectedOrganization = [];
   public ktsSelectSettings = {};
@@ -28,6 +29,8 @@ export class InternshipAddComponent implements OnInit {
   public title: string;
   public editFlag: boolean;
   public disableFlag: boolean;
+  public opportunity = [];
+  public currentCareers = [];
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -42,9 +45,11 @@ export class InternshipAddComponent implements OnInit {
     this.internship = new Model.Resource({});
     this.originalInternship = new Model.Resource({});
     this.careers = new Array<Model.Career>();
+    this.career_ids = new Array<Model.Career>();
     this.title = 'New Internship';
     this.editFlag = false;
     this.disableFlag = false;
+
 
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
@@ -54,6 +59,7 @@ export class InternshipAddComponent implements OnInit {
       this.title = 'Edit Internship';
       this.editFlag = true;
       this.disableFlag = true;
+
       this.getResource(id);
     }
     this.getCareers();
@@ -62,6 +68,7 @@ export class InternshipAddComponent implements OnInit {
 
   onCareerSelect(item: any) {
     this.onChange(item);
+    console.log('on select careers', this.selectedCareers);
   }
   onCareerDeSelect(item: any) {
     this.onChange(item);
@@ -122,6 +129,12 @@ export class InternshipAddComponent implements OnInit {
 
   getResource(id: string): void {
     this.resourcesService.getResource(id).subscribe((res) => {
+      const parsedCareers = res.careers.map(careers => {
+        careers.title = careers.title;
+        careers.id = careers.id;
+        return careers;
+      });
+      this.selectedCareers = MultiSelectUtil.SelectItem.buildFromData(parsedCareers, 'Career');
       this.internship = res;
       this.originalInternship = Object.assign({}, res);
       if (!this.originalInternship.is_active) {
@@ -170,10 +183,14 @@ export class InternshipAddComponent implements OnInit {
     }
 
     this.internship.type = 'Internship';
-    this.internship.career_titles = Array<number>();
-    for (let career of this.selectedCareers) {
-      this.internship.career_titles.push(career.id);
-    }
+
+    this.internship.career_ids = this.selectedCareers.map((career) => {
+      return career.id;
+    });
+    console.log('this is the career ids', this.internship.career_ids);
+
+
+
 
     if (!this.internship.id) {
       this.resourcesService.createResource(this.internship).subscribe((res) => {

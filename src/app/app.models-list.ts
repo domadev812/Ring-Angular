@@ -9,6 +9,7 @@ import { RolesAccess as ApiRolesAccess } from './_models/roles-access.model';
 import { Scholarship as ApiScholarship } from './_models/scholarship.model';
 import { User as ApiUser } from './_models/user.model';
 import { Ethnicity as ApiEthnicity } from './_models/ethnicity.model';
+import { AwardedPrize as ApiAwardedPrize } from './_models/awarded-prize.model';
 
 export module Model {
     export type User = ApiUser;
@@ -34,6 +35,8 @@ export module Model {
     export const Scholarship = ApiScholarship;
     export type Ethnicity = ApiEthnicity;
     export const Ethnicity = ApiEthnicity;
+    export type AwardedPrize = ApiAwardedPrize;
+    export const AwardedPrize = ApiAwardedPrize;
 
     export function initializeArray<T>(array: T[], type: string): any[] {
         let newArray: T[] = [];

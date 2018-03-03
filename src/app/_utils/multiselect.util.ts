@@ -38,11 +38,11 @@ export module MultiSelectUtil {
       });
     }
 
-    static buildCareerData(data: any, model_name: string): SelectItem[] {
-      return data.map((item: any) => {
-        return new SelectItem(item[this.model_values[model_name]], item.title);
-      });
-    }
+    // static buildCareerData(data: any, model_name: string): SelectItem[] {
+    //   return data.map((item: any) => {
+    //     return new SelectItem(item[this.model_values[model_name]], item.title);
+    //   });
+    // }
 
 
   }

@@ -4,6 +4,7 @@ import { AuthGuard } from './_guards/auth.guard';
 
 import * as Components from './app.components-list';
 import { UsersComponent } from './users/users.component';
+import { UserAddComponent } from './users/useradd/useradd.component';
 import { PrizesComponent } from './prizes/prizes.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { AppliedUserComponent } from './resources/appliedusers/appliedusers.component';
@@ -15,11 +16,16 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { NotificationAddComponent } from './notifications/notificationadd/notificationadd.component';
 import { RoleGuard } from './_guards/role.guard';
 import { OrganizationsComponent } from './organizations/organizations.component';
+import { OrganizationAddComponent } from './organizations/organizationadd/organizationadd.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: Components.LoginComponent },
 
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'useradd', component: UserAddComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'useredit/:userId', component: UserAddComponent, canActivate: [AuthGuard] },
 
   { path: 'prizes', component: PrizesComponent, canActivate: [AuthGuard, RoleGuard] },
 
@@ -46,6 +52,8 @@ const appRoutes: Routes = [
   { path: 'notificationadd', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'organizations', component: OrganizationsComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'organizationadd/:type', component: OrganizationAddComponent, canActivate: [AuthGuard] },
 
   { path: '**', redirectTo: '/login' }
 ];

@@ -6,9 +6,10 @@ export class User extends BaseUser {
   bio: string;
   organization_id: string;
   organization: Organization;
+  type: string;
   created_at: any;
   updated_at: any;
-  
+
   constructor(data) {
     super();
     this.setData(data);
@@ -20,6 +21,7 @@ export class User extends BaseUser {
     this.bio = data.bio || this.bio;
     this.organization_id = data.organization_id || this.organization_id;
     this.organization = data.organization || this.organization;
+    this.type = data.type || this.type;
     this.created_at = data.created_at ? moment(data.created_at, moment.ISO_8601)
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');

@@ -12,6 +12,7 @@ export class AccessService {
     {
       role: 'admin',
       routeAccess: ['users',
+        'useradd',
         'organizations',
         'organizationadd',
         'resources',

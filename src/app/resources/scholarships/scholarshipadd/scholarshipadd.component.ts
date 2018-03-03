@@ -122,19 +122,17 @@ export class ScholarshipAddComponent implements OnInit {
 
     this.scholarship.type = 'scholarship';
 
-    this.scholarship.career_titles = Array<number>();
-    for (let career of this.selectedCareers) {
-      this.scholarship.career_titles.push(career.id);
-    }
+    this.scholarship.career_ids = this.selectedCareers.map(career => {
+      return career.id;
+    });
 
-    this.scholarship.ethnicity_ids = Array<string>();
-    for (let ethnicity of this.selectedEthnicities) {
-      this.scholarship.ethnicity_ids.push(ethnicity.id);
-    }
-    this.scholarship.school_ids = Array<string>();
-    for (let school of this.selectedSchools) {
-      this.scholarship.school_ids.push(school.id);
-    }
+    this.scholarship.ethnicity_ids = this.selectedEthnicities.map(ethnicity => {
+      return ethnicity.id;
+    });
+
+    this.scholarship.school_ids = this.selectedSchools.map(school => {
+      return school.id;
+    });
 
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
@@ -165,6 +163,4 @@ export class ScholarshipAddComponent implements OnInit {
     const pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
     return pattern.test(url);
   }
-
-
 }

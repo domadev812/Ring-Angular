@@ -2,17 +2,17 @@
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="internship">
     <form class="form-group" #internshipForm="ngForm" (ngSubmit)="saveInternship(internshipForm.valid)" novalidate>
-      <div class="header-nav fixed-header">
+      <div class="header-nav">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">
+          <button class="resources-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">
              Save</button>
-          <button class="cancel-button" type="button" (click)="goBack()">
+          <button class="resources-btn secondary-button" type="button" (click)="goBack()">
              Cancel</button>
         </div>
       </div>
       <div class="applicants-view" *ngIf="editFlag === true &amp;&amp; internship.users" (click)="gotoApplicants(internship.id)">Applicants: {{internship.users.length}} <img class="link-arrow" src="../assets/imgs/link-arrow.svg"></div>
-      <div class="form-content"> 
+      <div class="wrapper-content"> 
         <div class="item-info">
           <div class="input-label">NAME
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !internshipForm.submitted)">Name is required</div>
@@ -39,7 +39,7 @@
           <input class="resources-input" [(ngModel)]="internship.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required>
         </div>
         <div class="item-info">
-          <div class="input-label-dropdown">CAREERS</div>
+          <div class="input-label">CAREERS</div>
           <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)">    </angular2-multiselect>
         </div>
         <div class="item-info">
@@ -47,7 +47,7 @@
           <label for="active">Active  </label>
         </div>
         <div class="item-info">  
-          <button class="delete-button" (click)="deleteInternship()">
+          <button class="resources-btn secondary-button delete-internship" (click)="deleteInternship()">
              Delete Internship  </button>
         </div>
       </div>

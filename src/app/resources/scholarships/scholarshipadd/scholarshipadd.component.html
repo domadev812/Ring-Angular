@@ -2,15 +2,15 @@
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="scholarshipadd">
     <form class="form-group" #scholarshipForm="ngForm" (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate>
-      <div class="header-nav fixed-header">
+      <div class="header-nav">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="save-button" type="submit">Save</button>
-          <button class="cancel-button" (click)="goBack()" type="button">
+          <button class="resources-btn primary-button" type="submit">Save</button>
+          <button class="resources-btn secondary-button" (click)="goBack()" type="button">
              Cancel  </button>
         </div>
       </div>
-      <div class="form-content"> 
+      <div class="wrapper-content"> 
         <div class="item-info">
           <div class="input-label-top">NAME
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !scholarshipForm.submitted)">Name is required</div>
@@ -62,7 +62,7 @@
           <label for="active">Active  </label>
         </div>
         <div class="item-info">  
-          <button class="delete-button" (click)="deleteScholarship()">
+          <button class="resources-btn secondary-button delete-internship" (click)="deleteScholarship()">
              Delete Scholarship  </button>
         </div>
       </div>

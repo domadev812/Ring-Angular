@@ -1,6 +1,7 @@
 
 import 'rxjs/add/observable/throw';
 import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router, Routes, RouterModule } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -20,12 +21,18 @@ export class PrizesComponent implements OnInit {
   private cardNumber: string;
   private modalRef: BsModalRef;
   private isActivated: boolean;
+  private startDate: Date = new Date();
+  private endDate: Date = new Date();
+  private validPick: boolean;
+  private checked = true;
   private config = {
     animated: true,
     keyboard: true,
     backdrop: true,
     ignoreBackdropClick: true
   };
+
+  exportForm: FormGroup;
 
   constructor(private router: Router,
     private modalService: BsModalService,
@@ -42,6 +49,17 @@ export class PrizesComponent implements OnInit {
       this.selectedTab = this.global.selectedTab;
     }
     this.global.selectedTab = '';
+
+    this.exportForm = new FormGroup({
+      allCheck: new FormControl(true),
+      startDate: new FormControl(),
+      endDate: new FormControl()
+   });
+   this.exportForm.controls['startDate'].disable();
+   this.exportForm.controls['endDate'].disable();
+   this.startDate = new Date();
+   this.endDate = new Date();
+   this.validPick = true;
   }
 
   switchTab(selectedTab: String): void {
@@ -69,6 +87,28 @@ export class PrizesComponent implements OnInit {
         this.isActivated = false;
         alert('There was a problem. They card was not activated.');
       });
+    }
+  }
+
+  export(): void {
+    if (this.startDate < this.endDate || this.checked) {
+      this.prizesService.exportCSV(this.exportForm.value)
+      .subscribe((err) => {
+        let message = err;
+      });
+    } else {
+      this.validPick = false;
+    }
+  }
+
+  check(value): void {
+    this.checked = value;
+    if (this.checked) {
+      this.exportForm.controls['startDate'].disable();
+      this.exportForm.controls['endDate'].disable();
+    } else {
+      this.exportForm.controls['startDate'].enable();
+      this.exportForm.controls['endDate'].enable();
     }
   }
 }

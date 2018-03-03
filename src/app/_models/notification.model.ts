@@ -4,7 +4,7 @@ export class Notification {
   message: string;
   careers: string;
   sent_date: string;
-  career_titles: Array<string>;
+  career_ids: Array<string>;
 
 
   constructor(data) {

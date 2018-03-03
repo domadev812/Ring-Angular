@@ -47,7 +47,7 @@ export class MultiSelectService {
       .map((response: Response) => {
         const json = response.json();
         if (json && json.data) {
-          this.careersSelect = MultiSelectUtil.SelectItem.buildCareerData(json.data, 'Career');
+          this.careersSelect = MultiSelectUtil.SelectItem.buildFromData(json.data, 'Career');
           return this.careersSelect;
         } else {
           Observable.throw({ message: 'Internal Server Error' });

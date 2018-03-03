@@ -1,0 +1,178 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+.header-nav {  
+  @include space-between;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  font-family: $font-primary;
+}
+.wrapper-content {
+  margin-top: 40px;
+  display: flex;
+}
+.logo-image {
+  flex: 0.25;    
+}
+
+.file-chooser {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+
+.content {
+  flex: 0.75;
+  margin-left: 20px;
+}
+.organization-btn {
+  margin: 10px 3px;
+  outline: none;
+  cursor: pointer;
+}
+.btn-disabled{
+  background: #E8BDC4;
+  box-shadow: none;
+  cursor: default;
+}
+.organization-input {
+  @extend .input;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  margin-left: 0;
+}
+
+.organization-textarea {
+  @extend .organization-input;
+  height: auto;
+}
+
+.item-info {
+  margin-bottom: 30px;
+}
+
+
+
+.my-drop-zone {  
+  position: relative;
+  border: solid 1px $color-input-outline; 
+  background-color: #FFF;
+  padding-top: 100%;
+  border-radius: 3px;
+  margin-top: -6px;
+  .preview {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    z-index: 3;
+    &:after {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 5;
+      height: 100%;
+      width: 100%;
+      content: 'Change Photo';
+      top: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: white;
+    }
+  }
+  
+}
+.nv-file-over { border: solid 1px red; } /* Default class applied to drop zones on over */
+.file-chooser{
+  margin-top: 10px;
+  width: 100%;
+  font-size: 12px;
+}
+
+
+.change-logo {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 100;
+  font-size: 20px;
+  color: white;
+  
+}
+.empty-logo{
+  position: absolute;
+  top: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-weight: 100;
+  font-size: 20px;
+  color: $color-text-input-placeholder;
+  .add-logo{
+    width: 100%;
+    height: 100%;
+    padding-top: 102px;
+  }
+}
+// Custom Checkbox Style
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 1.95em;
+  cursor: pointer;
+}
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 1.25em; height: 1.25em;
+  border: 1px solid $color-input-outline;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content: '✔';
+  position: absolute;
+  top: .4em; left: .215em;
+  font-size: 1em;
+  line-height: 0.8;
+  color: #000;
+  transition: all .2s;
+  font-family: Helvetica, Arial, sans-serif;
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}

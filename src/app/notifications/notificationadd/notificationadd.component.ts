@@ -67,10 +67,10 @@ export class NotificationAddComponent implements OnInit {
       return;
     }
 
-    this.notification.career_titles = Array<string>();
-    for (let career of this.selectedCareers) {
-      this.notification.career_titles.push(career.id);
-    }
+    this.notification.career_ids = this.selectedCareers.map(career => {
+      return career.id;
+    });
+
     if (!this.notification.subject || this.notification.subject === '') {
       alert('Please input notification name');
     } else {

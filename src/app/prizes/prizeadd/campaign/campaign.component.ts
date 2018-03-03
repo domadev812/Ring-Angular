@@ -52,13 +52,13 @@ export class CampaignComponent implements OnInit {
     this.selectedIndex = index;
     if (this.campaignId === 0) {
       this.modalTitle = 'New Campaign';  
-      this.startDate = new Date();    
+      this.startDate = new Date();
       this.endDate = new Date();
       this.endDate.setDate(this.endDate.getDate() + 30);
       this.quantity = '';      
     } else {
-      this.modalTitle = 'Edit Campaign';      
-      this.startDate = new Date(this.campaigns[index].activation_start);    
+      this.modalTitle = 'Edit Campaign';
+      this.startDate = new Date(this.campaigns[index].activation_start);
       this.endDate = new Date(this.campaigns[index].activation_end);
       this.quantity = this.campaigns[index].number_available;      
       this.redeemed = this.campaigns[index].redeemed;

@@ -3,7 +3,7 @@
     form.form-group(#userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate)
       .header-nav
         h1.headers
-          | {{title}}
+          | {{ title }}
         .button-group
           button.users-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag")
             | Save
@@ -23,7 +23,7 @@
               .invalid-validation([hidden]="lastName.valid || (lastName.pristine && !userForm.submitted)")
                 | Last Name is required
             input.user-input(type="text" name="lastName" [(ngModel)]='user.last_name' (ngModelChange)="onChange($event)" #lastName="ngModel" required)    
-        .item-info
+        .item-info(*ngIf="!editFlag")
           .input-label
             | USER TYPE
             .invalid-validation([hidden]="selectedType.length > 0 || !userForm.submitted")
@@ -55,15 +55,11 @@
             .invalid-validation([hidden]="email.valid || (email.pristine && !userForm.submitted)")
               | Email is required
             .invalid-validation([hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine && !userForm.submitted)")
-              | Email is not correct
-          input.user-input([(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required) 
-        .item-info
+              | Incorrect format
+          input.user-input([(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" [ngClass]="{'input-disabled': editFlag }" [disabled]="editFlag" required ) 
+        .item-info(*ngIf="!editFlag")
           .input-label
             | PASSWORD
             .invalid-validation([hidden]="psw.valid || (psw.pristine && !userForm.submitted)")
                 | Password is required
           input.user-input(type="password" name="psw" #psw="ngModel"  [(ngModel)]='user.password' (ngModelChange)="onChange($event)" required)
-        .item-info   
-          button.users-btn.secondary-button.delete-user((click)='deleteUser()') 
-            | Delete User  
-                      

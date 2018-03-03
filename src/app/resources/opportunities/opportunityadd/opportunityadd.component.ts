@@ -120,7 +120,21 @@ export class OpportunityAddComponent implements OnInit {
 
   getResource(id: string): void {
     this.resourcesService.getResource(id).subscribe((res) => {
+      const parsedCareers = res.careers.map(careers => {
+        careers.title = careers.title;
+        careers.id = careers.id;
+        return careers;
+      });
+      this.selectedCareers = MultiSelectUtil.SelectItem.buildFromData(parsedCareers, 'Career');
       this.opportunity = res;
+      this.originalOpportunity = Object.assign({}, res);
+      if (!this.originalOpportunity.is_active) {
+        this.originalOpportunity.is_active = false;
+      }
+      if (this.organizationList.length > 0) {
+        let org = this.organizationList.find(organization => organization.id === this.opportunity.organization_id);
+        this.selectedOrganization.push(org);
+      }
     }, (errors) => {
       alert('Server error');
     });
@@ -160,12 +174,15 @@ export class OpportunityAddComponent implements OnInit {
     if (!this.opportunity.is_active) {
       this.opportunity.is_active = false;
     }
-    this.opportunity.organization_id = this.selectedOrganization[0].id;
+
     this.opportunity.type = 'Other';
-    this.opportunity.career_titles = Array<number>();
-    for (let career of this.selectedCareers) {
-      this.opportunity.career_titles.push(career.id);
-    }
+
+    this.opportunity.organization_id = this.selectedOrganization[0].id;
+
+    this.opportunity.career_ids = this.selectedCareers.map(career => {
+      return career.id;
+    });
+
 
     if (!this.opportunity.id) {
       this.resourcesService.createResource(this.opportunity).subscribe((res) => {

@@ -4,7 +4,7 @@
       h1.headers
         | Users
       .button-group
-          button.resource-button((click)='addNewUser()')
+          button.users-button((click)='addNewUser()')
             | New User          
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('student')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'student'}")

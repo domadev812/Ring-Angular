@@ -10,7 +10,7 @@
     <div class="table-header mx-4 col-created">Created</div>
     <div class="table-header mx-4 col-edit">&nbsp;</div>
   </div>
-  <div class="table-content-with-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
+  <div class="table-content-without-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
     <div class="list" *ngFor="let opportunity of opportunities">
       <div class="d-flex space-between bg-white py-1">
         <div class="table-data-primary mx-4 col-resource">{{opportunity.title}}</div>

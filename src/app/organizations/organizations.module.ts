@@ -10,21 +10,24 @@ import { AuthGuard } from '../_guards/auth.guard';
 import * as Services from '../app.services-list';
 import { routing } from '../app.routing';
 import { OrganizationsComponent } from './organizations.component';
+import { OrganizationAddComponent } from './organizationadd/organizationadd.component';
 import { SchoolsTableComponent } from './schools-table/schools-table.component';
 import { SponsorsTableComponent } from './sponsors-table/sponsors-table.component';
 import { SharedModule } from '../shared.module';
-
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
     OrganizationsComponent,
     SchoolsTableComponent,
     SponsorsTableComponent,
+    OrganizationAddComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     SharedModule,
-    FormsModule
+    FileUploadModule
   ],
   providers: [
     {

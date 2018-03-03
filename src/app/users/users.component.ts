@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Routes, RouterModule } from '@angular/router';
+import { GlobalState } from '../global.state';
 import * as Services from '../app.services-list';
 
 @Component({
@@ -15,11 +16,18 @@ export class UsersComponent implements OnInit {
     private router: Router,
     private currentUserService: Services.CurrentUserService,
     private navBarService: Services.NavbarService,
+    public global: GlobalState,
   ) { }
 
   ngOnInit() {
     this.navBarService.show();
-    this.selectedTab = 'student';
+
+    if (this.global.selectedTab === '') {
+      this.selectedTab = 'student';
+    } else {
+      this.selectedTab = this.global.selectedTab;
+    }
+    this.global.selectedTab = '';
   }
 
   addNewUser(event): void {        

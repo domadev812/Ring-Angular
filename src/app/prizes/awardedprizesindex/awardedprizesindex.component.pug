@@ -1,0 +1,38 @@
+#keycardindex
+  .search-bar
+      i.fa.fa-search.search-icon
+      input.search-text(type="text" placeholder="Search Awarded Prizes..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
+  .d-flex.space-between.py-1
+    .table-header.mx-4.col-prize
+      | Prize
+    .table-header.mx-4.col-status
+      | Status
+    .table-header.mx-4.col-delivery
+      | Delivery
+    .table-header.mx-4.col-recipient
+      | Recipient
+    .table-header.mx-4.col-school
+      | School
+    .table-header.mx-4.col-awarded
+      | Awarded
+    .table-header.mx-4.col-delivered
+      | Delivered
+  .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+    .list(*ngFor="let award of awards")
+      .d-flex.space-between.bg-white.py-1
+        .table-data-primary.mx-4.col-prize
+          | {{award.title}}
+        .table-data.mx-4.col-status
+          | {{award.delivered_at}}
+        .table-data.mx-4.col-delivery
+          | {{award.delivery_type}}
+        .table-data.mx-4.col-recipient
+          | {{award.redeemed_by}}
+        .table-data.mx-4.col-school
+          | {{award.user_school}}
+        .table-data.mx-4.col-awarded
+          | {{award.redeemed_at}}
+        .table-data.mx-4.col-delivered
+          | {{award.delivered_at}}
+    .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+      |Loading ...  

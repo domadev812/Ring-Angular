@@ -7,6 +7,8 @@ export class Career {
   career_group: CareerGroup;
   created_at: any;
   updated_at: any;
+  career_ids: string;
+  career_title: string;
   constructor(data) {
     this.setData(data);
   }

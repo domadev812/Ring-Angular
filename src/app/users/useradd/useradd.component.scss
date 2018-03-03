@@ -18,6 +18,9 @@
   box-shadow: none;
   cursor: default;
 }
+.input-disabled{
+  background: #E6E9F2;
+}
 .user-input {
   @extend .input;
   padding: 10px;

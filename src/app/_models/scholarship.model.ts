@@ -16,7 +16,7 @@ export class Scholarship {
   ethnicities: Array<string>;
   schools: Array<string>;
   organization: string;
-  career_titles: Array<number>;
+  career_ids: Array<number>;
   ethnicity_ids: Array<string>;
   school_ids: Array<string>;
   constructor(data) {
@@ -32,7 +32,7 @@ export class Scholarship {
     this.is_active = data.is_active || this.is_active;
     this.organization_id = data.organization_id || this.organization_id;
     this.careers = data.careers || this.careers;
-    this.career_titles = data.careers || this.careers;
+    this.career_ids = data.careers || this.careers;
     this.ethnicity_ids = data.ethnicities || this.ethnicities;
     this.organization = data.organization || this.organization;
     this.created_at = data.created_at ? moment(data.created_at, moment.ISO_8601)
