@@ -14,7 +14,12 @@
 .logo-image {
   flex: 0.25;    
 }
-
+.input-disabled{
+  background: #E6E9F2;
+}
+.upload-disabled{
+  background-color: #E6E9F2 !important;
+}
 .file-chooser {
 	width: 0.1px;
 	height: 0.1px;

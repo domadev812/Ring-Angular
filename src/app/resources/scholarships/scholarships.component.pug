@@ -19,12 +19,12 @@
         .table-data-primary.mx-4.col-resource
           | {{scholarship.title}}
         .table-data.mx-4.col-organization
-          | {{getOrganizationNameById(scholarship.organization_id)}}
+          | {{scholarship.organization.name}}
         .table-data.mx-4.col-link
           | {{scholarship.link}}
         .table-data.mx-4.col-created
           | {{scholarship.created_at}}
         .table-data.mx-3.col-edit
-          i.fa.fa-pencil.edit-row
+          i.fa.fa-pencil.edit-row((click)='editScholarship(scholarship.id)')
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
       |Loading ...

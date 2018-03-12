@@ -4,14 +4,16 @@
     <input class="search-text" type="text" placeholder="Search sponsors..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
   </div>
   <div class="d-flex space-between px-4 mb-1">
-    <div class="table-header">Sponsor</div>
-    <div class="table-header">Created date</div>
+    <div class="table-header col-organization">Sponsor</div>
+    <div class="table-header col-created">Created date</div>
+    <div class="table-header mx-4 col-edit">&nbsp;</div>
   </div>
   <div class="table-content-without-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
     <div class="list" *ngFor="let organization of organizations">
-      <div class="d-flex space-between bg-white py-1">
-        <div class="table-data-primary mx-4">{{organization.name}}</div>
-        <div class="table-data mx-4">{{organization.created_at}}</div>
+      <div class="d-flex space-between bg-white py-1" (click)="editOrganization(organization.id)">
+        <div class="table-data-primary mx-4 col-organization">{{organization.name}}</div>
+        <div class="table-data mx-4 col-created">{{organization.created_at}}</div>
+        <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="editOrganization(organization.id)"></i></div>
       </div>
     </div>
     <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>

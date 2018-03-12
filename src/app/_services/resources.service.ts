@@ -56,7 +56,7 @@ export class ResourcesService {
   getResources(type: string, offset: number, search: string = '', limit: number = 50): Observable<Model.Resource[]> {
     let paramType = type !== '' ? `type=${type}` : '';
     let paramTitle = search !== '' ? `title=${search}` : '';
-    let url = `${environment.apiUrl}/api/opportunities/admin?offset=${offset}&limit=${limit}&${paramType}&${paramTitle}`;
+    let url = `${environment.apiUrl}/api/opportunities?offset=${offset}&limit=${limit}&${paramType}&${paramTitle}`;
     return this.http.get(url)
       .map((response: Response) => {
         const json = response.json();
@@ -69,7 +69,7 @@ export class ResourcesService {
   }
 
   getScholarships(offset: number, limit: number = 0): Observable<Model.Scholarship[]> {
-    let url = `${environment.apiUrl}/api/opportunities/admin?offset=${offset}&limit=${limit}`;
+    let url = `${environment.apiUrl}/api/scholarships?offset=${offset}&limit=${limit}`;
     return this.http.get(url)
       .map((response: Response) => {
         const json = response.json();
@@ -146,13 +146,12 @@ export class ResourcesService {
       });
   }
 
-
   createScholarship(scholarship: Model.Scholarship): Observable<Model.Scholarship> {
-    let url = `${environment.apiUrl}/api/scholarships`;
+    let url = `${environment.apiUrl}/api/opportunities`;    
     return this.http.post(url, scholarship)
       .map((response: Response) => {
         const json = response.json();
-        if (json && json.data) {
+        if (json && json.data) {          
           return new Model.Scholarship(json.data);
         } else {
           Observable.throw({ messages: 'Internal Server Error', response });

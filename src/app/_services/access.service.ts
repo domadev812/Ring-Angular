@@ -15,6 +15,7 @@ export class AccessService {
         'useradd',
         'organizations',
         'organizationadd',
+        'organizationedit',
         'resources',
         'prizes',
         'prizeadd',

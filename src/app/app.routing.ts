@@ -45,6 +45,8 @@ const appRoutes: Routes = [
 
   { path: 'scholarshipadd', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
+  { path: 'scholarshipedit/:scholarshipId', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
+
   { path: 'resources', component: ResourcesComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard, RoleGuard] },
@@ -54,6 +56,8 @@ const appRoutes: Routes = [
   { path: 'organizations', component: OrganizationsComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'organizationadd/:type', component: OrganizationAddComponent, canActivate: [AuthGuard] },
+
+  { path: 'organizationedit/:id', component: OrganizationAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: '**', redirectTo: '/login' }
 ];

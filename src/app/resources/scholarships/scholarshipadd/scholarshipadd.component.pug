@@ -24,7 +24,9 @@
             textarea.resources-textarea(rows='6' name="details" [(ngModel)]='scholarship.details' #details="ngModel" required) 
           .item-info
             .input-label-dropdown
-                | ORGANIZATION
+              | ORGANIZATION
+              .invalid-validation([hidden]="selectedOrganization.length > 0 || !scholarshipForm.submitted")
+                | Organization is required
             angular2-multiselect(
               name = 'organization'
               [data]='organizationList'
@@ -38,6 +40,8 @@
               | APPLICATION LINK
               .invalid-validation([hidden]="link.valid || (link.pristine && !scholarshipForm.submitted)")
                 | Application link is required
+              .invalid-validation([hidden]="!scholarship.link || scholarship.link === '' || validURL(scholarship.link) || (link.pristine && !internshipForm.submitted)")
+                | Application link is not correct
             input.resources-input([(ngModel)]='scholarship.link' name="link" #link='ngModel' required)
           .item-info
             .input-label

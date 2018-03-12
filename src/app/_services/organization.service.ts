@@ -58,6 +58,19 @@ export class OrganizationService {
       });
   }
 
+  getOrganization(organization_id: string): Observable<Model.Organization> {
+    let url = `${environment.apiUrl}/api/organization/${organization_id}`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json) {
+          return new Model.Organization(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
   createOrganizationUrl(): string {
     let url = '/organization?';
 

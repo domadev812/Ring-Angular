@@ -18,11 +18,10 @@ export class OrganizationAddComponent implements OnInit {
   public organization: Model.Organization;
   public type: string;
   public title: string;
-  public editFlag: boolean;
-  public disableFlag: boolean;
   public uploader: FileUploader;
   public hasBaseDropZoneOver: boolean;
-  public filePreviewPath: any;
+  public isSchool = false;
+  public filePreviewPath: SafeUrl;
   public testImg: string;
 
   constructor(private router: Router,
@@ -34,14 +33,10 @@ export class OrganizationAddComponent implements OnInit {
     this.organization = new Model.Organization({});
     this.uploader = this.organizationService.uploader;
     this.type = this.route.snapshot.paramMap.get('type');
-    const id = this.route.snapshot.paramMap.get('organizationId');
+    const id = this.route.snapshot.paramMap.get('id');
     this.title = this.type === 'school' ? 'School Details' : 'Sponsor Details';
-    this.editFlag = false;
-    this.disableFlag = false;
     this.hasBaseDropZoneOver = false;
     if (id !== null) {
-      this.editFlag = true;
-      this.disableFlag = true;
       this.getOrganization(id);
     }
   }
@@ -49,8 +44,8 @@ export class OrganizationAddComponent implements OnInit {
   createOrUpdateOrganization(): void {
     if (this.organization.id) {
       this.organizationService
-        .updateOrganization(this.organization);
-      this.handleOrganizationSuccess.bind(this);
+        .updateOrganization(this.organization)
+        .subscribe(this.handleOrganizationSuccess.bind(this));
       alert('Organization Updated Successfully');
       this.router.navigate(['organizations']);
     } else {
@@ -82,6 +77,15 @@ export class OrganizationAddComponent implements OnInit {
   }
 
   getOrganization(id: string): void {
+    this.organizationService.getOrganization(id).subscribe((organization: Model.Organization) => {
+      this.organization = organization;
+      this.filePreviewPath = this.sanitizer.bypassSecurityTrustUrl(this.organization.getImgUrl());
+      
+      if ( this.organization.type === 'school') {
+        this.isSchool = true;
+        this.title = 'School Details';
+      }
+    });
   }
 
   saveOrganization(valid): void {
@@ -90,12 +94,9 @@ export class OrganizationAddComponent implements OnInit {
     } else if (!this.validURL(this.organization.url)) {
       return;
     } else {
-      this.organization.type = this.type;
+      this.organization.type = this.type || this.organization.type;
       this.createOrUpdateOrganization();
     }
-  }
-
-  onChange(event): void {
   }
 
   goBack(event): void {

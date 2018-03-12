@@ -3,7 +3,7 @@
   <div class="content-wrapper" id="users">
     <form class="form-group" #userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate>
       <div class="header-nav">
-        <h1 class="headers">{{title}}</h1>
+        <h1 class="headers">{{ title }}</h1>
         <div class="button-group">
           <button class="users-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">Save</button>
           <button class="users-btn secondary-button" type="button" (click)="goBack()">
@@ -25,7 +25,7 @@
             <input class="user-input" type="text" name="lastName" [(ngModel)]="user.last_name" (ngModelChange)="onChange($event)" #lastName="ngModel" required>
           </div>
         </div>
-        <div class="item-info">
+        <div class="item-info" *ngIf="!editFlag">
           <div class="input-label">USER TYPE
             <div class="invalid-validation" [hidden]="selectedType.length &gt; 0 || !userForm.submitted">Type is required</div>
           </div>
@@ -40,19 +40,15 @@
         <div class="item-info">
           <div class="input-label">EMAIL
             <div class="invalid-validation" [hidden]="email.valid || (email.pristine &amp;&amp; !userForm.submitted)">Email is required</div>
-            <div class="invalid-validation" [hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine &amp;&amp; !userForm.submitted)">Email is not correct</div>
+            <div class="invalid-validation" [hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine &amp;&amp; !userForm.submitted)">Incorrect format</div>
           </div>
-          <input class="user-input" [(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" required>
+          <input class="user-input" [(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" [ngClass]="{'input-disabled': editFlag }" [disabled]="editFlag" required>
         </div>
-        <div class="item-info">
+        <div class="item-info" *ngIf="!editFlag">
           <div class="input-label">PASSWORD
             <div class="invalid-validation" [hidden]="psw.valid || (psw.pristine &amp;&amp; !userForm.submitted)">Password is required</div>
           </div>
           <input class="user-input" type="password" name="psw" #psw="ngModel" [(ngModel)]="user.password" (ngModelChange)="onChange($event)" required>
-        </div>
-        <div class="item-info">  
-          <button class="users-btn secondary-button delete-user" (click)="deleteUser()">
-             Delete User  </button>
         </div>
       </div>
     </form>

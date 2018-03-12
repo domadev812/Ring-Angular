@@ -1,0 +1,29 @@
+
+<div id="keycardindex">
+  <div class="search-bar"><i class="fa fa-search search-icon"></i>
+    <input class="search-text" type="text" placeholder="Search Awarded Prizes..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+  </div>
+  <div class="d-flex space-between py-1">
+    <div class="table-header mx-4 col-prize">Prize</div>
+    <div class="table-header mx-4 col-status">Status</div>
+    <div class="table-header mx-4 col-delivery">Delivery</div>
+    <div class="table-header mx-4 col-recipient">Recipient</div>
+    <div class="table-header mx-4 col-school">School</div>
+    <div class="table-header mx-4 col-awarded">Awarded</div>
+    <div class="table-header mx-4 col-delivered">Delivered</div>
+  </div>
+  <div class="table-content-with-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
+    <div class="list" *ngFor="let award of awards">
+      <div class="d-flex space-between bg-white py-1">
+        <div class="table-data-primary mx-4 col-prize">{{award.title}}</div>
+        <div class="table-data mx-4 col-status">{{award.delivered_at}}</div>
+        <div class="table-data mx-4 col-delivery">{{award.delivery_type}}</div>
+        <div class="table-data mx-4 col-recipient">{{award.redeemed_by}}</div>
+        <div class="table-data mx-4 col-school">{{award.user_school}}</div>
+        <div class="table-data mx-4 col-awarded">{{award.redeemed_at}}</div>
+        <div class="table-data mx-4 col-delivered">{{award.delivered_at}}</div>
+      </div>
+    </div>
+    <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...  </div>
+  </div>
+</div>

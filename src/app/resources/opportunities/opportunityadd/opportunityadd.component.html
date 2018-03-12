@@ -2,17 +2,17 @@
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="opportunity">
     <form class="form-group" #opportunityForm="ngForm" (ngSubmit)="saveOpportunity(opportunityForm.valid)" novalidate>
-      <div class="header-nav">
+      <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="resources-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">
+          <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">
              Save</button>
-          <button class="resources-btn secondary-button" type="button" (click)="goBack()">
+          <button class="cancel-button" type="button" (click)="goBack()">
              Cancel</button>
         </div>
       </div>
       <div class="applicants-view" *ngIf="editFlag === true &amp;&amp; opportunity.users" (click)="gotoApplicants(opportunity.id)">Applicants: {{opportunity.users.length}} <img class="link-arrow" src="../assets/imgs/link-arrow.svg"></div>
-      <div class="wrapper-content"> 
+      <div class="form-content"> 
         <div class="item-info">
           <div class="input-label">NAME
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !opportunityForm.submitted)">Name is required</div>
@@ -39,7 +39,7 @@
           <input class="resources-input" [(ngModel)]="opportunity.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required>
         </div>
         <div class="item-info">
-          <div class="input-label">CAREERS</div>
+          <div class="input-label-dropdown">CAREERS</div>
           <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)">    </angular2-multiselect>
         </div>
         <div class="item-info">
@@ -47,7 +47,7 @@
           <label for="active">Active  </label>
         </div>
         <div class="item-info">  
-          <button class="resources-btn secondary-button delete-opportunity" (click)="deleteOpportunity()">
+          <button class="delete-button" (click)="deleteOpportunity()">
              Delete Opportunity  </button>
         </div>
       </div>

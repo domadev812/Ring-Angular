@@ -32,6 +32,8 @@ export class ScholarshipAddComponent implements OnInit {
   public organizationList = [];
   public selectedOrganization = [];
   public title: string;
+  public editFlag: boolean;
+  public disableFlag: boolean;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -46,7 +48,17 @@ export class ScholarshipAddComponent implements OnInit {
     this.schools = new Array<Model.Organization>();
     this.ethnicities = new Array<Model.Ethnicity>();
     this.organizations = new Array<Model.Organization>();
-    this.title = 'New scholarship';
+    this.title = 'New Scholarship';
+
+    const id = this.route.snapshot.paramMap.get('scholarshipId');
+    if (id !== null) {
+      this.title = 'Edit Scholarship';
+      this.editFlag = true;
+      this.disableFlag = true;
+
+      this.getScholarship(id);
+    }
+
     this.getEthnicities();
     this.getCareers();
     this.getSchools();
@@ -109,7 +121,9 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
+  getScholarship(id: string): void {
 
+  }
   saveScholarship(valid: boolean): void {
 
     if (!valid) {
@@ -120,19 +134,19 @@ export class ScholarshipAddComponent implements OnInit {
       this.scholarship.is_active = false;
     }
 
-    this.scholarship.type = 'scholarship';
+    this.scholarship.type = 'Scholarship';
 
-    this.scholarship.career_ids = this.selectedCareers.map(career => {
-      return career.id;
-    });
+    // this.scholarship.career_ids = this.selectedCareers.map(career => {
+    //   return career.id;
+    // });
 
-    this.scholarship.ethnicity_ids = this.selectedEthnicities.map(ethnicity => {
-      return ethnicity.id;
-    });
+    // this.scholarship.ethnicity_ids = this.selectedEthnicities.map(ethnicity => {
+    //   return ethnicity.id;
+    // });
 
-    this.scholarship.school_ids = this.selectedSchools.map(school => {
-      return school.id;
-    });
+    // this.scholarship.school_ids = this.selectedSchools.map(school => {
+    //   return school.id;
+    // });
 
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {

@@ -5,34 +5,28 @@
         h1.headers
           | {{title}}
         .button-group
-            button.organization-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
+            button.organization-btn.primary-button(type="submit", *ngIf="!isSchool") 
               | Save
-            button.organization-btn.secondary-button(type="button" (click)="goBack()") 
+            button.organization-btn.secondary-button(type="button" (click)="goBack($event)") 
               | Cancel
       .wrapper-content
-        .logo-image 
-          .well.my-drop-zone(ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader" (onFileDrop)="selectedFile($event)")            
-            img.preview([ngStyle]="{'background-image': 'url(' + filePreviewPath.changingThisBreaksApplicationSecurity + ')'}" *ngIf="filePreviewPath" for='file' (click)='file.click()')
+        .logo-image(*ngIf="!isSchool") 
+          .well.my-drop-zone(ng2FileDrop [ngClass]="{'upload-disabled': isSchool,'nv-file-over': hasBaseDropZoneOver}", (fileOver)="fileOverBase($event)", [uploader]="uploader", (onFileDrop)="selectedFile($event)")            
+            img.preview([ngClass]="{'upload-disabled': isSchool}",  [src]="filePreviewPath", *ngIf="filePreviewPath", for='file', (click)='file.click()')
             .empty-logo(*ngIf="!filePreviewPath")
               label.add-logo(for="file")
                 | Add Logo  
             .change-logo(*ngIf="filePreviewPath")
               label.add-logo(for="file")
                 | Change Logo  
-          input.file-chooser(#file type="file" id="file" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" (onFileSelected)="selectedFile($event)")
+          input.file-chooser(#file type="file", id="file", ng2FileSelect, [uploader]="uploader", accept="image/x-png,image/gif,image/jpeg", (onFileSelected)="selectedFile($event)", [disabled]="isSchool")
         .content
           .item-info
             .input-label
               | NAME
               .invalid-validation([hidden]="name.valid || (name.pristine && !organizationForm.submitted)")
                 | Name is required
-            input.organization-input(type="text" name="name" [(ngModel)]="organization.name" (ngModelChange)="onChange($event)" #name="ngModel" required) 
-          .item-info
-            .input-label
-              | DESCRIPTION
-              .invalid-validation([hidden]="details.valid || (details.pristine && !organizationForm.submitted)")
-                | Description is required
-            textarea.organization-textarea(rows="6" name="details" [(ngModel)]="organization.details" (ngModelChange)="onChange($event)" #details="ngModel" required)
+            input.organization-input([ngClass]="{'input-disabled': isSchool }", [disabled]="isSchool", name="name", [(ngModel)]="organization.name", #name="ngModel", required) 
           .item-info
             .input-label
               | WEBSITE
@@ -40,8 +34,4 @@
                 | Website link is required
               .invalid-validation([hidden]="!organization.url || organization.url === '' || validURL(organization.url) || (link.pristine && !organizationForm.submitted)")
                 | Website link is not correct
-            input.organization-input([(ngModel)]="organization.url" (ngModelChange)="onChange($event)" name="link" #link="ngModel" required)        
-          .item-info
-            input(type='checkbox' id='active' [(ngModel)]='organization.is_active' [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
-            label(for='active')
-              | Active  
+            input.organization-input([ngClass]="{'input-disabled': isSchool }", [disabled]="isSchool", [(ngModel)]="organization.url", name="link", #link="ngModel", required)        

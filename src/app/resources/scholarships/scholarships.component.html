@@ -14,10 +14,10 @@
     <div class="list" *ngFor="let scholarship of scholarships">
       <div class="d-flex space-between bg-white py-1">
         <div class="table-data-primary mx-4 col-resource">{{scholarship.title}}</div>
-        <div class="table-data mx-4 col-organization">{{getOrganizationNameById(scholarship.organization_id)}}</div>
+        <div class="table-data mx-4 col-organization">{{scholarship.organization.name}}</div>
         <div class="table-data mx-4 col-link">{{scholarship.link}}</div>
         <div class="table-data mx-4 col-created">{{scholarship.created_at}}</div>
-        <div class="table-data mx-3 col-edit"><i class="fa fa-pencil edit-row"></i></div>
+        <div class="table-data mx-3 col-edit"><i class="fa fa-pencil edit-row" (click)="editScholarship(scholarship.id)"></i></div>
       </div>
     </div>
     <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>

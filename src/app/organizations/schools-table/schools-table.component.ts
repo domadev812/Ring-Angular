@@ -5,6 +5,7 @@ import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 import { Observable } from 'rxjs/Observable';
 import { Organization } from '../../_models/organization.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-schools-table',
@@ -23,7 +24,8 @@ export class SchoolsTableComponent implements OnInit {
   organizations: Model.Organization[];
 
   constructor(private http: Http,
-    private organizationService: OrganizationService
+    private organizationService: OrganizationService,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -45,6 +47,10 @@ export class SchoolsTableComponent implements OnInit {
       this.organizations = res.map(organization => organization);
       this.offset += res.length;
     });
+  }
+
+  editOrganization(organization_id: string): void {
+    this.router.navigate([`organizationedit/${organization_id}`]);
   }
 
   myScrollCallBack(): Observable<Organization[]> {

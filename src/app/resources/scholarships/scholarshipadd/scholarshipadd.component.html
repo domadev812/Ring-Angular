@@ -2,15 +2,15 @@
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="scholarshipadd">
     <form class="form-group" #scholarshipForm="ngForm" (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate>
-      <div class="header-nav">
+      <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="resources-btn primary-button" type="submit">Save</button>
-          <button class="resources-btn secondary-button" (click)="goBack()" type="button">
+          <button class="save-button" type="submit">Save</button>
+          <button class="cancel-button" (click)="goBack()" type="button">
              Cancel  </button>
         </div>
       </div>
-      <div class="wrapper-content"> 
+      <div class="form-content"> 
         <div class="item-info">
           <div class="input-label-top">NAME
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !scholarshipForm.submitted)">Name is required</div>
@@ -24,12 +24,15 @@
           <textarea class="resources-textarea" rows="6" name="details" [(ngModel)]="scholarship.details" #details="ngModel" required> </textarea>
         </div>
         <div class="item-info">
-          <div class="input-label-dropdown">ORGANIZATION</div>
+          <div class="input-label-dropdown">ORGANIZATION
+            <div class="invalid-validation" [hidden]="selectedOrganization.length &gt; 0 || !scholarshipForm.submitted">Organization is required</div>
+          </div>
           <angular2-multiselect name="organization" [data]="organizationList" [(ngModel)]="selectedOrganization" [settings]="ktsSelectSettings" (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"></angular2-multiselect>
         </div>
         <div class="item-info">
           <div class="input-label">APPLICATION LINK
             <div class="invalid-validation" [hidden]="link.valid || (link.pristine &amp;&amp; !scholarshipForm.submitted)">Application link is required</div>
+            <div class="invalid-validation" [hidden]="!scholarship.link || scholarship.link === '' || validURL(scholarship.link) || (link.pristine &amp;&amp; !internshipForm.submitted)">Application link is not correct</div>
           </div>
           <input class="resources-input" [(ngModel)]="scholarship.link" name="link" #link="ngModel" required>
         </div>
@@ -62,7 +65,7 @@
           <label for="active">Active  </label>
         </div>
         <div class="item-info">  
-          <button class="resources-btn secondary-button delete-internship" (click)="deleteScholarship()">
+          <button class="delete-button" (click)="deleteScholarship()">
              Delete Scholarship  </button>
         </div>
       </div>
