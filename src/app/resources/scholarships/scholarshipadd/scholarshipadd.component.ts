@@ -9,6 +9,7 @@ import { Model } from '../../../app.models-list';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { FormsModule } from '@angular/forms';
 import { NavbarService } from '../../../app.services-list';
+import { GlobalState } from '../../../global.state';
 
 @Component({
   selector: 'app-scholarshipadd',
@@ -41,6 +42,7 @@ export class ScholarshipAddComponent implements OnInit {
     private multiSelectService: MultiSelectService,
     private resourcesService: ResourcesService,
     private navBarSerice: NavbarService,
+    public global: GlobalState,
   ) {
   }
   ngOnInit() {
@@ -87,7 +89,7 @@ export class ScholarshipAddComponent implements OnInit {
   onCareerSelect(item: any) {    
     this.onChange(item);
   }
-  
+
   onCareerDeSelect(item: any) {    
     this.onChange(item);
   }
@@ -128,70 +130,70 @@ export class ScholarshipAddComponent implements OnInit {
                                                                       this.scholarship.organization_id));
       }
     }, (errors) => {
+      console.log('err', errors);
       alert('Server error');
     });
   }
 
   onChange(event): void {
     if (this.editFlag) {
-      console.log('Condition1');
       if (this.scholarship.title !== this.originalScholarship.title) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition2');
+      
       if (this.scholarship.description !== this.originalScholarship.description) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition3');
+      
       if (this.scholarship.organization_id !== this.originalScholarship.organization_id) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition4');
+      
       if (this.scholarship.url !== this.originalScholarship.url) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition5');
+      
       if (this.scholarship.amount !== this.originalScholarship.amount) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition6');
+      
       if (this.scholarship.number_available !== this.originalScholarship.number_available) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition7');
+      
       if (this.scholarship.active !== this.originalScholarship.active) {
         this.disableFlag = false;
         return;
       }  
-      console.log('Condition8');
+      
       if (!this.isCareersChanged()) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition9');
+      
       if (!this.isSchoolChanged()) {
         this.disableFlag = false;
         return;
       }
-      console.log('Condition10');
+      
       this.disableFlag = true;
     }
   }
 
   isCareersChanged(): boolean {
     // TODO: Update once lodash is added
-    return this.selectedCareers.length > 0 ? true : false;
+    return this.selectedCareers.length > 0 ? false : true;
   }
 
   isSchoolChanged(): boolean {
     // TODO: Update once lodash is added
-    return this.selectedSchools.length > 0 ? true : false;
+    return this.selectedSchools.length > 0 ? false : true;
   }
 
   saveScholarship(valid: boolean): void {
@@ -214,21 +216,19 @@ export class ScholarshipAddComponent implements OnInit {
 
     this.scholarship.type = 'Scholarship';
 
-    // this.scholarship.career_ids = this.selectedCareers.map(career => {
-    //   return career.id;
-    // });
+    this.scholarship.career_ids = this.selectedCareers.map(career => {
+      return career.id;
+    });
 
-    // this.scholarship.ethnicity_ids = this.selectedEthnicities.map(ethnicity => {
-    //   return ethnicity.id;
-    // });
-
-    // this.scholarship.school_ids = this.selectedSchools.map(school => {
-    //   return school.id;
-    // });
-
+    this.scholarship.school_ids = this.selectedSchools.map(school => {
+      return school.id;
+    });
+    
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
         alert('Create new scholarship successfully');
+        this.global.selectedTab = 'scholarships';
+        this.router.navigate(['resources']);
         this.scholarship = res;
       }, (errors) => {
         alert('Server error');
@@ -236,6 +236,8 @@ export class ScholarshipAddComponent implements OnInit {
     } else {
       this.resourcesService.updateScholarship(this.scholarship).subscribe((res) => {
         alert('Update scholarship successfully');
+        this.global.selectedTab = 'scholarships';
+        this.router.navigate(['resources']);
       }, (errors) => {
         alert('Server error');
       });
