@@ -27,7 +27,7 @@ export class NotificationlistComponent implements OnInit {
   }
 
   getNotifications(): void {
-    this.notificationsService.getNotifications('Notification', this.offset).subscribe((res) => {
+    this.notificationsService.getNotifications().subscribe((res) => {
       this.notifications = res.map(internship => internship);
       this.offset += res.length;
     }, (errors) => {
@@ -38,7 +38,7 @@ export class NotificationlistComponent implements OnInit {
   myScrollCallBack() {
     if (this.moreContentAvailable) {
       this.infiniteScrollLoading = true;
-      return this.notificationsService.getNotifications('Notification', this.offset).do(this.infiniteScrollCallBack.bind(this));
+      return this.notificationsService.getNotifications(this.offset).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
