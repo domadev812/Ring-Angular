@@ -1,5 +1,4 @@
 import * as moment from 'moment';
-import { Model } from '../app.models-list';
 import { Organization } from './organization.model';
 import { Ethnicity } from './ethnicity.model';
 import { Career } from './career.model';
@@ -8,21 +7,21 @@ export class Scholarship {
   title: string;
   amount: number;
   number_available: number;
-  active: boolean;
-  is_active: boolean;
+  active: boolean;  
   in_app: boolean;
   type: string;
-  link: string;
-  details: string;
+  url: string;
+  description: string;
   organization_id: string;
   organization: Organization;
   schools: Array<Organization>;
-  ethnicities: Array<Ethnicity>;
   careers: Array<Career>;  
   images: Array<string>;  
   created_at: any;
   updated_at: any;
-  
+  career_ids: Array<number>;
+  school_ids: Array<number>;
+
   constructor(data) {
     this.setData(data);
   }
@@ -32,28 +31,27 @@ export class Scholarship {
     this.title = data.title || this.title;
     this.amount = data.amount || this.amount;
     this.number_available = data.number_available || this.number_available;
-    this.is_active = data.is_active || this.is_active;
+    this.active = data.is_active || this.active;
     this.active = data.active || this.active;
     this.in_app = data.in_app || this.in_app;
     this.type = data.type || this.type;
-    this.link = data.link || this.link;
-    this.details = data.details || this.details;    
+    this.url = data.url || this.url;
+    this.description = data.description || this.description;    
     this.organization_id = data.organization_id || this.organization_id;
     this.organization = data.organization || this.organization;
     if (data.schools) {
-      this.schools = Model.initializeArray(data.organization, 'Organization');
+      this.schools = data.schools.map(school => school);
+      this.school_ids = data.school.map(school => school.id);
     } else {
       this.schools = [];
-    }
-    if (data.ethnicities) {
-      this.ethnicities = Model.initializeArray(data.ethnicities, 'Ethnicity');
-    } else {
-      this.ethnicities = [];
-    }
+      this.school_ids = [];
+    }    
     if (data.careers) {
-      this.careers = Model.initializeArray(data.careers, 'Career');
+      this.careers = data.careers.map(career => career);
+      this.career_ids = data.careers.map(career => career.id);
     } else {
       this.careers = [];
+      this.career_ids = [];
     }   
     this.created_at = data.created_at ? moment(data.created_at, moment.ISO_8601)
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)

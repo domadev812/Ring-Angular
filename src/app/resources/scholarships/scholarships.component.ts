@@ -19,14 +19,14 @@ export class ScholarshipsComponent implements OnInit {
   public limit: number;
   public offset: number;
   public searchText: string;
-  public scholarships: Array<Model.Resource>;
+  public scholarships: Array<Model.Scholarship>;
   public organizations: Array<Model.Organization>;
 
   constructor(private router: Router,
               private resourcesService: ResourcesService) { }
 
   ngOnInit() {
-    this.scholarships = new Array<Model.Resource>();
+    this.scholarships = new Array<Model.Scholarship>();
     this.organizations = new Array<Model.Organization>();
     this.limit = 50;
     this.offset = 0;
@@ -45,7 +45,7 @@ export class ScholarshipsComponent implements OnInit {
   }
 
   getScholarships(): void {
-    this.resourcesService.getResources('Scholarship', this.offset, this.searchText).subscribe((res) => {
+    this.resourcesService.getScholarships(this.searchText).subscribe((res) => {
       this.scholarships = res.map(scholarship => scholarship);
       this.offset += res.length;
     }, (errors) => {
@@ -57,7 +57,7 @@ export class ScholarshipsComponent implements OnInit {
     if (this.moreContentAvailable) {
       //use this to handle *ngIf if you want to tell the user the infinite scroll is loading.
       this.infiniteScrollLoading = true;
-      return this.resourcesService.getResources('Scholarship', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
+      return this.resourcesService.getScholarships(this.searchText, this.offset).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 

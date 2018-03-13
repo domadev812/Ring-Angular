@@ -17,6 +17,7 @@ import { NavbarService } from '../../../app.services-list';
 })
 export class ScholarshipAddComponent implements OnInit {
   public scholarship: Model.Scholarship;
+  public originalScholarship: Model.Scholarship;
   public careers: Array<Model.Career>;
   public schools: Array<Model.Organization>;
   public ethnicities: Array<Model.Ethnicity>;
@@ -45,6 +46,7 @@ export class ScholarshipAddComponent implements OnInit {
   ngOnInit() {
     this.navBarSerice.show();
     this.scholarship = new Model.Scholarship({});
+    this.originalScholarship = new Model.Scholarship({});
     this.schools = new Array<Model.Organization>();
     this.ethnicities = new Array<Model.Ethnicity>();
     this.organizations = new Array<Model.Organization>();
@@ -58,8 +60,7 @@ export class ScholarshipAddComponent implements OnInit {
 
       this.getScholarship(id);
     }
-
-    this.getEthnicities();
+    
     this.getCareers();
     this.getSchools();
     this.getOrganizations();
@@ -68,9 +69,11 @@ export class ScholarshipAddComponent implements OnInit {
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
   }
 
-  onSchoolSelect(item: any) {
+  onSchoolSelect(item: any) {    
+    this.onChange(item);
   }
-  onSchoolDeSelect(item: any) {
+  onSchoolDeSelect(item: any) {    
+    this.onChange(item);
   }
 
   getSchools(): void {
@@ -81,9 +84,12 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
-  onCareerSelect(item: any) {
+  onCareerSelect(item: any) {    
+    this.onChange(item);
   }
-  onCareerDeSelect(item: any) {
+  
+  onCareerDeSelect(item: any) {    
+    this.onChange(item);
   }
 
   getCareers(): void {
@@ -94,23 +100,13 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
-  onEthnicitySelect(item: any) {
-  }
-  onEthnicityDeSelect(item: any) {
-  }
-
-  getEthnicities(): void {
-    this.multiSelectService.getDropdownEthnicities().subscribe((res: MultiSelectUtil.SelectItem[]) => {
-      this.ethnicityList = res;
-    }, err => {
-      console.log('err', err);
-    });
-  }
-
   onOrganizationSelect(item: any) {
-    this.scholarship.organization_id = item.id;
+    this.scholarship.organization_id = item.id;   
+    this.onChange(item); 
   }
   onOrganizationDeSelect(item: any) {
+    this.scholarship.organization_id = null;    
+    this.onChange(item);
   }
 
   getOrganizations(): void {
@@ -122,16 +118,98 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   getScholarship(id: string): void {
-
+    this.resourcesService.getScholarship(id).subscribe((res) => {
+      this.scholarship = res;     
+      this.originalScholarship = Object.assign({}, res); 
+      this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
+      this.selectedCareers = this.scholarship.careers.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
+      if (this.scholarship.organization) {
+        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name, 
+                                                                      this.scholarship.organization_id));
+      }
+    }, (errors) => {
+      alert('Server error');
+    });
   }
+
+  onChange(event): void {
+    if (this.editFlag) {
+      console.log('Condition1');
+      if (this.scholarship.title !== this.originalScholarship.title) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition2');
+      if (this.scholarship.description !== this.originalScholarship.description) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition3');
+      if (this.scholarship.organization_id !== this.originalScholarship.organization_id) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition4');
+      if (this.scholarship.url !== this.originalScholarship.url) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition5');
+      if (this.scholarship.amount !== this.originalScholarship.amount) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition6');
+      if (this.scholarship.number_available !== this.originalScholarship.number_available) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition7');
+      if (this.scholarship.active !== this.originalScholarship.active) {
+        this.disableFlag = false;
+        return;
+      }  
+      console.log('Condition8');
+      if (!this.isCareersChanged()) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition9');
+      if (!this.isSchoolChanged()) {
+        this.disableFlag = false;
+        return;
+      }
+      console.log('Condition10');
+      this.disableFlag = true;
+    }
+  }
+
+  isCareersChanged(): boolean {
+    // TODO: Update once lodash is added
+    return this.selectedCareers.length > 0 ? true : false;
+  }
+
+  isSchoolChanged(): boolean {
+    // TODO: Update once lodash is added
+    return this.selectedSchools.length > 0 ? true : false;
+  }
+
   saveScholarship(valid: boolean): void {
 
     if (!valid) {
       return;
     }
 
-    if (!this.scholarship.is_active) {
-      this.scholarship.is_active = false;
+    if (!this.validURL(this.scholarship.url)) {
+      return;
+    }
+
+    if (this.selectedOrganization.length === 0) {
+      return;
+    }
+
+    if (!this.scholarship.active) {
+      this.scholarship.active = false;
     }
 
     this.scholarship.type = 'Scholarship';

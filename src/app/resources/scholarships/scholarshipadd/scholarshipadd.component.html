@@ -5,7 +5,7 @@
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="save-button" type="submit">Save</button>
+          <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">Save</button>
           <button class="cancel-button" (click)="goBack()" type="button">
              Cancel  </button>
         </div>
@@ -15,13 +15,13 @@
           <div class="input-label-top">NAME
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !scholarshipForm.submitted)">Name is required</div>
           </div>
-          <input class="resources-input" type="text" name="name" [(ngModel)]="scholarship.title" #name="ngModel" required>
+          <input class="resources-input" type="text" name="name" [(ngModel)]="scholarship.title" (ngModelChange)="onChange($event)" #name="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">DESCRIPTION
             <div class="invalid-validation" [hidden]="details.valid || (details.pristine &amp;&amp; !scholarshipForm.submitted)">Description is required</div>
           </div>
-          <textarea class="resources-textarea" rows="6" name="details" [(ngModel)]="scholarship.details" #details="ngModel" required> </textarea>
+          <textarea class="resources-textarea" rows="6" name="details" [(ngModel)]="scholarship.description" (ngModelChange)="onChange($event)" #details="ngModel" required> </textarea>
         </div>
         <div class="item-info">
           <div class="input-label-dropdown">ORGANIZATION
@@ -32,36 +32,32 @@
         <div class="item-info">
           <div class="input-label">APPLICATION LINK
             <div class="invalid-validation" [hidden]="link.valid || (link.pristine &amp;&amp; !scholarshipForm.submitted)">Application link is required</div>
-            <div class="invalid-validation" [hidden]="!scholarship.link || scholarship.link === '' || validURL(scholarship.link) || (link.pristine &amp;&amp; !internshipForm.submitted)">Application link is not correct</div>
+            <div class="invalid-validation" [hidden]="!scholarship.url || scholarship.url === '' || validURL(scholarship.url) || (link.pristine &amp;&amp; !internshipForm.submitted)">Application link is not correct</div>
           </div>
-          <input class="resources-input" [(ngModel)]="scholarship.link" name="link" #link="ngModel" required>
+          <input class="resources-input" [(ngModel)]="scholarship.url" (ngModelChange)="onChange($event)" name="link" #link="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">AMOUNT
             <div class="invalid-validation" [hidden]="amount.valid || (amount.pristine &amp;&amp; !scholarshipForm.submitted)">Amount is required</div>
           </div>
-          <input class="resources-input" [(ngModel)]="scholarship.amount" name="amount" #amount="ngModel" required>
+          <input class="resources-input" type="number" [(ngModel)]="scholarship.amount" (ngModelChange)="onChange($event)" name="amount" #amount="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">NUMBER AVAILABLE
             <div class="invalid-validation" [hidden]="number_available.valid || (number_available.pristine &amp;&amp; !scholarshipForm.submitted)">Number available is required</div>
           </div>
-          <input class="resources-input" [(ngModel)]="scholarship.number_available" name="number_available" #number_available="ngModel" required>
+          <input class="resources-input" type="number" [(ngModel)]="scholarship.number_available" (ngModelChange)="onChange($event)" name="number_available" #number_available="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label-dropdown">CAREERS</div>
-          <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)"></angular2-multiselect>
-        </div>
-        <div class="item-info">
-          <div class="input-label-bold">ETHNICITIES</div>
-          <angular2-multiselect name="ethnicity" [data]="ethnicityList" [(ngModel)]="selectedEthnicities" [settings]="ktsMultiSettings" (onSelect)="onEthnicitySelect($event)" (onDeSelect)="onEthnicityDeSelect($event)">    </angular2-multiselect>
+          <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)">   </angular2-multiselect>
         </div>
         <div class="item-info">
           <div class="input-label-bold">HIGH SCHOOLS</div>
           <angular2-multiselect name="schools" [data]="schoolList" [(ngModel)]="selectedSchools" [settings]="ktsMultiSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)">    </angular2-multiselect>
         </div>
         <div class="item-info">
-          <input type="checkbox" [(ngModel)]="scholarship.is_active" id="active" name="checkbox">
+          <input type="checkbox" [(ngModel)]="scholarship.active" (ngModelChange)="onChange($event)" id="active" name="checkbox">
           <label for="active">Active  </label>
         </div>
         <div class="item-info">  
