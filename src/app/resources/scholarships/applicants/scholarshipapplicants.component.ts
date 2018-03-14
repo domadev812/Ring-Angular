@@ -12,6 +12,7 @@ import { NavbarService } from '../../../app.services-list';
 
 export class ScholarshipApplicantsComponent implements OnInit {
   public applications: Array<Model.Application>;
+  public scholarship: Model.Scholarship;
 
   constructor(
     private route: ActivatedRoute, 
@@ -22,17 +23,28 @@ export class ScholarshipApplicantsComponent implements OnInit {
   ngOnInit() {
     this.navBarService.show();    
     this.applications = new Array<Model.Application>();
+    this.scholarship = new Model.Scholarship({});
+
     const id = this.route.snapshot.paramMap.get('scholarshipId');
     if (id !== null) {
       this.getApplications(id);
+      this.getScholarship(id);
     }
   }
 
   getApplications(id: string): void {
     this.resourcesService.getScholarshipApplications(id).subscribe((res) => {
-      this.applications = res;
-      console.log(res);
+      this.applications = res;      
     }, (errors) => {
+      alert('Server error');
+    });
+  }
+
+  getScholarship(id: string): void {
+    this.resourcesService.getScholarship(id).subscribe((res) => {      
+      this.scholarship = res;           
+    }, (errors) => {
+      console.log('err', errors);
       alert('Server error');
     });
   }

@@ -120,8 +120,7 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   getScholarship(id: string): void {
-    this.resourcesService.getScholarship(id).subscribe((res) => {
-      console.log(res);
+    this.resourcesService.getScholarship(id).subscribe((res) => {      
       this.scholarship = res;     
       this.originalScholarship = Object.assign({}, res); 
       this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
