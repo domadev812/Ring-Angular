@@ -9,7 +9,7 @@
             | Save
           button.cancel-button((click)='goBack()' type='button') 
             | Cancel 
-      .applicants-view(*ngIf="editFlag === true && scholarship.users" (click)="gotoApplicants(scholarship.id)")
+      .applicants-view.fixed-header(*ngIf="editFlag === true && scholarship.users" (click)="gotoApplicants(scholarship.id)")
         | Applicants: {{scholarship.users.length}} 
         img.link-arrow(src="../assets/imgs/link-arrow.svg")  
       .form-content 
