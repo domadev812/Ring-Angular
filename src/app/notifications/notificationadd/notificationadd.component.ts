@@ -16,7 +16,7 @@ import { NavbarService } from '../../app.services-list';
 })
 export class NotificationAddComponent implements OnInit {
   notification: Model.Notification;
-  subject: string;
+  title: string;
   public careers: Array<Model.Career>;
   public careerList = [];
   public selectedCareers = [];
@@ -47,16 +47,19 @@ export class NotificationAddComponent implements OnInit {
     this.notification = new Model.Notification({});
     this.careers = new Array<Model.Career>();
     this.getCareers();
-    this.notification.id = this.route.snapshot.paramMap.get('notificationId');
-    if (this.notification.id !== null) {
-      this.subject = 'View Notification';
-    }
-    
+    let notificationId = this.route.snapshot.paramMap.get('notificationId');
+    this.title = 'New Notification';
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
     for (let year = 2010; year <= 2018; year++) {
       this.originalTypeValueList.push({id: year.toString(), itemName: year.toString(), category: 'graduation_year'});
     }
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    if (notificationId) {
+      this.title = 'View Notification';
+      this.getNotification(notificationId);
+      this.ktsSelectSettings['disabled'] = true;  
+      this.ktsMultiSettings['disabled'] = true;  
+    }            
   }
 
   onTypeSelect(item: any) {    
@@ -108,6 +111,24 @@ export class NotificationAddComponent implements OnInit {
     });
   }
 
+  getNotification(id: string) {
+    this.notificationsService.getNotification(id).subscribe((res) => {      
+      this.notification = res;
+      this.selectedType.push(this.typeList.find(type => type.id === res.type)); 
+      if (res.type === 'gender' || res.type === 'graduation_year') {
+        this.selectedValueList.push(this.originalTypeValueList.find(value => value.id === res.resource['resource_value']));  
+      } else if (res.type === 'careers') {
+        this.selectedCareers = res.resource.map(career => {
+          return {id: career.id, itemName: career.title};
+        });
+        console.log(this.selectedCareers);
+      }
+      this.changeState();              
+    }, (errors) => {
+      alert('Server error');
+    });
+  }
+
   saveNotification(valid: boolean): void {
     if (!valid) {
       return;
@@ -143,6 +164,7 @@ export class NotificationAddComponent implements OnInit {
       alert('Server error');
     });    
   }
+
   cancelNotification(): void {
     this.router.navigate(['notifications']);
   }

@@ -3,11 +3,11 @@
     form.form-group(#notificationForm="ngForm" (ngSubmit)="saveNotification(notificationForm.valid)" novalidate)
       .header-nav
         h1.headers
-          | New Notification
+          | {{title}}
         .button-group
-            button.resources-btn.primary-button(type="submit") 
+            button.notifications-btn.primary-button(type="submit", *ngIf="!notification.id") 
               | Save
-            button.resources-btn.secondary-button(type="button" (click)="cancelNotification()") 
+            button.notifications-btn.secondary-button(type="button" (click)="cancelNotification()") 
               | Cancel  
       .wrapper-content 
         .item-info
@@ -15,13 +15,13 @@
             | SUBJECT
             .invalid-validation([hidden]="subject.valid || (subject.pristine && !notificationForm.submitted)")
               | Subject is required
-          input.notification-input(type="text" name="subject" [(ngModel)]='notification.subject' #subject="ngModel" required)
+          input.notification-input(type="text" name="subject" [(ngModel)]='notification.subject' #subject="ngModel" [disabled]="notification.id" required)
         .item-info
           .input-label
             | MESSAGE
             .invalid-validation([hidden]="message.valid || (message.pristine && !notificationForm.submitted)")
               | Message is required
-          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" required)
+          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id" required)
         .item-info
           .input-label-dropdown
             | TYPES
@@ -34,6 +34,7 @@
             [settings]='ktsSelectSettings'
             (onSelect)='onTypeSelect($event)'
             (onDeSelect)='onTypeDeSelect($event)'
+            [disabled]="notification.id"
           )
         .item-info(*ngIf="valueListVisibleFlag")
           .input-label-dropdown
