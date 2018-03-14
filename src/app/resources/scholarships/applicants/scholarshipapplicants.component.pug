@@ -1,0 +1,27 @@
+.page-wrapper.resources
+  #appliedusers.content-wrapper
+    .header-nav
+      h1.headers
+        | Applicants
+    .resource-name
+      | Scholarship Title
+    .d-flex.space-between.py-1
+      .table-header.mx-4.col-student
+        | Student
+      .table-header.mx-4.col-school
+        | School
+      .table-header.mx-4.col-grade
+        | Grade
+      .table-header.mx-4.col-email
+        | Email
+    .table-content-without-search(*ngIf="applications.length > 0")
+      .list(*ngFor="let application of applications")
+        .d-flex.space-between.bg-white.py-1
+          .table-data-primary.mx-4.col-student
+            | {{application.name}}
+          .table-data.mx-4.col-school
+            | School
+          .table-data.mx-4.col-grade
+            | {{application.graduation_year}}
+          .table-data.mx-4.col-email
+            | {{application.email}}
