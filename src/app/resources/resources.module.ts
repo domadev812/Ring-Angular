@@ -18,6 +18,7 @@ import { InternshipAddComponent } from './internships/internshipadd/internshipad
 import { ScholarshipsComponent } from './scholarships/scholarships.component';
 import { AppliedUserComponent } from './appliedusers/appliedusers.component';
 import { ScholarshipAddComponent } from './scholarships/scholarshipadd/scholarshipadd.component';
+import { ScholarshipApplicantsComponent } from './scholarships/applicants/scholarshipapplicants.component';
 import { InfiniteScrollerDirective } from '../_directives/infinite-scroll.directive';
 import { SharedModule } from '../shared.module';
 
@@ -30,7 +31,8 @@ import { SharedModule } from '../shared.module';
     InternshipsComponent,
     InternshipAddComponent,
     AppliedUserComponent,
-    ScholarshipAddComponent
+    ScholarshipAddComponent,
+    ScholarshipApplicantsComponent
   ],
   imports: [
     CommonModule,

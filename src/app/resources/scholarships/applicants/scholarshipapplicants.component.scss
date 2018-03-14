@@ -1,0 +1,21 @@
+@import "../../resources.component.scss";
+.resource-name {
+  margin-top: -15px;  
+  margin-bottom: 30px;
+  font-family: $font-primary;    
+  font-size: 18px;  
+  color: $color-text-sub-nav;
+  font-weight: 300;
+}
+.col-student {
+  width: 20%;
+}
+.col-school {
+  width: 30%;
+}
+.col-grade {
+  width: 20%;
+}
+.col-email {
+  width: 30%;
+}

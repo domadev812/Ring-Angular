@@ -15,7 +15,7 @@
       | &nbsp;
   .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let student of students")
-      .d-flex.space-between.bg-white.py-1
+      .d-flex.space-between.bg-white.py-1.pointer((click)='editStudent(student.id)')
         .table-data-primary.mx-4.col-student
           | {{student.getName()}}
         .table-data.mx-4.col-school

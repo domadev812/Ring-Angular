@@ -15,16 +15,16 @@
       | &nbsp;
   .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let scholarship of scholarships")
-      .d-flex.space-between.bg-white.py-1
+      .d-flex.space-between.bg-white.py-1.pointer
         .table-data-primary.mx-4.col-resource
           | {{scholarship.title}}
         .table-data.mx-4.col-organization
-          | {{getOrganizationNameById(scholarship.organization_id)}}
+          | {{scholarship.organization.name}}
         .table-data.mx-4.col-link
-          | {{scholarship.link}}
+          | {{scholarship.url}}
         .table-data.mx-4.col-created
           | {{scholarship.created_at}}
         .table-data.mx-3.col-edit
-          i.fa.fa-pencil.edit-row
+          i.fa.fa-pencil.edit-row((click)='editScholarship(scholarship.id)')
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
       |Loading ...

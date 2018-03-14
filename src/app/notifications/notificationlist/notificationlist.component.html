@@ -10,9 +10,9 @@
     <div class="list" *ngFor="let notification of notifications">
       <div class="d-flex space-between bg-white py-1">
         <div class="table-data-primary mx-4 col-subject">{{notification.subject}}</div>
-        <div class="table-data mx-4 col-message">{{notification.body}}</div>
-        <div class="table-data mx-4 col-sent">{{notification.created_at}}</div>
-        <div class="table-data mx-4 col-view"><i class="fa fa-eye view-row" (click)="viewNotification(notification.id)"></i></div>
+        <div class="table-data mx-4 col-message">{{notification.message}}</div>
+        <div class="table-data mx-4 col-sent">{{notification.sent_date}}</div>
+        <div class="table-data mx-4 col-view"><i class="fa fa-eye view-row"></i></div>
       </div>
     </div>
     <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>

@@ -9,6 +9,7 @@ import { Model } from '../../../app.models-list';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { FormsModule } from '@angular/forms';
 import { NavbarService } from '../../../app.services-list';
+import { GlobalState } from '../../../global.state';
 
 @Component({
   selector: 'app-scholarshipadd',
@@ -17,6 +18,7 @@ import { NavbarService } from '../../../app.services-list';
 })
 export class ScholarshipAddComponent implements OnInit {
   public scholarship: Model.Scholarship;
+  public originalScholarship: Model.Scholarship;
   public careers: Array<Model.Career>;
   public schools: Array<Model.Organization>;
   public ethnicities: Array<Model.Ethnicity>;
@@ -32,22 +34,35 @@ export class ScholarshipAddComponent implements OnInit {
   public organizationList = [];
   public selectedOrganization = [];
   public title: string;
+  public editFlag: boolean;
+  public disableFlag: boolean;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private multiSelectService: MultiSelectService,
     private resourcesService: ResourcesService,
     private navBarSerice: NavbarService,
+    public global: GlobalState,
   ) {
   }
   ngOnInit() {
     this.navBarSerice.show();
     this.scholarship = new Model.Scholarship({});
+    this.originalScholarship = new Model.Scholarship({});
     this.schools = new Array<Model.Organization>();
     this.ethnicities = new Array<Model.Ethnicity>();
     this.organizations = new Array<Model.Organization>();
-    this.title = 'New scholarship';
-    this.getEthnicities();
+    this.title = 'New Scholarship';
+
+    const id = this.route.snapshot.paramMap.get('scholarshipId');
+    if (id !== null) {
+      this.title = 'Edit Scholarship';
+      this.editFlag = true;
+      this.disableFlag = true;
+
+      this.getScholarship(id);
+    }
+    
     this.getCareers();
     this.getSchools();
     this.getOrganizations();
@@ -56,9 +71,11 @@ export class ScholarshipAddComponent implements OnInit {
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
   }
 
-  onSchoolSelect(item: any) {
+  onSchoolSelect(item: any) {    
+    this.onChange(item);
   }
-  onSchoolDeSelect(item: any) {
+  onSchoolDeSelect(item: any) {    
+    this.onChange(item);
   }
 
   getSchools(): void {
@@ -69,9 +86,12 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
-  onCareerSelect(item: any) {
+  onCareerSelect(item: any) {    
+    this.onChange(item);
   }
-  onCareerDeSelect(item: any) {
+
+  onCareerDeSelect(item: any) {    
+    this.onChange(item);
   }
 
   getCareers(): void {
@@ -82,23 +102,13 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
-  onEthnicitySelect(item: any) {
-  }
-  onEthnicityDeSelect(item: any) {
-  }
-
-  getEthnicities(): void {
-    this.multiSelectService.getDropdownEthnicities().subscribe((res: MultiSelectUtil.SelectItem[]) => {
-      this.ethnicityList = res;
-    }, err => {
-      console.log('err', err);
-    });
-  }
-
   onOrganizationSelect(item: any) {
-    this.scholarship.organization_id = item.id;
+    this.scholarship.organization_id = item.id;   
+    this.onChange(item); 
   }
   onOrganizationDeSelect(item: any) {
+    this.scholarship.organization_id = null;    
+    this.onChange(item);
   }
 
   getOrganizations(): void {
@@ -109,6 +119,83 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
+  getScholarship(id: string): void {
+    this.resourcesService.getScholarship(id).subscribe((res) => {
+      console.log(res);
+      this.scholarship = res;     
+      this.originalScholarship = Object.assign({}, res); 
+      this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
+      this.selectedCareers = this.scholarship.careers.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
+      if (this.scholarship.organization) {
+        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name, 
+                                                                      this.scholarship.organization_id));
+      }
+    }, (errors) => {
+      console.log('err', errors);
+      alert('Server error');
+    });
+  }
+
+  onChange(event): void {
+    if (this.editFlag) {
+      if (this.scholarship.title !== this.originalScholarship.title) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      if (this.scholarship.description !== this.originalScholarship.description) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      if (this.scholarship.organization_id !== this.originalScholarship.organization_id) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      if (this.scholarship.url !== this.originalScholarship.url) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      if (this.scholarship.amount !== this.originalScholarship.amount) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      if (this.scholarship.number_available !== this.originalScholarship.number_available) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      if (this.scholarship.active !== this.originalScholarship.active) {
+        this.disableFlag = false;
+        return;
+      }  
+      
+      if (!this.isCareersChanged()) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      if (!this.isSchoolChanged()) {
+        this.disableFlag = false;
+        return;
+      }
+      
+      this.disableFlag = true;
+    }
+  }
+
+  isCareersChanged(): boolean {
+    // TODO: Update once lodash is added
+    return this.selectedCareers.length > 0 ? false : true;
+  }
+
+  isSchoolChanged(): boolean {
+    // TODO: Update once lodash is added
+    return this.selectedSchools.length > 0 ? false : true;
+  }
 
   saveScholarship(valid: boolean): void {
 
@@ -116,27 +203,33 @@ export class ScholarshipAddComponent implements OnInit {
       return;
     }
 
-    if (!this.scholarship.is_active) {
-      this.scholarship.is_active = false;
+    if (!this.validURL(this.scholarship.url)) {
+      return;
     }
 
-    this.scholarship.type = 'scholarship';
+    if (this.selectedOrganization.length === 0) {
+      return;
+    }
+
+    if (!this.scholarship.active) {
+      this.scholarship.active = false;
+    }
+
+    this.scholarship.type = 'Scholarship';
 
     this.scholarship.career_ids = this.selectedCareers.map(career => {
       return career.id;
     });
 
-    this.scholarship.ethnicity_ids = this.selectedEthnicities.map(ethnicity => {
-      return ethnicity.id;
-    });
-
     this.scholarship.school_ids = this.selectedSchools.map(school => {
       return school.id;
     });
-
+    
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
         alert('Create new scholarship successfully');
+        this.global.selectedTab = 'scholarships';
+        this.router.navigate(['resources']);
         this.scholarship = res;
       }, (errors) => {
         alert('Server error');
@@ -144,6 +237,8 @@ export class ScholarshipAddComponent implements OnInit {
     } else {
       this.resourcesService.updateScholarship(this.scholarship).subscribe((res) => {
         alert('Update scholarship successfully');
+        this.global.selectedTab = 'scholarships';
+        this.router.navigate(['resources']);
       }, (errors) => {
         alert('Server error');
       });
@@ -152,6 +247,10 @@ export class ScholarshipAddComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['resources']);
+  }
+
+  gotoApplicants(id): void {
+    this.router.navigate(['scholarshipapplicants/' + id]);
   }
 
   deleteScholarship(): void {

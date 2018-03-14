@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
 import { NotificationsService } from '../../_services/notifications.service';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
@@ -18,8 +17,7 @@ export class NotificationlistComponent implements OnInit {
   notifications: Array<Model.Notification>;
   counter = 0;
 
-  constructor(private notificationsService: NotificationsService,
-              private router: Router) { }
+  constructor(private notificationsService: NotificationsService) { }
 
   ngOnInit() {
     this.notifications = new Array<Model.Notification>();
@@ -29,7 +27,7 @@ export class NotificationlistComponent implements OnInit {
   }
 
   getNotifications(): void {
-    this.notificationsService.getNotifications().subscribe((res) => {
+    this.notificationsService.getNotifications('Notification', this.offset).subscribe((res) => {
       this.notifications = res.map(internship => internship);
       this.offset += res.length;
     }, (errors) => {
@@ -40,7 +38,7 @@ export class NotificationlistComponent implements OnInit {
   myScrollCallBack() {
     if (this.moreContentAvailable) {
       this.infiniteScrollLoading = true;
-      return this.notificationsService.getNotifications(this.offset).do(this.infiniteScrollCallBack.bind(this));
+      return this.notificationsService.getNotifications('Notification', this.offset).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
@@ -52,9 +50,5 @@ export class NotificationlistComponent implements OnInit {
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);
     this.infiniteScrollLoading = false;
-  }
-
-  viewNotification(id): void {
-    this.router.navigate(['notificationview/' + id]);
   }
 }

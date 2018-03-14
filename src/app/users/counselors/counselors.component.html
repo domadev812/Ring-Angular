@@ -12,7 +12,7 @@
   </div>
   <div class="table-content-with-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
     <div class="list" *ngFor="let counselor of counselors">
-      <div class="d-flex space-between bg-white py-1">
+      <div class="d-flex space-between bg-white py-1 pointer" (click)="editCounselor(counselor.id)">
         <div class="table-data-primary mx-4 col-name">{{counselor.getName()}}</div>
         <div class="table-data mx-4 col-school">{{counselor.organization.name}}</div>
         <div class="table-data mx-4 col-email">{{counselor.email}}</div>

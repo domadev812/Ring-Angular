@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ResourcesService } from '../../_services/resources.service';
+import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 
@@ -18,18 +19,23 @@ export class ScholarshipsComponent implements OnInit {
   public limit: number;
   public offset: number;
   public searchText: string;
-  public scholarships: Array<Model.Resource>;
+  public scholarships: Array<Model.Scholarship>;
   public organizations: Array<Model.Organization>;
 
-  constructor(private resourcesService: ResourcesService) { }
+  constructor(private router: Router,
+              private resourcesService: ResourcesService) { }
 
   ngOnInit() {
-    this.scholarships = new Array<Model.Resource>();
+    this.scholarships = new Array<Model.Scholarship>();
     this.organizations = new Array<Model.Organization>();
     this.limit = 50;
     this.offset = 0;
     this.searchText = '';
-    this.getOrganizationSize();
+    this.getScholarships();    
+  }
+
+  editScholarship(id) {    
+    this.router.navigate(['scholarshipedit/' + id]);
   }
 
   searchItems(): void {
@@ -39,7 +45,7 @@ export class ScholarshipsComponent implements OnInit {
   }
 
   getScholarships(): void {
-    this.resourcesService.getResources('Scholarship', this.offset, this.searchText).subscribe((res) => {
+    this.resourcesService.getScholarships(this.searchText).subscribe((res) => {
       this.scholarships = res.map(scholarship => scholarship);
       this.offset += res.length;
     }, (errors) => {
@@ -51,7 +57,7 @@ export class ScholarshipsComponent implements OnInit {
     if (this.moreContentAvailable) {
       //use this to handle *ngIf if you want to tell the user the infinite scroll is loading.
       this.infiniteScrollLoading = true;
-      return this.resourcesService.getResources('Scholarship', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
+      return this.resourcesService.getScholarships(this.searchText, this.offset).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
@@ -63,27 +69,5 @@ export class ScholarshipsComponent implements OnInit {
     //Stops getting content if there is no content
     this.moreContentAvailable = !(res.length < this.limit);
     this.infiniteScrollLoading = false;
-  }
-
-  getOrganizationSize(): void {
-    this.resourcesService.getOrganizationSize().subscribe((res) => {
-      this.getOrganizations(res);
-    }, (errors) => {
-      alert('Server error');
-    });
-  }
-
-  getOrganizations(size): void {
-    this.resourcesService.getOrganizations(size).subscribe((res) => {
-      this.organizations = res.map(organization => organization);
-      this.getScholarships();
-    }, (errors) => {
-      alert('Server error');
-    });
-  }
-
-  getOrganizationNameById(id): string {
-    let findOrganization = this.organizations.find(organization => organization.id === id);
-    return findOrganization.name;
-  }
+  }  
 }

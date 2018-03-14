@@ -11,8 +11,9 @@ export class NotificationsService {
 
   constructor(private http: Http) { }
 
-  getNotifications(offset: number = 0, limit: number = 50): Observable<Model.Notification[]> {    
-    let url = `${environment.apiUrl}/api/notifications/all?offset=${offset}&limit=${limit}`;
+  getNotifications(type: string, offset: number, search: string = '', limit: number = 50): Observable<Model.Notification[]> {
+    let paramType = type !== '' ? `type=${type}` : '';
+    let url = `${environment.apiUrl}/notificationss?offset=${offset}&limit=${limit}&${paramType}`;
     return this.http.get(url)
       .map((response: Response) => {
         const json = response.json();
@@ -25,7 +26,7 @@ export class NotificationsService {
   }
 
   createNotification(notification: Model.Notification): Observable<Model.Notification> {
-    let url = environment.apiUrl + '/api/notifications/';
+    let url = environment.apiUrl + '/notifications/';
     return this.http.post(url, notification)
       .map((response: Response) => {
         const json = response.json();

@@ -18,7 +18,7 @@
       | &nbsp;
 .table-content-with-search
   .list(*ngFor="let campaign of campaigns; let ind = index" [ngClass]="{'current-status': getStatus(campaign.activation_start, campaign.activation_end) === 'Current'}")
-    .d-flex.space-between.bg-white.py-1
+    .d-flex.space-between.bg-white.py-1.pointer((click)='openModal(template, ind)' [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'")
       .table-data.mx-4.col-start-date
         | {{formatDate(campaign.activation_start)}}
       .table-data.mx-4.col-end-date

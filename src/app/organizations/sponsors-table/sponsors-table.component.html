@@ -10,7 +10,7 @@
   </div>
   <div class="table-content-without-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
     <div class="list" *ngFor="let organization of organizations">
-      <div class="d-flex space-between bg-white py-1" (click)="editOrganization(organization.id)">
+      <div class="d-flex space-between bg-white py-1 pointer" (click)="editOrganization(organization.id)">
         <div class="table-data-primary mx-4 col-organization">{{organization.name}}</div>
         <div class="table-data mx-4 col-created">{{organization.created_at}}</div>
         <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="editOrganization(organization.id)"></i></div>

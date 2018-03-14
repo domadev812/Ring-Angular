@@ -11,6 +11,7 @@ import { AppliedUserComponent } from './resources/appliedusers/appliedusers.comp
 import { InternshipAddComponent } from './resources/internships/internshipadd/internshipadd.component';
 import { OpportunityAddComponent } from './resources/opportunities/opportunityadd/opportunityadd.component';
 import { ScholarshipAddComponent } from './resources/scholarships/scholarshipadd/scholarshipadd.component';
+import { ScholarshipApplicantsComponent } from './resources/scholarships/applicants/scholarshipapplicants.component';
 import { PrizeAddComponent } from './prizes/prizeadd/prizeadd.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationAddComponent } from './notifications/notificationadd/notificationadd.component';
@@ -45,13 +46,15 @@ const appRoutes: Routes = [
 
   { path: 'scholarshipadd', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
+  { path: 'scholarshipedit/:scholarshipId', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'scholarshipapplicants/:scholarshipId', component: ScholarshipApplicantsComponent, canActivate: [AuthGuard, RoleGuard] },
+
   { path: 'resources', component: ResourcesComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'notificationadd', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
-
-  { path: 'notificationview/:notificationId', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'organizations', component: OrganizationsComponent, canActivate: [AuthGuard, RoleGuard] },
 

@@ -14,10 +14,10 @@
         .table-data-primary.mx-4.col-subject
           | {{notification.subject}}
         .table-data.mx-4.col-message
-          | {{notification.body}}
+          | {{notification.message}}
         .table-data.mx-4.col-sent
-          | {{notification.created_at}}
+          | {{notification.sent_date}}
         .table-data.mx-4.col-view
-          i.fa.fa-eye.view-row((click)='viewNotification(notification.id)')
+          i.fa.fa-eye.view-row
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
       |Loading ...
