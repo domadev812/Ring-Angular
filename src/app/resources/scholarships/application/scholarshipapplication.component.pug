@@ -1,0 +1,22 @@
+.page-wrapper.resources
+  .content-wrapper    
+    .header-nav.fixed-header
+      h1.headers
+        | Scholarship Application      
+    .form-content 
+      .item-info
+        .input-label-top
+          | NAME          
+        input.resources-input(type="text" [(ngModel)]='application.name')      
+      .item-info
+        .input-label-top
+          | GRADUATION YEAR          
+        input.resources-input(type="text" [(ngModel)]='application.graduation_year')      
+      .item-info
+        .input-label-top
+          | SCHOOL          
+        input.resources-input(type="text")
+      .item-info
+        .input-label
+          | ESSAY            
+        textarea.resources-textarea(rows="6" [(ngModel)]="application.essay")      
