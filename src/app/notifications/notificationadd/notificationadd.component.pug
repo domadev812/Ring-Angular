@@ -21,8 +21,34 @@
             | MESSAGE
             .invalid-validation([hidden]="message.valid || (message.pristine && !notificationForm.submitted)")
               | Message is required
-          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.message" #message="ngModel" required)
+          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" required)
         .item-info
+          .input-label-dropdown
+            | TYPES
+            .invalid-validation([hidden]="selectedType.length > 0 || !notificationForm.submitted")
+              | Type is required
+          angular2-multiselect(
+            name = 'types'
+            [data]='typeList'
+            [(ngModel)]='selectedType'
+            [settings]='ktsSelectSettings'
+            (onSelect)='onTypeSelect($event)'
+            (onDeSelect)='onTypeDeSelect($event)'
+          )
+        .item-info(*ngIf="valueListVisibleFlag")
+          .input-label-dropdown
+            | {{valueListTitle}}
+            .invalid-validation([hidden]="selectedValueList.length > 0 || !notificationForm.submitted")
+              | Type is required
+          angular2-multiselect(
+            name = 'typevalues'
+            [data]='typeValueList'
+            [(ngModel)]='selectedValueList'
+            [settings]='ktsSelectSettings'
+            (onSelect)='onValueSelect($event)'
+            (onDeSelect)='onValueDeSelect($event)'
+          )
+        .item-info(*ngIf="careerListVisibleFlag")
           .input-label-dropdown
               | CAREERS
           angular2-multiselect(

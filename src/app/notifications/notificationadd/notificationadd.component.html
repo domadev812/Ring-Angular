@@ -22,9 +22,21 @@
           <div class="input-label">MESSAGE
             <div class="invalid-validation" [hidden]="message.valid || (message.pristine &amp;&amp; !notificationForm.submitted)">Message is required</div>
           </div>
-          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.message" #message="ngModel" required></textarea>
+          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" required></textarea>
         </div>
         <div class="item-info">
+          <div class="input-label-dropdown">TYPES
+            <div class="invalid-validation" [hidden]="selectedType.length &gt; 0 || !notificationForm.submitted">Type is required</div>
+          </div>
+          <angular2-multiselect name="types" [data]="typeList" [(ngModel)]="selectedType" [settings]="ktsSelectSettings" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)"></angular2-multiselect>
+        </div>
+        <div class="item-info" *ngIf="valueListVisibleFlag">
+          <div class="input-label-dropdown">{{valueListTitle}}
+            <div class="invalid-validation" [hidden]="selectedValueList.length &gt; 0 || !notificationForm.submitted">Type is required</div>
+          </div>
+          <angular2-multiselect name="typevalues" [data]="typeValueList" [(ngModel)]="selectedValueList" [settings]="ktsSelectSettings" (onSelect)="onValueSelect($event)" (onDeSelect)="onValueDeSelect($event)"></angular2-multiselect>
+        </div>
+        <div class="item-info" *ngIf="careerListVisibleFlag">
           <div class="input-label-dropdown">CAREERS</div>
           <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)"></angular2-multiselect>
         </div>
