@@ -45,13 +45,13 @@ const appRoutes: Routes = [
 
   { path: 'scholarshipadd', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'scholarshipedit/:scholarshipId', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
-
   { path: 'resources', component: ResourcesComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'notificationadd', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'notificationview/:notificationId', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'organizations', component: OrganizationsComponent, canActivate: [AuthGuard, RoleGuard] },
 

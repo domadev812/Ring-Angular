@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
 import { NotificationsService } from '../../_services/notifications.service';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
@@ -17,7 +18,8 @@ export class NotificationlistComponent implements OnInit {
   notifications: Array<Model.Notification>;
   counter = 0;
 
-  constructor(private notificationsService: NotificationsService) { }
+  constructor(private notificationsService: NotificationsService,
+              private router: Router) { }
 
   ngOnInit() {
     this.notifications = new Array<Model.Notification>();
@@ -50,5 +52,9 @@ export class NotificationlistComponent implements OnInit {
     this.offset += res.length;
     this.moreContentAvailable = !(res.length < this.limit);
     this.infiniteScrollLoading = false;
+  }
+
+  viewNotification(id): void {
+    this.router.navigate(['notificationview/' + id]);
   }
 }

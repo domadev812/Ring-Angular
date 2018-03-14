@@ -22,6 +22,7 @@ export class AccessService {
         'prizeedit',
         'notifications',
         'notificationadd',
+        'notificationview',
         'internshipadd',
         'internshipedit',
         'opportunityadd',

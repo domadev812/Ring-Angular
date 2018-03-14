@@ -67,7 +67,7 @@ export class NotificationAddComponent implements OnInit {
       return;
     }
 
-    this.notification.career_ids = this.selectedCareers.map(career => {
+    this.notification.type_ids = this.selectedCareers.map(career => {
       return career.id;
     });
 
