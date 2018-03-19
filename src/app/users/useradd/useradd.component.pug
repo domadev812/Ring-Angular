@@ -30,7 +30,7 @@
               | Type is required
           angular2-multiselect(
             name = 'type'
-            [data]='typeList'
+            [data]='filteredTypeList'
             [(ngModel)]='selectedType'
             [settings]='ktsTypeSettings'
             (onSelect)='onTypeSelect($event)'
