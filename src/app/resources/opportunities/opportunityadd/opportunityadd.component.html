@@ -11,7 +11,7 @@
              Cancel</button>
         </div>
       </div>
-      <div class="applicants-view" *ngIf="editFlag === true &amp;&amp; opportunity.users" (click)="gotoApplicants(opportunity.id)">Applicants: {{opportunity.users.length}} <img class="link-arrow" src="../assets/imgs/link-arrow.svg"></div>
+      <div class="applicants-view fixed-header" *ngIf="editFlag === true &amp;&amp; opportunity.users" (click)="gotoApplicants(opportunity.id)">Applicants: {{opportunity.users.length}}         <img class="link-arrow" src="../assets/imgs/link-arrow.svg"></div>
       <div class="form-content"> 
         <div class="item-info">
           <div class="input-label">NAME

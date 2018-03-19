@@ -9,8 +9,8 @@
               | Save
             button.cancel-button(type="button" (click)="goBack()") 
               | Cancel
-      .applicants-view(*ngIf="editFlag === true && opportunity.users" (click)="gotoApplicants(opportunity.id)")
-        | Applicants: {{opportunity.users.length}} 
+      .applicants-view.fixed-header(*ngIf="editFlag === true && opportunity.users" (click)="gotoApplicants(opportunity.id)")
+        | Applicants: {{opportunity.users.length}}         
         img.link-arrow(src="../assets/imgs/link-arrow.svg") 
       .form-content 
         .item-info
