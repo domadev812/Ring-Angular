@@ -4,12 +4,14 @@ import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { error } from 'util';
-import { MultiSelectService, ResourcesService } from '../../../app.services-list';
+import { MultiSelectService, ResourcesService, CurrentUserService, AuthService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { FormsModule } from '@angular/forms';
 import { NavbarService } from '../../../app.services-list';
 import { GlobalState } from '../../../global.state';
+// import { userInfo } from 'os';
+import { User } from '../../../_models/user.model';
 
 @Component({
   selector: 'app-scholarshipadd',
@@ -21,11 +23,9 @@ export class ScholarshipAddComponent implements OnInit {
   public originalScholarship: Model.Scholarship;
   public careers: Array<Model.Career>;
   public schools: Array<Model.Organization>;
-  public ethnicities: Array<Model.Ethnicity>;
   public organizations: Array<Model.Organization>;
-  public ktsSelectSettings = {};
+  public ktsSelectSettings: any = {};
   public ktsMultiSettings = {};
-  public ethnicityList = [];
   public selectedEthnicities = [];
   public careerList = [];
   public selectedCareers = [];
@@ -37,12 +37,15 @@ export class ScholarshipAddComponent implements OnInit {
   public editFlag: boolean;
   public disableFlag: boolean;
 
+
   constructor(private router: Router,
     private route: ActivatedRoute,
     private multiSelectService: MultiSelectService,
     private resourcesService: ResourcesService,
     private navBarSerice: NavbarService,
     public global: GlobalState,
+    private currentUserService: CurrentUserService,
+    public authProvider: AuthService
   ) {
   }
   ngOnInit() {
@@ -50,8 +53,7 @@ export class ScholarshipAddComponent implements OnInit {
     this.scholarship = new Model.Scholarship({});
     this.originalScholarship = new Model.Scholarship({});
     this.schools = new Array<Model.Organization>();
-    this.ethnicities = new Array<Model.Ethnicity>();
-    this.organizations = new Array<Model.Organization>();
+    this.organizations = new Array<Model.Organization>(null);
     this.title = 'New Scholarship';
 
     const id = this.route.snapshot.paramMap.get('scholarshipId');
@@ -62,19 +64,40 @@ export class ScholarshipAddComponent implements OnInit {
 
       this.getScholarship(id);
     }
-    
+
+    this.getUser();
     this.getCareers();
     this.getSchools();
     this.getOrganizations();
 
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
   }
 
-  onSchoolSelect(item: any) {    
+
+  getUser() {
+    this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
+      if (res) {
+        this.setAdminStatus(res.roles);
+        const org = res.organization;
+        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.scholarship.organization_id));
+      }
+    }, err => {
+      console.log('err', err);
+    });
+  }
+
+  setAdminStatus(roles: Array<string>): void {
+    const filtered = roles.filter(role => {
+      if (role === 'admin') { return true; }
+    });
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
+  }
+
+  onSchoolSelect(item: any) {
     this.onChange(item);
   }
-  onSchoolDeSelect(item: any) {    
+  onSchoolDeSelect(item: any) {
     this.onChange(item);
   }
 
@@ -86,11 +109,11 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
-  onCareerSelect(item: any) {    
+  onCareerSelect(item: any) {
     this.onChange(item);
   }
 
-  onCareerDeSelect(item: any) {    
+  onCareerDeSelect(item: any) {
     this.onChange(item);
   }
 
@@ -103,11 +126,11 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   onOrganizationSelect(item: any) {
-    this.scholarship.organization_id = item.id;   
-    this.onChange(item); 
+    this.scholarship.organization_id = item.id;
+    this.onChange(item);
   }
   onOrganizationDeSelect(item: any) {
-    this.scholarship.organization_id = null;    
+    this.scholarship.organization_id = null;
     this.onChange(item);
   }
 
@@ -120,14 +143,15 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   getScholarship(id: string): void {
-    this.resourcesService.getScholarship(id).subscribe((res) => {      
-      this.scholarship = res;     
-      this.originalScholarship = Object.assign({}, res); 
+    this.resourcesService.getScholarship(id).subscribe((res) => {
+      this.scholarship = res;
+      console.log('scholarship response', res);
+      this.originalScholarship = Object.assign({}, res);
       this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
       this.selectedCareers = this.scholarship.careers.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
       if (this.scholarship.organization) {
-        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name, 
-                                                                      this.scholarship.organization_id));
+        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name,
+          this.scholarship.organization_id));
       }
     }, (errors) => {
       console.log('err', errors);
@@ -141,47 +165,47 @@ export class ScholarshipAddComponent implements OnInit {
         this.disableFlag = false;
         return;
       }
-      
+
       if (this.scholarship.description !== this.originalScholarship.description) {
         this.disableFlag = false;
         return;
       }
-      
+
       if (this.scholarship.organization_id !== this.originalScholarship.organization_id) {
         this.disableFlag = false;
         return;
       }
-      
+
       if (this.scholarship.url !== this.originalScholarship.url) {
         this.disableFlag = false;
         return;
       }
-      
+
       if (this.scholarship.amount !== this.originalScholarship.amount) {
         this.disableFlag = false;
         return;
       }
-      
+
       if (this.scholarship.number_available !== this.originalScholarship.number_available) {
         this.disableFlag = false;
         return;
       }
-      
+
       if (this.scholarship.active !== this.originalScholarship.active) {
         this.disableFlag = false;
         return;
-      }  
-      
+      }
+
       if (!this.isCareersChanged()) {
         this.disableFlag = false;
         return;
       }
-      
+
       if (!this.isSchoolChanged()) {
         this.disableFlag = false;
         return;
       }
-      
+
       this.disableFlag = true;
     }
   }
@@ -223,7 +247,7 @@ export class ScholarshipAddComponent implements OnInit {
     this.scholarship.school_ids = this.selectedSchools.map(school => {
       return school.id;
     });
-    
+
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
         alert('Create new scholarship successfully');

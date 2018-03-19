@@ -2,6 +2,7 @@
   .search-bar
     i.fa.fa-search.search-icon
     input.search-text(type="text" placeholder="Search counselors..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
+  ngx-loading([show]='loading')  
   .d-flex.space-between.py-1
     .table-header.mx-4.col-name
       | NAME

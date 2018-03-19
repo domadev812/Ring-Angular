@@ -17,6 +17,7 @@ export class AwardedPrizesIndexComponent implements OnInit {
   limit: number;
   offset: number;
   searchText: string;
+  public loading = false;
 
   constructor(
     public router: Router,
@@ -37,11 +38,13 @@ export class AwardedPrizesIndexComponent implements OnInit {
   }
 
   getAwardedPrizes(): void {
+    this.loading = true;
     this.prizesService.getAwardedPrizes(this.offset, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.awards = res.map(award => award);
-      console.log('awards!!!', this.awards);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }

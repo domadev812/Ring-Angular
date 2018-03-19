@@ -18,6 +18,7 @@ export class InternshipsComponent implements OnInit {
   public searchText: string;
   public internships: Array<Model.Resource>;
   public organizations: Array<Model.Organization>;
+  public loading = false;
 
   constructor(private router: Router, private resourcesService: ResourcesService) { }
 
@@ -27,6 +28,7 @@ export class InternshipsComponent implements OnInit {
     this.limit = 50;
     this.offset = 0;
     this.getOrganizationSize();
+    this.loading = true;
   }
 
   editInternship(id) {
@@ -40,10 +42,12 @@ export class InternshipsComponent implements OnInit {
   }
 
   getInternships(): void {
-    this.resourcesService.getResources('Internship', this.offset, this.searchText).subscribe((res) => {
+    this.resourcesService.getResources('internship', this.offset, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.internships = res.map(internship => internship);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }
@@ -51,7 +55,7 @@ export class InternshipsComponent implements OnInit {
   myScrollCallBack() {
     if (this.moreContentAvailable) {
       this.infiniteScrollLoading = true;
-      return this.resourcesService.getResources('Internship', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
+      return this.resourcesService.getResources('internship', this.offset, this.searchText).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
@@ -68,6 +72,7 @@ export class InternshipsComponent implements OnInit {
     this.resourcesService.getOrganizationSize().subscribe((res) => {
       this.getOrganizations(res);
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }
@@ -77,6 +82,7 @@ export class InternshipsComponent implements OnInit {
       this.organizations = res.map(organization => organization);
       this.getInternships();
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }

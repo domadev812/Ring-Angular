@@ -6,6 +6,7 @@ import { Model } from '../../app.models-list';
 import * as moment from 'moment';
 import { Campaign } from '../../_models/campaign.model';
 
+
 @Component({
   selector: 'app-prizesindex',
   templateUrl: './prizesindex.component.html',
@@ -19,6 +20,7 @@ export class PrizesIndexComponent implements OnInit {
   private limit: number;
   private offset: number;
   public searchText: string;
+  public loading = false;
 
   constructor(private router: Router, private prizesService: PrizesService) { }
 
@@ -40,10 +42,13 @@ export class PrizesIndexComponent implements OnInit {
   }
 
   getPrizes(): void {
+    this.loading = true;
     this.prizesService.getPrizes(this.offset, this.searchText).subscribe((res) => {
-      this.prizes = res.map(prize => prize);            
+      this.loading = false;
+      this.prizes = res.map(prize => prize);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }
@@ -66,7 +71,7 @@ export class PrizesIndexComponent implements OnInit {
 
   formatDate(date: any): string {
     return date ? moment(date, moment.ISO_8601)
-      .format('DD  MMM  YYYY') : '';    
+      .format('DD  MMM  YYYY') : '';
   }
 
   getKeyValue(campaign: Model.Campaign, key: string): any {

@@ -10,6 +10,7 @@
 .wrapper-content {
   margin-top: 40px;
   display: flex;
+  justify-content: flex-end;
 }
 .logo-image {
   flex: 0.25;    
@@ -27,6 +28,11 @@
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
+}
+
+.input.input{
+  width: 945px;
+  height: 40px;
 }
 
 

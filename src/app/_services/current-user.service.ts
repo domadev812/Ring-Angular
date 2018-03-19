@@ -57,19 +57,19 @@ export class CurrentUserService {
         else if (token) {
           let decodedToken = this.jwtHelper.decodeToken(token);
           let userId = decodedToken.id;
-          authProvider.getUser(userId).subscribe((user: Model.User) => {
+          authProvider.getUser().subscribe((user: Model.User) => {
             this.load(user);
             if (user) {
               this.currentUser = user;
               this.emitUpdate();
               resolve(user);
-            }else {
+            } else {
               reject();
             }
           }, (err) => {
             reject(err);
           });
-        }else {
+        } else {
           reject('User not logged in');
         }
       });
@@ -97,16 +97,16 @@ export class CurrentUserService {
 
   updateUser(params: Model.User, id: string): Observable<Model.User> {
     return this.http.patch('/users/' + id, params)
-    .map((response: Response) => {
-      const json = response.json();
+      .map((response: Response) => {
+        const json = response.json();
 
-      if (json && json.data) {
-        this.currentUser = new Model.User(json.data);
-        return new Model.User(json.data);
-      } else {
-        Observable.throw({ message: 'Internal Server Error' , response });
-      }
-    });
+        if (json && json.data) {
+          this.currentUser = new Model.User(json.data);
+          return new Model.User(json.data);
+        } else {
+          Observable.throw({ message: 'Internal Server Error', response });
+        }
+      });
   }
 
   public emitUpdate() {

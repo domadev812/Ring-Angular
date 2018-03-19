@@ -2,7 +2,6 @@ import * as moment from 'moment';
 import { Career } from './career.model';
 import { User } from './user.model';
 import { Organization } from './organization.model';
-import { Ethnicity } from './ethnicity.model';
 import { Scholarship } from './scholarship.model';
 export class Resource {
   id: string;
@@ -17,8 +16,7 @@ export class Resource {
   updated_at: any;
   careers: Array<Career>;
   users: Array<User>;
-  organization: Array<Organization>;
-  ethnicities: Array<Ethnicity>;
+  organization: Organization;
   schools: Array<Organization>;
   scolarship: Scholarship;
   career_titles: Array<number>;
@@ -37,6 +35,7 @@ export class Resource {
     this.images = data.images || this.images;
     this.is_active = data.is_active || this.is_active;
     this.organization_id = data.organization_id || this.organization_id;
+    this.organization = data.organization || this.organization;
     this.careers = data.careers || this.careers;
     this.career_ids = data.careers || this.careers;
     this.users = data.users || this.users;

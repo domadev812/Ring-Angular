@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { error } from 'util';
-import { MultiSelectService, ResourcesService } from '../../../app.services-list';
+import { MultiSelectService, ResourcesService, CurrentUserService, AuthService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { GlobalState } from '../../../global.state';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
@@ -22,13 +22,14 @@ export class OpportunityAddComponent implements OnInit {
   public organizations: Array<Model.Organization>;
   public organizationList = [];
   public selectedOrganization = [];
-  public ktsSelectSettings = {};
+  public ktsSelectSettings: any = {};
   public ktsMultiSettings = {};
   public careerList = [];   //Selectable Career List
   public selectedCareers = [];    //Selected Career List
   public title: string;
   public editFlag: boolean;
   public disableFlag: boolean;
+  public isAdmin: boolean;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -36,6 +37,8 @@ export class OpportunityAddComponent implements OnInit {
     private multiSelectService: MultiSelectService,
     public global: GlobalState,
     public navBarService: NavbarService,
+    private currentUserService: CurrentUserService,
+    private authProvider: AuthService
   ) { }
 
   ngOnInit() {
@@ -48,10 +51,10 @@ export class OpportunityAddComponent implements OnInit {
     this.editFlag = false;
     this.disableFlag = false;
 
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
     this.getCareers();
     this.getOrganizations();
+    this.getUser();
 
     const id = this.route.snapshot.paramMap.get('opportunityId');
     if (id !== null) {
@@ -61,6 +64,26 @@ export class OpportunityAddComponent implements OnInit {
       this.getResource(id);
     }
 
+  }
+
+  getUser() {
+    this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
+      if (res) {
+        this.setAdminStatus(res.roles);
+        const org = res.organization;
+        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.opportunity.id));
+      }
+    }, err => {
+      console.log('err', err);
+    });
+  }
+
+  setAdminStatus(roles: Array<string>): void {
+    const filtered = roles.filter(role => {
+      if (role === 'admin') { return true; }
+    });
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
   }
 
   onCareerSelect(item: any) {

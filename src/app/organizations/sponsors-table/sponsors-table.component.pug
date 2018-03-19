@@ -2,21 +2,26 @@
   .search-bar
     i.fa.fa-search.search-icon
     input.search-text(type="text", placeholder="Search sponsors...", [(ngModel)]='searchText', (keyup.enter)='searchItems()')
+  ngx-loading([show]='loading')  
   .d-flex.space-between.px-4.mb-1
     .table-header.col-organization
       | Sponsor
+    .table-header.col-url
+      | Url
     .table-header.col-created
       | Created date
-    .table-header.mx-4.col-edit
+    .table-header.mr-4.col-edit
       | &nbsp;
   .table-content-without-search(#scrollVariable, appInfiniteScroller, [scrollPercent]="90", [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let organization of organizations")
       .d-flex.space-between.bg-white.py-1.pointer((click)='editOrganization(organization.id)')
         .table-data-primary.mx-4.col-organization
           | {{organization.name}}
-        .table-data.mx-4.col-created
+        .table-data-primary.col-url
+          | {{organization.url}}
+        .table-data.col-created
           | {{organization.created_at}}
-        .table-data.mx-4.col-edit
+        .table-data.mr-4.col-edit
           i.fa.fa-pencil.edit-row((click)='editOrganization(organization.id)')
     .infinite-scroll-loading(class="infinite-scroll-loading", *ngIf="infiniteScrollLoading")
       | Loading ...

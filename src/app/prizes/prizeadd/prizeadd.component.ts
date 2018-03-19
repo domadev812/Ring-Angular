@@ -4,7 +4,7 @@ import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { error } from 'util';
-import { MultiSelectService, PrizesService } from '../../app.services-list';
+import { MultiSelectService, PrizesService, CurrentUserService, AuthService } from '../../app.services-list';
 import { Model } from '../../app.models-list';
 import { GlobalState } from '../../global.state';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
@@ -25,7 +25,8 @@ export class PrizeAddComponent implements OnInit {
   public selectedSponsor = [];
   public deliveryList = [{ itemName: 'In-House', id: 1 }, { itemName: 'Third Party', id: 2 }];
   public selectedDelivery = [];
-  public ktsSelectSettings = {};
+  public ktsSelectSettings: any = {};
+  public ktsDeliverySelectSettings = {};
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -33,6 +34,8 @@ export class PrizeAddComponent implements OnInit {
     private multiSelectService: MultiSelectService,
     public global: GlobalState,
     public navBarService: NavbarService,
+    private currentUserService: CurrentUserService,
+    public authProvider: AuthService
   ) { }
 
   ngOnInit() {
@@ -41,7 +44,7 @@ export class PrizeAddComponent implements OnInit {
     this.prize = new Model.Prize({});
     this.editFlag = false;
     this.disableFlag = false;
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsDeliverySelectSettings = MultiSelectUtil.singleDeliverySelection;
     const id = this.route.snapshot.paramMap.get('prizeId');
     if (id !== null) {
       this.title = 'Edit Prize';
@@ -50,7 +53,30 @@ export class PrizeAddComponent implements OnInit {
       this.getPrize(id);
     }
     this.getSponsors();
+    this.getUser();
   }
+
+  getUser() {
+    this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
+      if (res) {
+        this.setAdminStatus(res.roles);
+        const org = res.organization;
+        this.selectedSponsor.push(new MultiSelectUtil.SelectItem(org.name, this.prize.id));
+      }
+    }, err => {
+      console.log('err', err);
+    });
+  }
+
+  setAdminStatus(roles: Array<string>): void {
+    const filtered = roles.filter(role => {
+      if (role === 'admin') { return true; }
+    });
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
+  }
+
+
 
   onSponsorSelect(item: any) {
     this.prize.organization_id = item.id;
@@ -73,7 +99,7 @@ export class PrizeAddComponent implements OnInit {
   getPrize(id): void {
     this.prizesService.getPrize(id).subscribe((res) => {
       this.prize = res;
-      this.prize.details = 'Detail';      
+      this.prize.details = 'Detail';
       this.prize.delivery_type = 'Third Party';
       this.originalPrize = Object.assign({}, this.prize);
       if (this.sponsorList.length > 0) {

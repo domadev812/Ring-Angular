@@ -55,23 +55,6 @@ export class MultiSelectService {
       });
   }
 
-  getDropdownEthnicities(): Observable<MultiSelectUtil.SelectItem[]> {
-    if (this.ethnicitiesSelect) {
-      return Observable.of(this.ethnicitiesSelect);
-    }
-    let url = `${environment.apiUrl}/api/ethnicities`;
-    return this.http.get(url)
-      .map((response: Response) => {
-        const json = response.json();
-        if (json && json.data) {
-          this.ethnicitiesSelect = MultiSelectUtil.SelectItem.buildFromData(json.data, 'Ethnicity');
-          return this.ethnicitiesSelect;
-        } else {
-          Observable.throw({ message: 'Internal Server Error' });
-        }
-      });
-  }
-
   getDropdownOrganizations(): Observable<MultiSelectUtil.SelectItem[]> {
     if (this.organizationsSelect) {
       return Observable.of(this.organizationsSelect);

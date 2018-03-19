@@ -20,6 +20,7 @@ export class SchoolsTableComponent implements OnInit {
   public limit: number;
   public offset: number;
   public searchText: string;
+  public loading = false;
 
   organizations: Model.Organization[];
 
@@ -43,9 +44,14 @@ export class SchoolsTableComponent implements OnInit {
   }
 
   getOrganizations(): void {
+    this.loading = true;
     this.organizationService.getOrganizationSearch('school', 0, this.limit, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.organizations = res.map(organization => organization);
       this.offset += res.length;
+    }, (errors) => {
+      this.loading = false;
+      alert('Server error');
     });
   }
 

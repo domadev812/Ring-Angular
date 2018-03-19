@@ -20,9 +20,10 @@ export class CounselorsComponent implements OnInit {
   public searchText: string;
   public counselors: Array<ApiUser>;
   public organizations: Array<Model.Organization>;
+  public loading = false;
 
   constructor(private router: Router,
-              private usersService: UsersService) { }
+    private usersService: UsersService) { }
 
   ngOnInit() {
     this.counselors = new Array<ApiUser>();
@@ -43,10 +44,13 @@ export class CounselorsComponent implements OnInit {
   }
 
   getCounselors(): void {
+    this.loading = true;
     this.usersService.getUsers('counselor', this.offset, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.counselors = res.map(counselor => counselor);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }

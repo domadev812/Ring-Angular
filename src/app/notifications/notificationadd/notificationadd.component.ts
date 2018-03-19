@@ -17,18 +17,20 @@ import { NavbarService } from '../../app.services-list';
 export class NotificationAddComponent implements OnInit {
   notification: Model.Notification;
   title: string;
+  min = new Date().getFullYear();
+  max = this.min + 4;
   public careers: Array<Model.Career>;
   public careerList = [];
   public selectedCareers = [];
   public ktsSelectSettings = {};
   public ktsMultiSettings = {};
-  public typeList = [{id: 'all', itemName: 'All'},
-                     {id: 'gender', itemName: 'Gender'},
-                     {id: 'graduation_year', itemName: 'Graduation Year'},
-                     {id: 'careers', itemName: 'Careers'}];
+  public typeList = [{ id: 'all', itemName: 'All' },
+  { id: 'gender', itemName: 'Gender' },
+  { id: 'graduation_year', itemName: 'Graduation Year' },
+  { id: 'careers', itemName: 'Careers' }];
   public selectedType = [];
-  public originalTypeValueList = [{id: 'M', itemName: 'Male', category: 'gender'},
-                                  {id: 'F', itemName: 'Female', category: 'gender'}];
+  public originalTypeValueList = [{ id: 'M', itemName: 'Male', category: 'gender' },
+  { id: 'F', itemName: 'Female', category: 'gender' }];
   public typeValueList = [];
   public selectedValueList = [];
   public valueListTitle = '';
@@ -51,20 +53,20 @@ export class NotificationAddComponent implements OnInit {
     this.title = 'New Notification';
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
-    for (let year = 2010; year <= 2018; year++) {
-      this.originalTypeValueList.push({id: year.toString(), itemName: year.toString(), category: 'graduation_year'});
+    for (let year = this.min; year <= this.max; year++) {
+      this.originalTypeValueList.push({ id: year.toString(), itemName: year.toString(), category: 'graduation_year' });
     }
     if (notificationId) {
       this.title = 'View Notification';
       this.getNotification(notificationId);
-      this.ktsSelectSettings['disabled'] = true;  
-      this.ktsMultiSettings['disabled'] = true;  
-    }            
+      this.ktsSelectSettings['disabled'] = true;
+      this.ktsMultiSettings['disabled'] = true;
+    }
   }
 
-  onTypeSelect(item: any) {    
-    this.selectedValueList = [];   
-    this.changeState(); 
+  onTypeSelect(item: any) {
+    this.selectedValueList = [];
+    this.changeState();
   }
 
   onTypeDeSelect(item: any) {
@@ -92,11 +94,11 @@ export class NotificationAddComponent implements OnInit {
       this.careerListVisibleFlag = false;
     } else if (this.selectedType[0].id === 'gender') {
       this.valueListVisibleFlag = true;
-      this.careerListVisibleFlag = false;      
+      this.careerListVisibleFlag = false;
       this.typeValueList = this.originalTypeValueList.filter(typeValue => typeValue.category === 'gender');
     } else if (this.selectedType[0].id === 'graduation_year') {
       this.valueListVisibleFlag = true;
-      this.careerListVisibleFlag = false;      
+      this.careerListVisibleFlag = false;
       this.typeValueList = this.originalTypeValueList.filter(typeValue => typeValue.category === 'graduation_year');
     } else if (this.selectedType[0].id === 'careers') {
       this.valueListVisibleFlag = false;
@@ -112,17 +114,17 @@ export class NotificationAddComponent implements OnInit {
   }
 
   getNotification(id: string) {
-    this.notificationsService.getNotification(id).subscribe((res) => {      
+    this.notificationsService.getNotification(id).subscribe((res) => {
       this.notification = res;
-      this.selectedType.push(this.typeList.find(type => type.id === res.type)); 
+      this.selectedType.push(this.typeList.find(type => type.id === res.type));
       if (res.type === 'gender' || res.type === 'graduation_year') {
-        this.selectedValueList.push(this.originalTypeValueList.find(value => value.id === res.resource['resource_value']));  
+        this.selectedValueList.push(this.originalTypeValueList.find(value => value.id === res.resource['resource_value']));
       } else if (res.type === 'careers') {
         this.selectedCareers = res.resource.map(career => {
-          return {id: career.id, itemName: career.title};
+          return { id: career.id, itemName: career.title };
         });
       }
-      this.changeState();              
+      this.changeState();
     }, (errors) => {
       alert('Server error');
     });
@@ -136,7 +138,7 @@ export class NotificationAddComponent implements OnInit {
     if (this.selectedType.length === 0) {
       return;
     }
-    
+
     if (this.selectedType[0].id === 'gender' || this.selectedType[0].id === 'graduation_year') {
       if (this.selectedValueList.length === 0) {
         return;
@@ -155,14 +157,14 @@ export class NotificationAddComponent implements OnInit {
         this.notification.type_value = null;
       }
     } else {
-      this.notification.type = null;      
-    }            
+      this.notification.type = null;
+    }
     this.notificationsService.createNotification(this.notification).subscribe((res) => {
-      alert('Create new notification successfully');  
-      this.router.navigate(['notifications']);               
+      alert('Create new notification successfully');
+      this.router.navigate(['notifications']);
     }, (errors) => {
       alert('Server error');
-    });    
+    });
   }
 
   cancelNotification(): void {

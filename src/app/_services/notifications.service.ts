@@ -11,9 +11,8 @@ export class NotificationsService {
 
   constructor(private http: Http) { }
 
-  getNotifications(type: string, offset: number, search: string = '', limit: number = 50): Observable<Model.Notification[]> {
-    let paramType = type !== '' ? `type=${type}` : '';
-    let url = `${environment.apiUrl}/notificationss?offset=${offset}&limit=${limit}&${paramType}`;
+  getNotifications(offset: number = 0, limit: number = 50): Observable<Model.Notification[]> {    
+    let url = `${environment.apiUrl}/api/notifications/all?offset=${offset}&limit=${limit}`;
     return this.http.get(url)
       .map((response: Response) => {
         const json = response.json();
@@ -26,7 +25,7 @@ export class NotificationsService {
   }
 
   createNotification(notification: Model.Notification): Observable<Model.Notification> {
-    let url = environment.apiUrl + '/notifications/';
+    let url = environment.apiUrl + '/api/notifications/';    
     return this.http.post(url, notification)
       .map((response: Response) => {
         const json = response.json();
@@ -39,7 +38,7 @@ export class NotificationsService {
   }
 
   getNotification(notificationId: string): Observable<Model.Notification> {
-    let url = environment.apiUrl + '/notifications/' + notificationId;
+    let url = environment.apiUrl + '/api/notifications/' + notificationId;
     return this.http.get(url)
       .map((response: Response) => {
         const json = response.json();
@@ -50,17 +49,4 @@ export class NotificationsService {
         }
       });
   }
-  updateNotification(notification: Model.Notification): Observable<boolean> {
-    let url = environment.apiUrl + '/notifications/';
-    return this.http.post(url, notification)
-      .map((response: Response) => {
-        const json = response.json();
-        if (json && json.data) {
-          return true;
-        } else {
-          Observable.throw({ messages: 'Internal Server Error', response });
-        }
-      });
-  }
-
 }

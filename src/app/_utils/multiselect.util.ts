@@ -9,6 +9,7 @@ export module MultiSelectUtil {
     classes: 'kts-multiselect',
     unSelectAllText: 'UnSelect All',
     singleSelection: false,
+
   };
 
   export const singleSelection = {
@@ -17,7 +18,16 @@ export module MultiSelectUtil {
     enableSearchFilter: true,
     classes: 'kts-multiselect',
     unSelectAllText: 'UnSelect All',
-    singleSelection: true
+    singleSelection: true,
+  };
+
+  export const singleDeliverySelection = {
+    text: 'MAKE SELECTION',
+    enableCheckAll: false,
+    enableSearchFilter: true,
+    classes: 'kts-multiselect',
+    unSelectAllText: 'UnSelect All',
+    singleSelection: true,
   };
 
   export class SelectItem {
@@ -27,7 +37,6 @@ export module MultiSelectUtil {
     static model_values: any = {
       School: 'name',
       Career: 'title',
-      Ethnicity: 'name',
       Organization: 'name',
     };
 
@@ -37,15 +46,5 @@ export module MultiSelectUtil {
 
       });
     }
-
-    // static buildCareerData(data: any, model_name: string): SelectItem[] {
-    //   return data.map((item: any) => {
-    //     return new SelectItem(item[this.model_values[model_name]], item.title);
-    //   });
-    // }
-
-
   }
-
-
 }

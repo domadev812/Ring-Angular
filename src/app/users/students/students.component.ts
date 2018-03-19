@@ -20,9 +20,10 @@ export class StudentsComponent implements OnInit {
   public searchText: string;
   public students: Array<Model.User>;
   public organizations: Array<Model.Organization>;
+  public loading = false;
 
   constructor(private router: Router,
-              private usersService: UsersService) { }
+    private usersService: UsersService) { }
 
   ngOnInit() {
     this.students = new Array<Model.User>();
@@ -43,10 +44,13 @@ export class StudentsComponent implements OnInit {
   }
 
   getStudents(): void {
+    this.loading = true;
     this.usersService.getUsers('student', this.offset, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.students = res.map(student => student);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }

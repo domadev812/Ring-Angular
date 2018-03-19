@@ -68,6 +68,20 @@ export class ResourcesService {
       });
   }
 
+  getScholarships(offset: number, limit: number, search: string = ''): Observable<Model.Scholarship[]> {
+    let querySearch = search !== '' ? `&search=${search}` : '';
+    let url = `${environment.apiUrl}/api/scholarships/admin?offset=${offset}&limit=${limit}${querySearch}`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return Model.initializeArray(json.data, 'Scholarship');
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
   getOpportunities(offset: number, limit: number = 0): Observable<Model.Resource[]> {
     let url = `${environment.apiUrl}/api/opportunities?offset=${offset}&limit=${limit}`;
     return this.http.get(url)
@@ -127,23 +141,6 @@ export class ResourcesService {
         const json = response.json();
         if (json && json.data) {
           return Model.initializeArray(json.data, 'Organization');
-        } else {
-          Observable.throw({ messages: 'Internal Server Error', response });
-        }
-      });
-  }
-
-  getScholarships(search: string = '', offset: number = 0, limit: number = 50): Observable<Model.Scholarship[]> {
-    if (search !== '') {
-      search = '&search=' + search;
-    }
-    let url = `${environment.apiUrl}/api/scholarships/admin?offset=${offset}&limit=${limit}`;
-    // let url = `${environment.apiUrl}/api/scholarships/admin?offset=${offset}&limit=${limit}${search}`;
-    return this.http.get(url)
-      .map((response: Response) => {
-        const json = response.json();
-        if (json && json.data) {
-          return Model.initializeArray(json.data, 'Scholarship');
         } else {
           Observable.throw({ messages: 'Internal Server Error', response });
         }

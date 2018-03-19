@@ -20,9 +20,10 @@ export class KeyContactsComponent implements OnInit {
   public searchText: string;
   public keycontacts: Array<ApiUser>;
   public organizations: Array<Model.Organization>;
+  public loading = false;
 
   constructor(private router: Router,
-              private usersService: UsersService) { }
+    private usersService: UsersService) { }
 
   ngOnInit() {
     this.keycontacts = new Array<ApiUser>();
@@ -43,10 +44,13 @@ export class KeyContactsComponent implements OnInit {
   }
 
   getKeyContacts(): void {
+    this.loading = true;
     this.usersService.getUsers('key_contact', this.offset, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.keycontacts = res.map(keycontact => keycontact);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }

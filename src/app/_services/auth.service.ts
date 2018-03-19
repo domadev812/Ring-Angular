@@ -11,18 +11,18 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
-    
+
   public redirectUrl: string;
 
   constructor(
     private currentUserService: CurrentUserService,
     private http: Http,
     private router: Router,
-  ) {}
+  ) { }
 
-    public authenticated() {
-      return tokenNotExpired('Token');
-    }
+  public authenticated() {
+    return tokenNotExpired('Token');
+  }
 
   login(loginForm: JSON): Observable<boolean> {
     return this.http.post('/auth', loginForm).map((response: Response) => {
@@ -40,27 +40,27 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getUser(id: number): Observable<Model.User> {
-    return this.http.get('/users/' + id)
-    .map((response: Response) => {
-      const user = new Model.User(response.json().data);
-      if (user.email) {
-        return user;
-      } else {
-        Observable.throw({ message: 'Internal Server Error' });
-      }
-    });
+  getUser(): Observable<Model.User> {
+    return this.http.get('/users/me')
+      .map((response: Response) => {
+        const user = new Model.User(response.json().data);
+        if (user.email) {
+          return user;
+        } else {
+          Observable.throw({ message: 'Internal Server Error' });
+        }
+      });
   }
 
   signup(body: Model.User, captcha: string): Observable<boolean> {
     return this.http.post('/users', body)
-    .map((response: Response) => {
-      const json = response.json();
-      if (json && json.auth_token) {
-        return this.currentUserService.set(json.auth_token, json);
-      } else {
-        Observable.throw({ message: 'Internal Server Error' });
-      }
-    });
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.auth_token) {
+          return this.currentUserService.set(json.auth_token, json);
+        } else {
+          Observable.throw({ message: 'Internal Server Error' });
+        }
+      });
   }
 }

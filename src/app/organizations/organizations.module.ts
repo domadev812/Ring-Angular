@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { LoadingModule } from 'ngx-loading';
 
 import { apiFactory } from '../_factories/api.factory';
 import { AuthGuard } from '../_guards/auth.guard';
@@ -27,7 +28,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     CommonModule,
     FormsModule,
     SharedModule,
-    FileUploadModule
+    FileUploadModule,
+    LoadingModule,
   ],
   providers: [
     {

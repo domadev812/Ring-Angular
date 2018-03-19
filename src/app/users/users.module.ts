@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { LoadingModule } from 'ngx-loading';
 
 import { apiFactory } from '../_factories/api.factory';
 import { AuthGuard } from '../_guards/auth.guard';
@@ -31,7 +32,8 @@ import { SharedModule } from '../shared.module';
     CommonModule,
     FormsModule,
     AngularMultiSelectModule,
-    SharedModule
+    SharedModule,
+    LoadingModule,
   ],
   providers: [
     {

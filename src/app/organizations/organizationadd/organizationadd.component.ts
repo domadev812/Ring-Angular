@@ -34,7 +34,13 @@ export class OrganizationAddComponent implements OnInit {
     this.uploader = this.organizationService.uploader;
     this.type = this.route.snapshot.paramMap.get('type');
     const id = this.route.snapshot.paramMap.get('id');
-    this.title = this.type === 'school' ? 'School Details' : 'Sponsor Details';
+    if (this.type === 'school') {
+      this.title = 'School Details';
+    } if (this.type === 'sponsor') {
+      this.title = 'New Sponsor';
+    } else {
+      this.title = 'Sponsor Details';
+    }
     this.hasBaseDropZoneOver = false;
     if (id !== null) {
       this.getOrganization(id);
@@ -80,8 +86,8 @@ export class OrganizationAddComponent implements OnInit {
     this.organizationService.getOrganization(id).subscribe((organization: Model.Organization) => {
       this.organization = organization;
       this.filePreviewPath = this.sanitizer.bypassSecurityTrustUrl(this.organization.getImgUrl());
-      
-      if ( this.organization.type === 'school') {
+
+      if (this.organization.type === 'school') {
         this.isSchool = true;
         this.title = 'School Details';
       }

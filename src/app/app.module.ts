@@ -19,6 +19,7 @@ import { Api } from './_providers/api.provider';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { GlobalState } from './global.state';
+import { LoadingModule } from 'ngx-loading';
 
 
 @NgModule({
@@ -39,7 +40,9 @@ import { GlobalState } from './global.state';
     ResourcesModule,
     AngularMultiSelectModule,
     NotificationsModule,
-    OrganizationsModule
+    OrganizationsModule,
+    LoadingModule
+
   ],
   providers: [
     {

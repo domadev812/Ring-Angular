@@ -18,6 +18,8 @@ export class OpportunitiesComponent implements OnInit {
   public searchText: string;
   public opportunities: Array<Model.Resource>;
   public organizations: Array<Model.Organization>;
+  public loading = false;
+
   constructor(private router: Router, private resourcesService: ResourcesService) { }
 
   ngOnInit() {
@@ -26,6 +28,7 @@ export class OpportunitiesComponent implements OnInit {
     this.limit = 50;
     this.offset = 0;
     this.getOrganizationSize();
+    this.loading = true;
   }
 
   editOpportunity(id) {
@@ -40,10 +43,12 @@ export class OpportunitiesComponent implements OnInit {
 
   getOpportunities(): void {
     this.resourcesService.getResources('Other', this.offset, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.opportunities = res.map(opportunity => opportunity);
       this.offset += res.length;
     }, (errors) => {
       alert('Server error');
+      this.loading = false;
     });
   }
 
@@ -67,6 +72,7 @@ export class OpportunitiesComponent implements OnInit {
     this.resourcesService.getOrganizationSize().subscribe((res) => {
       this.getOrganizations(res);
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }
@@ -76,6 +82,7 @@ export class OpportunitiesComponent implements OnInit {
       this.organizations = res.map(organization => organization);
       this.getOpportunities();
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }

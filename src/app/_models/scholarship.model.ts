@@ -1,6 +1,5 @@
 import * as moment from 'moment';
 import { Organization } from './organization.model';
-import { Ethnicity } from './ethnicity.model';
 import { Career } from './career.model';
 import { User } from './user.model';
 export class Scholarship {
@@ -32,7 +31,6 @@ export class Scholarship {
     this.title = data.title || this.title;
     this.amount = data.amount || this.amount;
     this.number_available = data.number_available || this.number_available;
-    this.active = data.is_active || this.active;
     this.active = data.active || this.active;
     this.in_app = data.in_app || this.in_app;
     this.type = data.type || this.type;

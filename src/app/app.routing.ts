@@ -56,6 +56,8 @@ const appRoutes: Routes = [
 
   { path: 'notificationadd', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
+  { path: 'notificationview/:notificationId', component: NotificationAddComponent, canActivate: [AuthGuard, RoleGuard] },
+
   { path: 'organizations', component: OrganizationsComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'organizationadd/:type', component: OrganizationAddComponent, canActivate: [AuthGuard] },
@@ -65,5 +67,5 @@ const appRoutes: Routes = [
   { path: '**', redirectTo: '/login' }
 ];
 
-export const routing = RouterModule.forRoot(appRoutes);
+export const routing = RouterModule.forRoot(appRoutes, { useHash: true });
 

@@ -8,7 +8,6 @@ import { Notification as ApiNotification } from './_models/notification.model';
 import { RolesAccess as ApiRolesAccess } from './_models/roles-access.model';
 import { Scholarship as ApiScholarship } from './_models/scholarship.model';
 import { User as ApiUser } from './_models/user.model';
-import { Ethnicity as ApiEthnicity } from './_models/ethnicity.model';
 import { AwardedPrize as ApiAwardedPrize } from './_models/awarded-prize.model';
 import { Application as ApiApplication } from './_models/application.model';
 
@@ -34,8 +33,6 @@ export module Model {
     export const RolesAccess = ApiRolesAccess;
     export type Scholarship = ApiScholarship;
     export const Scholarship = ApiScholarship;
-    export type Ethnicity = ApiEthnicity;
-    export const Ethnicity = ApiEthnicity;
     export type AwardedPrize = ApiAwardedPrize;
     export const AwardedPrize = ApiAwardedPrize;
     export type Application = ApiApplication;

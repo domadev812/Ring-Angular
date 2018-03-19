@@ -20,9 +20,10 @@ export class BusinessOwnersComponent implements OnInit {
   public searchText: string;
   public businessowners: Array<ApiUser>;
   public organizations: Array<Model.Organization>;
+  public loading = false;
 
   constructor(private router: Router,
-              private usersService: UsersService) { }
+    private usersService: UsersService) { }
 
   ngOnInit() {
     this.businessowners = new Array<ApiUser>();
@@ -43,10 +44,13 @@ export class BusinessOwnersComponent implements OnInit {
   }
 
   getBusinessOwners(): void {
+    this.loading = true;
     this.usersService.getUsers('business_owner', this.offset, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.businessowners = res.map(businessowner => businessowner);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }

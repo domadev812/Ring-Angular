@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import * as Services from '../app.services-list';
+import { LoadingModule } from 'ngx-loading';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -29,6 +30,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multisel
     BrowserModule,
     CommonModule,
     FormsModule,
+    LoadingModule,
     ModalModule.forRoot(),
     ButtonsModule.forRoot(),
     SharedModule,

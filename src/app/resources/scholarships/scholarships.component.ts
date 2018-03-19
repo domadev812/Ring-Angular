@@ -21,9 +21,10 @@ export class ScholarshipsComponent implements OnInit {
   public searchText: string;
   public scholarships: Array<Model.Scholarship>;
   public organizations: Array<Model.Organization>;
+  public loading = false;
 
   constructor(private router: Router,
-              private resourcesService: ResourcesService) { }
+    private resourcesService: ResourcesService) { }
 
   ngOnInit() {
     this.scholarships = new Array<Model.Scholarship>();
@@ -31,10 +32,11 @@ export class ScholarshipsComponent implements OnInit {
     this.limit = 50;
     this.offset = 0;
     this.searchText = '';
-    this.getScholarships();    
+    this.getScholarships();
+    this.loading = true;
   }
 
-  editScholarship(id) {    
+  editScholarship(id) {
     this.router.navigate(['scholarshipedit/' + id]);
   }
 
@@ -45,10 +47,12 @@ export class ScholarshipsComponent implements OnInit {
   }
 
   getScholarships(): void {
-    this.resourcesService.getScholarships(this.searchText).subscribe((res) => {
+    this.resourcesService.getScholarships(this.offset, this.limit, this.searchText).subscribe((res) => {
+      this.loading = false;
       this.scholarships = res.map(scholarship => scholarship);
       this.offset += res.length;
     }, (errors) => {
+      this.loading = false;
       alert('Server error');
     });
   }
@@ -57,7 +61,7 @@ export class ScholarshipsComponent implements OnInit {
     if (this.moreContentAvailable) {
       //use this to handle *ngIf if you want to tell the user the infinite scroll is loading.
       this.infiniteScrollLoading = true;
-      return this.resourcesService.getScholarships(this.searchText, this.offset).do(this.infiniteScrollCallBack.bind(this));
+      return this.resourcesService.getScholarships(this.offset, this.limit, this.searchText).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
@@ -69,5 +73,5 @@ export class ScholarshipsComponent implements OnInit {
     //Stops getting content if there is no content
     this.moreContentAvailable = !(res.length < this.limit);
     this.infiniteScrollLoading = false;
-  }  
+  }
 }

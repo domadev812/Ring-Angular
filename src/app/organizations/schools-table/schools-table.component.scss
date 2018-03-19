@@ -1,6 +1,17 @@
 .col-organization {
-    width: 80%;
+    width: 45%;
+    word-wrap: normal;
+    padding-right: 2em;
+}
+.col-url {
+    width: 45%;
+    word-wrap: break-word;
+    overflow: hidden;
+    padding-right: 2em;
 }
 .col-created {
-    width: 20%;
+    width: 10%;
+}
+.scrollCompensate{
+    margin-right: 2em;
 }
