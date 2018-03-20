@@ -21,7 +21,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-
+    this.navBarService.activeTabChanged('users');
     if (this.global.selectedTab === '') {
       this.selectedTab = 'student';
     } else {

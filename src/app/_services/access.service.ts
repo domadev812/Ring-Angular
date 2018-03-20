@@ -30,12 +30,14 @@ export class AccessService {
         'scholarshipadd',
         'scholarshipedit',
         'scholarshipapplicants',
+        'scholarshipapplication',
         'applicants'],
       functionAccess: ['']
     },
     {
       role: 'key_contact',
       routeAccess: ['users',
+        'useradd',
         'resources',
         'prizes',
         'scholarshipadd',
@@ -49,6 +51,7 @@ export class AccessService {
     {
       role: 'counselor',
       routeAccess: ['users',
+        'useradd',
         'resources',
         'opportunityadd',
         'opportunityedit',
@@ -59,6 +62,7 @@ export class AccessService {
     {
       role: 'business_owner',
       routeAccess: ['organizations',
+        'useradd',
         'resources',
         'prizes',
         'prizeadd',

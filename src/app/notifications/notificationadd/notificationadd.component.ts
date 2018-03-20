@@ -15,28 +15,27 @@ import { NavbarService } from '../../app.services-list';
   styleUrls: ['./notificationadd.component.scss']
 })
 export class NotificationAddComponent implements OnInit {
-  notification: Model.Notification;
-  title: string;
-  min = new Date().getFullYear();
-  max = this.min + 4;
+  public notification: Model.Notification;
+  public title: string;
+  public min = new Date().getFullYear();
+  public max = this.min + 4;
   public careers: Array<Model.Career>;
   public careerList = [];
   public selectedCareers = [];
   public ktsSelectSettings = {};
   public ktsMultiSettings = {};
   public typeList = [{ id: 'all', itemName: 'All' },
-  { id: 'gender', itemName: 'Gender' },
-  { id: 'graduation_year', itemName: 'Graduation Year' },
-  { id: 'careers', itemName: 'Careers' }];
+                     { id: 'gender', itemName: 'Gender' },
+                     { id: 'graduation_year', itemName: 'Graduation Year' },
+                     { id: 'careers', itemName: 'Careers' }];
   public selectedType = [];
   public originalTypeValueList = [{ id: 'M', itemName: 'Male', category: 'gender' },
-  { id: 'F', itemName: 'Female', category: 'gender' }];
+                                  { id: 'F', itemName: 'Female', category: 'gender' }];
   public typeValueList = [];
   public selectedValueList = [];
   public valueListTitle = '';
   public valueListVisibleFlag = false;
   public careerListVisibleFlag = false;
-  public creating = false;
 
   constructor(private route: ActivatedRoute,
     private notificationsService: NotificationsService,
@@ -48,16 +47,19 @@ export class NotificationAddComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
+    this.navBarService.activeTabChanged('notifications');
     this.notification = new Model.Notification({});
-    this.careers = new Array<Model.Career>();
-    this.getCareers();
+    this.careers = new Array<Model.Career>();    
     let notificationId = this.route.snapshot.paramMap.get('notificationId');
     this.title = 'New Notification';
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+
+    this.getCareers();
     for (let year = this.min; year <= this.max; year++) {
       this.originalTypeValueList.push({ id: year.toString(), itemName: year.toString(), category: 'graduation_year' });
     }
+    
     if (notificationId) {
       this.title = 'View Notification';
       this.getNotification(notificationId);
@@ -116,7 +118,6 @@ export class NotificationAddComponent implements OnInit {
   }
 
   getNotification(id: string) {
-    this.creating = true;
     this.notificationsService.getNotification(id).subscribe((res) => {
       this.notification = res;
       this.selectedType.push(this.typeList.find(type => type.id === res.type));
@@ -128,9 +129,7 @@ export class NotificationAddComponent implements OnInit {
         });
       }
       this.changeState();
-      this.creating = false;
     }, (errors) => {
-      this.creating = false;
       alert('Server error');
     });
   }
@@ -164,13 +163,10 @@ export class NotificationAddComponent implements OnInit {
     } else {
       this.notification.type = null;
     }
-    this.creating = true;
     this.notificationsService.createNotification(this.notification).subscribe((res) => {
-      this.creating = false;
       alert('Create new notification successfully');
       this.router.navigate(['notifications']);
     }, (errors) => {
-      this.creating = false;
       alert('Server error');
     });
   }

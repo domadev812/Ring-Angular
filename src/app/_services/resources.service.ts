@@ -9,6 +9,7 @@ import { Scholarship } from '../_models/scholarship.model';
 @Injectable()
 
 export class ResourcesService {
+  public selectedApplication: Model.Application;
 
   constructor(private http: Http) {
 
@@ -210,5 +211,13 @@ export class ResourcesService {
           Observable.throw({ messages: 'Internal Server Error', response });
         }
       });
+  }
+
+  setApplication(application: Model.Application): void {
+    this.selectedApplication = application;
+  }
+
+  getApplication(): Model.Application {    
+    return this.selectedApplication ? this.selectedApplication : new Model.Application();
   }
 }

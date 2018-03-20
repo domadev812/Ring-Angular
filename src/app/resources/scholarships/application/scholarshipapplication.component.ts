@@ -20,7 +20,8 @@ export class ScholarshipApplicationComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.navBarService.show();    
+    this.navBarService.show();
+    this.navBarService.activeTabChanged('resources');     
     this.application = this.resourcesService.getApplication();        
   }
 

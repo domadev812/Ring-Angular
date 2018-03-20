@@ -31,6 +31,10 @@
   margin-bottom: 9px;
 }
 
+.pointer{
+  cursor: pointer;
+}
+
 //Nav
 .nav-item{  
   a{ 
@@ -189,7 +193,7 @@
   font-family: $font-primary;
 }
 
-.input[type=text]:disabled, textarea{
+.input[type=text]:disabled {
   color: $color-input-outline;
   background-color: $color-background;
 }
@@ -269,7 +273,7 @@
 
 .table-content-with-search{
   height: calc(100vh - 280px);
-  overflow-y: auto;    
+  overflow-y: auto;
 }
 .table-content-without-search{
   height: calc(100vh - 225px);

@@ -1,6 +1,5 @@
 .page-wrapper.resources
   #opportunity.content-wrapper
-    ngx-loading([show]='creating') 
     form.form-group(#opportunityForm="ngForm" (ngSubmit)="saveOpportunity(opportunityForm.valid)" novalidate)
       .header-nav.fixed-header
         h1.headers

@@ -1,6 +1,5 @@
 .page-wrapper
   #prizes.content-wrapper
-    ngx-loading([show]='creating') 
     form.form-group(#prizeForm="ngForm" (ngSubmit)="savePrize(prizeForm.valid)" novalidate)
       .header-nav
         h1.headers

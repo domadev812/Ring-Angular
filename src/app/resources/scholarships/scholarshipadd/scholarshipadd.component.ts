@@ -36,20 +36,21 @@ export class ScholarshipAddComponent implements OnInit {
   public title: string;
   public editFlag: boolean;
   public disableFlag: boolean;
-  public creating = false;
+
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private multiSelectService: MultiSelectService,
     private resourcesService: ResourcesService,
-    private navBarSerice: NavbarService,
+    private navBarService: NavbarService,
     public global: GlobalState,
     private currentUserService: CurrentUserService,
-    public authProvider: AuthService
+    public authProvider: AuthService,
   ) {
   }
   ngOnInit() {
-    this.navBarSerice.show();
+    this.navBarService.show();
+    this.navBarService.activeTabChanged('resources'); 
     this.scholarship = new Model.Scholarship({});
     this.originalScholarship = new Model.Scholarship({});
     this.schools = new Array<Model.Organization>();
@@ -143,7 +144,6 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   getScholarship(id: string): void {
-    this.creating = true;
     this.resourcesService.getScholarship(id).subscribe((res) => {
       this.scholarship = res;
       this.originalScholarship = Object.assign({}, res);
@@ -153,9 +153,7 @@ export class ScholarshipAddComponent implements OnInit {
         this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name,
           this.scholarship.organization_id));
       }
-      this.creating = false;
     }, (errors) => {
-      this.creating = false;
       console.log('err', errors);
       alert('Server error');
     });
@@ -259,26 +257,21 @@ export class ScholarshipAddComponent implements OnInit {
       return school.id;
     });
 
-    this.creating = true;
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
-        this.creating = false;
         alert('Create new scholarship successfully');
         this.global.selectedTab = 'scholarships';
         this.router.navigate(['resources']);
         this.scholarship = res;
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateScholarship(this.scholarship).subscribe((res) => {
-        this.creating = false;
         alert('Update scholarship successfully');
         this.global.selectedTab = 'scholarships';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     }

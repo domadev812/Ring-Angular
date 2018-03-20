@@ -1,7 +1,6 @@
 
 <div class="page-wrapper">
   <div class="content-wrapper" id="users">
-    <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate>
       <div class="header-nav">
         <h1 class="headers">{{ title }}</h1>

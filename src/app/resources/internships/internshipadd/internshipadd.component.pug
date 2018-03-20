@@ -1,6 +1,5 @@
 .page-wrapper.resources
   #internship.content-wrapper
-    ngx-loading([show]='creating') 
     form.form-group(#internshipForm="ngForm" (ngSubmit)="saveInternship(internshipForm.valid)" novalidate)
       .header-nav.fixed-header
         h1.headers

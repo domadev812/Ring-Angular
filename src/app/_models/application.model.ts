@@ -5,9 +5,12 @@ export class Application {
   graduation_year: string;
   essay: string;
   school: string;
-
-  constructor(data) {
-    this.setData(data);
+  in_app: boolean;
+  
+  constructor(data = null) {
+    if (data) {
+      this.setData(data);
+    }
   }
 
   setData(data) {
@@ -17,5 +20,6 @@ export class Application {
     this.school = data.school || this.school; 
     this.graduation_year = data.graduation_year || this.graduation_year;
     this.essay = data.essay || this.essay;    
+    this.in_app = data.in_app || this.in_app;    
   }
 }

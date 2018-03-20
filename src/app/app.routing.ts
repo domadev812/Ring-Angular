@@ -12,6 +12,7 @@ import { InternshipAddComponent } from './resources/internships/internshipadd/in
 import { OpportunityAddComponent } from './resources/opportunities/opportunityadd/opportunityadd.component';
 import { ScholarshipAddComponent } from './resources/scholarships/scholarshipadd/scholarshipadd.component';
 import { ScholarshipApplicantsComponent } from './resources/scholarships/applicants/scholarshipapplicants.component';
+import { ScholarshipApplicationComponent } from './resources/scholarships/application/scholarshipapplication.component';
 import { PrizeAddComponent } from './prizes/prizeadd/prizeadd.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationAddComponent } from './notifications/notificationadd/notificationadd.component';
@@ -49,6 +50,8 @@ const appRoutes: Routes = [
   { path: 'scholarshipedit/:scholarshipId', component: ScholarshipAddComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'scholarshipapplicants/:scholarshipId', component: ScholarshipApplicantsComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'scholarshipapplication', component: ScholarshipApplicationComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'resources', component: ResourcesComponent, canActivate: [AuthGuard, RoleGuard] },
 

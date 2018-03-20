@@ -1,7 +1,6 @@
 
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="scholarshipadd">
-    <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #scholarshipForm="ngForm" (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate>
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
