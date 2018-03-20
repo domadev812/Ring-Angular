@@ -143,6 +143,7 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   getScholarship(id: string): void {
+    this.creating = true;
     this.resourcesService.getScholarship(id).subscribe((res) => {
       this.scholarship = res;
       this.originalScholarship = Object.assign({}, res);
@@ -152,7 +153,9 @@ export class ScholarshipAddComponent implements OnInit {
         this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name,
           this.scholarship.organization_id));
       }
+      this.creating = false;
     }, (errors) => {
+      this.creating = false;
       console.log('err', errors);
       alert('Server error');
     });

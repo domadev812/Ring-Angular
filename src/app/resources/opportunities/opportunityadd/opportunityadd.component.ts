@@ -143,6 +143,7 @@ export class OpportunityAddComponent implements OnInit {
   }
 
   getResource(id: string): void {
+    this.creating = true;
     this.resourcesService.getResource(id).subscribe((res) => {
       const parsedCareers = res.careers.map(careers => {
         careers.title = careers.title;
@@ -159,7 +160,9 @@ export class OpportunityAddComponent implements OnInit {
         let org = this.organizationList.find(organization => organization.id === this.opportunity.organization_id);
         this.selectedOrganization.push(org);
       }
+      this.creating = false;
     }, (errors) => {
+      this.creating = false;
       alert('Server error');
     });
   }
