@@ -31,6 +31,7 @@ export class InternshipAddComponent implements OnInit {
   public disableFlag: boolean;
   public opportunity = [];
   public currentCareers = [];
+  public creating = false;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -209,25 +210,26 @@ export class InternshipAddComponent implements OnInit {
     this.internship.career_ids = this.selectedCareers.map((career) => {
       return career.id;
     });
-    console.log('this is the career ids', this.internship.career_ids);
 
-
-
-
+    this.creating = true;    
     if (!this.internship.id) {
       this.resourcesService.createResource(this.internship).subscribe((res) => {
+        this.creating = false;
         alert('Create new internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateResource(this.internship).subscribe((res) => {
+        this.creating = false;
         alert('Update internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     }

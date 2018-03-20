@@ -30,6 +30,7 @@ export class OpportunityAddComponent implements OnInit {
   public editFlag: boolean;
   public disableFlag: boolean;
   public isAdmin: boolean;
+  public creating: boolean;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -50,6 +51,7 @@ export class OpportunityAddComponent implements OnInit {
     this.title = 'New Opportunity';
     this.editFlag = false;
     this.disableFlag = false;
+    this.creating = false;
 
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
     this.getCareers();
@@ -63,7 +65,6 @@ export class OpportunityAddComponent implements OnInit {
       this.disableFlag = true;
       this.getResource(id);
     }
-
   }
 
   getUser() {
@@ -163,7 +164,6 @@ export class OpportunityAddComponent implements OnInit {
     });
   }
 
-
   getCareers(): void {
     this.multiSelectService.getDropdownCareers().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.careerList = res;
@@ -206,21 +206,25 @@ export class OpportunityAddComponent implements OnInit {
       return career.id;
     });
 
-
+    this.creating = true;
     if (!this.opportunity.id) {
       this.resourcesService.createResource(this.opportunity).subscribe((res) => {
+        this.creating = false;
         alert('Create new opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateResource(this.opportunity).subscribe((res) => {
+        this.creating = false;
         alert('Update opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     }

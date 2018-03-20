@@ -1,6 +1,7 @@
 
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="internship">
+    <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #internshipForm="ngForm" (ngSubmit)="saveInternship(internshipForm.valid)" novalidate>
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
@@ -45,10 +46,6 @@
         <div class="item-info">
           <input type="checkbox" id="active" [(ngModel)]="internship.is_active" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)">
           <label for="active">Active  </label>
-        </div>
-        <div class="item-info">  
-          <button class="delete-button" (click)="deleteInternship()">
-             Delete Internship  </button>
         </div>
       </div>
     </form>

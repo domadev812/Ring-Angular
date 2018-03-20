@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Routes, RouterModule } from '@angular/router';
 import { Model } from '../../../app.models-list';
 import { ResourcesService } from '../../../app.services-list';
@@ -10,7 +10,7 @@ import { NavbarService } from '../../../app.services-list';
   styleUrls: ['./scholarshipapplication.component.scss']
 })
 
-export class ScholarshipApplicationComponent implements OnInit {
+export class ScholarshipApplicationComponent implements OnInit, OnDestroy {
   public application: Model.Application;  
 
   constructor(
@@ -21,19 +21,10 @@ export class ScholarshipApplicationComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();    
-    this.application = new Model.Application();    
-
-    const id = this.route.snapshot.paramMap.get('applicationId');
-    if (id !== null) {
-      this.getApplication(id);      
-    }
+    this.application = this.resourcesService.getApplication();        
   }
 
-  getApplication(id: string): void {
-    // this.resourcesService.getScholarshipApplications(id).subscribe((res) => {
-    //   this.applications = res;      
-    // }, (errors) => {
-    //   alert('Server error');
-    // });
+  ngOnDestroy() {   
+    this.resourcesService.setApplication(null); 
   }
 }

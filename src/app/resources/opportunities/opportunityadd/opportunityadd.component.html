@@ -1,6 +1,7 @@
 
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="opportunity">
+    <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #opportunityForm="ngForm" (ngSubmit)="saveOpportunity(opportunityForm.valid)" novalidate>
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
@@ -45,10 +46,6 @@
         <div class="item-info">
           <input type="checkbox" id="active" [(ngModel)]="opportunity.is_active" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)">
           <label for="active">Active  </label>
-        </div>
-        <div class="item-info">  
-          <button class="delete-button" (click)="deleteOpportunity()">
-             Delete Opportunity  </button>
         </div>
       </div>
     </form>

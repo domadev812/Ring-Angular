@@ -1,5 +1,6 @@
 .page-wrapper.resources
   #scholarshipadd.content-wrapper
+    ngx-loading([show]='creating') 
     form.form-group(#scholarshipForm='ngForm' (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate)
       .header-nav.fixed-header
         h1.headers
@@ -80,10 +81,11 @@
               (onSelect)='onSchoolSelect($event)'
               (onDeSelect)='onSchoolDeSelect($event)'
             )     
+          .item-info  
+            input(type='checkbox' [(ngModel)]='scholarship.in_app' (ngModelChange)="onChange($event)" id='in_app' name='checkbox')
+            label(for='in_app')
+              | In App
           .item-info
             input(type='checkbox' [(ngModel)]='scholarship.active' (ngModelChange)="onChange($event)" id='active' name='checkbox')
             label(for='active')
               | Active  
-          .item-info   
-            button.delete-button((click)='deleteScholarship()') 
-              | Delete Scholarship  
