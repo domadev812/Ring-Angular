@@ -14,7 +14,7 @@
 </div>
 <div class="table-content-with-search">
   <div class="list" *ngFor="let campaign of campaigns; let ind = index" [ngClass]="{'current-status': getStatus(campaign.activation_start, campaign.activation_end) === 'Current'}">
-    <div class="d-flex space-between bg-white py-1 pointer" (click)="openModal(template, ind)" [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'">
+    <div class="d-flex space-between bg-white py-1 pointer">
       <div class="table-data mx-4 col-start-date">{{formatDate(campaign.activation_start)}}</div>
       <div class="table-data mx-4 col-end-date">{{formatDate(campaign.activation_end)}}</div>
       <div class="table-data mx-4 col-quantity">{{campaign.number_available}}</div>
@@ -33,7 +33,7 @@
         <div class="input-label">START DATE
           <div class="invalid-validation" [hidden]="startDate">Start Date is required      </div>
         </div>
-        <input class="form-control" name="start-date" [disabled]="campaignId &gt; 0" [minDate]="minDate" [maxDate]="endDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
+        <input class="form-control" name="start-date" [disabled]="campaignId &gt; 0" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" (bsValueChange)="onValueChange($event)" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
         <div class="input-label">END DATE
           <div class="invalid-validation" [hidden]="endDate">End Date is required</div>
         </div>

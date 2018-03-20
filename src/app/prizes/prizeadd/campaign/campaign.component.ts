@@ -125,4 +125,14 @@ export class CampaignComponent implements OnInit {
     }
     return 'Current';
   }
+
+  onValueChange(value: Date): void {
+    if (!this.startDate || !this.endDate) {
+      return;
+    }
+    if (moment(value).isAfter(this.endDate)) {      
+      this.endDate = moment(value).toDate();
+      this.endDate.setDate(this.endDate.getDate() + 1);
+    }        
+  }
 }

@@ -18,7 +18,7 @@
       | &nbsp;
 .table-content-with-search
   .list(*ngFor="let campaign of campaigns; let ind = index" [ngClass]="{'current-status': getStatus(campaign.activation_start, campaign.activation_end) === 'Current'}")
-    .d-flex.space-between.bg-white.py-1.pointer((click)='openModal(template, ind)' [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'")
+    .d-flex.space-between.bg-white.py-1.pointer()
       .table-data.mx-4.col-start-date
         | {{formatDate(campaign.activation_start)}}
       .table-data.mx-4.col-end-date
@@ -44,7 +44,7 @@
           | START DATE
           .invalid-validation([hidden]="startDate")
             | Start Date is required      
-        input.form-control(name="start-date" [disabled]="campaignId > 0" [minDate]="minDate" [maxDate]="endDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }")        
+        input.form-control(name="start-date" [disabled]="campaignId > 0" [minDate]="minDate"  #dp="bsDatepicker" bsDatepicker [(bsValue)]="startDate" (bsValueChange)="onValueChange($event)" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }")        
         .input-label
           | END DATE
           .invalid-validation([hidden]="endDate")
