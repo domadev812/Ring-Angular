@@ -3,11 +3,11 @@
   <div class="content-wrapper" id="notification">
     <form class="form-group" #notificationForm="ngForm" (ngSubmit)="saveNotification(notificationForm.valid)" novalidate>
       <div class="header-nav">
-        <h1 class="headers">New Notification</h1>
+        <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="resources-btn primary-button" type="submit">
+          <button class="notifications-btn primary-button" type="submit" *ngIf="!notification.id">
              Save</button>
-          <button class="resources-btn secondary-button" type="button" (click)="cancelNotification()">
+          <button class="notifications-btn secondary-button" type="button" (click)="cancelNotification()">
              Cancel  </button>
         </div>
       </div>
@@ -16,15 +16,27 @@
           <div class="input-label-top">SUBJECT
             <div class="invalid-validation" [hidden]="subject.valid || (subject.pristine &amp;&amp; !notificationForm.submitted)">Subject is required</div>
           </div>
-          <input class="notification-input" type="text" name="subject" [(ngModel)]="notification.subject" #subject="ngModel" required>
+          <input class="notification-input" type="text" name="subject" [(ngModel)]="notification.subject" #subject="ngModel" [disabled]="notification.id" required>
         </div>
         <div class="item-info">
           <div class="input-label">MESSAGE
             <div class="invalid-validation" [hidden]="message.valid || (message.pristine &amp;&amp; !notificationForm.submitted)">Message is required</div>
           </div>
-          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.message" #message="ngModel" required></textarea>
+          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id" required></textarea>
         </div>
         <div class="item-info">
+          <div class="input-label">Recipient Category
+            <div class="invalid-validation" [hidden]="selectedType.length &gt; 0 || !notificationForm.submitted">Category is required</div>
+          </div>
+          <angular2-multiselect name="types" [data]="typeList" [(ngModel)]="selectedType" [settings]="ktsSelectSettings" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)" [disabled]="notification.id"></angular2-multiselect>
+        </div>
+        <div class="item-info" *ngIf="valueListVisibleFlag">
+          <div class="input-label-dropdown">{{valueListTitle}}
+            <div class="invalid-validation" [hidden]="selectedValueList.length &gt; 0 || !notificationForm.submitted">Type is required</div>
+          </div>
+          <angular2-multiselect name="typevalues" [data]="typeValueList" [(ngModel)]="selectedValueList" [settings]="ktsSelectSettings" (onSelect)="onValueSelect($event)" (onDeSelect)="onValueDeSelect($event)"></angular2-multiselect>
+        </div>
+        <div class="item-info" *ngIf="careerListVisibleFlag">
           <div class="input-label-dropdown">CAREERS</div>
           <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)"></angular2-multiselect>
         </div>

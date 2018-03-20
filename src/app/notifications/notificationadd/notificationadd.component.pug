@@ -23,7 +23,7 @@
               | Message is required
           textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id" required)
         .item-info
-          .input-label-dropdown
+          .input-label
             | Recipient Category
             .invalid-validation([hidden]="selectedType.length > 0 || !notificationForm.submitted")
               | Category is required

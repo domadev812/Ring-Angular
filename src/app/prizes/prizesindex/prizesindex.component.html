@@ -3,6 +3,7 @@
   <div class="search-bar"><i class="fa fa-search search-icon"></i>
     <input class="search-text" type="text" placeholder="Search prizes..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
   </div>
+  <ngx-loading [show]="loading"></ngx-loading>
   <div class="d-flex space-between py-1">
     <div class="table-header mx-4 col-prize">Prize</div>
     <div class="table-header mx-4 col-sponsor">Sponsor</div>

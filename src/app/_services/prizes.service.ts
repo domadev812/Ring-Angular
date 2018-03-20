@@ -135,7 +135,7 @@ export class PrizesService {
   saveData(data, fileName) {
     let a = document.createElement('a');
     document.body.appendChild(a);
-    let json = JSON.stringify(data._body);
+    let json = data._body;
     let blob = new Blob([json], { type: data.headers.get('Content-Type') });
     let url = window.URL.createObjectURL(blob);
     a.href = url;

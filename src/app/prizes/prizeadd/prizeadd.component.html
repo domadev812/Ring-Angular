@@ -33,7 +33,7 @@
           <div class="input-label">DELIVERY
             <div class="invalid-validation" [hidden]="selectedDelivery.length &gt; 0 || !prizeForm.submitted">Delivery is required</div>
           </div>
-          <angular2-multiselect name="delivery" [data]="deliveryList" [(ngModel)]="selectedDelivery" [settings]="ktsSelectSettings" (onSelect)="onDeliverySelect($event)" (onDeSelect)="onDeliveryDeSelect($event)"> </angular2-multiselect>
+          <angular2-multiselect name="delivery" [data]="deliveryList" [(ngModel)]="selectedDelivery" [settings]="ktsDeliverySelectSettings" (onSelect)="onDeliverySelect($event)" (onDeSelect)="onDeliveryDeSelect($event)"> </angular2-multiselect>
         </div>
       </div>
     </form>

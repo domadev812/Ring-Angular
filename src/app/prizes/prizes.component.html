@@ -8,7 +8,7 @@
            New Prizes</button>
         <button class="prizes-btn primary-button" (click)="openModal(template)">
            Activate Key Cards</button>
-        <button class="prizes-btn primary-button" (click)="openCsv(csv)">Recipients CSV</button>
+        <button class="prizes-btn primary-button" (click)="openCsv(csv)">Awarded CSV</button>
       </div>
     </div>
     <div class="justify-start newTabs mb-4">
@@ -30,7 +30,7 @@
     </ng-template>
     <ng-template #csv>
       <div class="modal-header active-modal-header">
-        <h6 class="modal-title">RECIPIENTS CSV</h6>
+        <h6 class="modal-title">Awarded CSV</h6>
         <button class="close" (click)="modalRef.hide()" aria-label="close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body active-modal-body" [formGroup]="exportForm">

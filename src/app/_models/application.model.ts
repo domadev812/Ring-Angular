@@ -4,6 +4,7 @@ export class Application {
   name: string;
   graduation_year: string;
   essay: string;
+  school: string;
 
   constructor(data) {
     this.setData(data);
@@ -13,6 +14,7 @@ export class Application {
     this.id = data.id || this.id;
     this.email = data.email || this.email;
     this.name = data.name || this.name;
+    this.school = data.school || this.school; 
     this.graduation_year = data.graduation_year || this.graduation_year;
     this.essay = data.essay || this.essay;    
   }

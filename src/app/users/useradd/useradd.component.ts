@@ -2,7 +2,7 @@ import 'rxjs/add/observable/throw';
 import { Component, OnInit, TemplateRef} from '@angular/core';
 import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
 import { error } from 'util';
-import { MultiSelectService, UsersService, NavbarService, AuthService, CurrentUserService } from '../../app.services-list';
+import { MultiSelectService, UsersService, NavbarService } from '../../app.services-list';
 import { Model } from '../../app.models-list';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
 import { GlobalState } from '../../global.state';
@@ -14,7 +14,6 @@ import { GlobalState } from '../../global.state';
 })
 
 export class UserAddComponent implements OnInit { 
-  currentUser: Model.User;
   user: Model.User; 
   originalUser: Model.User;
   title: string;
@@ -29,7 +28,6 @@ export class UserAddComponent implements OnInit {
                       {itemName: 'Key Contact', id: 'key_contact'},
                       {itemName: 'Counselor', id: 'counselor'},
                       {itemName: 'Business Owner', id: 'business_owner'}];
-  filteredTypeList = [];
   selectedType = [];
   ktsTypeSettings = {};
   ktsOrganizationSettings = {};
@@ -41,8 +39,6 @@ export class UserAddComponent implements OnInit {
     public multiSelectService: MultiSelectService,
     public global: GlobalState,
     public navBarService: NavbarService,
-    public authProvider: AuthService,
-    public currentUserService: CurrentUserService,
   ) { }
 
   ngOnInit() { 
@@ -56,7 +52,6 @@ export class UserAddComponent implements OnInit {
     this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);    
     this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);        
     const id = this.route.snapshot.paramMap.get('userId');
-    this.getCurrentUser();
     if (id !== null) {
       this.title = 'User Details';
       this.editFlag = true;            
@@ -91,25 +86,6 @@ export class UserAddComponent implements OnInit {
 
   goBack(event): void {
     this.router.navigate(['users']);
-  }
-
-  getCurrentUser(): void {
-    this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
-      this.currentUser = res;      
-      let roles = this.currentUser.roles.map(role => role);      
-      if (roles.indexOf('admin') !== -1) {
-        this.filteredTypeList = this.typeList.map(type => type);
-      } else if (roles.indexOf('key_contact') !== -1) {
-        this.filteredTypeList = this.typeList.filter(type => type.id === 'counselor' || type.id === 'student');
-        this.selectedOrganization.push({id: this.currentUser.organization_id, itemName: this.currentUser.organization.name});        
-      } else if (roles.indexOf('counselor') !== -1) {
-        this.filteredTypeList = this.typeList.filter(type => type.id === 'student');
-        this.selectedOrganization.push({id: this.currentUser.organization_id, itemName: this.currentUser.organization.name});
-        this.selectedType.push(this.filteredTypeList[0]);        
-      } else if (roles.indexOf('business_owner') !== -1) {
-        this.filteredTypeList = this.typeList.map(type => type);
-      }
-    });
   }
 
   getUser(id): void {

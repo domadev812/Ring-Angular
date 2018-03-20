@@ -10,14 +10,16 @@
       <div class="table-header mx-4 col-school">School</div>
       <div class="table-header mx-4 col-grade">Graduation Year</div>
       <div class="table-header mx-4 col-email">Email</div>
+      <div class="table-header mx-4 col-edit">&nbsp;  </div>
     </div>
     <div class="table-content-without-search" *ngIf="applications.length &gt; 0">
-      <div class="list" *ngFor="let application of applications">
+      <div class="list" *ngFor="let application of applications" (click)="viewApplication(application)">
         <div class="d-flex space-between bg-white py-1">
           <div class="table-data-primary mx-4 col-student">{{application.name}}</div>
           <div class="table-data mx-4 col-school">{{application.school}}</div>
           <div class="table-data mx-4 col-grade">{{application.graduation_year}}</div>
-          <div class="table-data mx-4 col-email">{{application.email}}</div>
+          <div class="table-data mx-4 col-email">{{application.email}} </div>
+          <div class="table-data mx-4 col-edit"><i class="fa fa-eye edit-row"></i></div>
         </div>
       </div>
     </div>
