@@ -14,14 +14,14 @@
         | Grade
       .table-header.mx-4.col-email
         | Email
-    .table-content-without-search(*ngIf="resource.users")
-      .list(*ngFor="let user of resource.users")
+    .table-content-without-search(*ngIf="applications.length > 0")
+      .list(*ngFor="let application of applications")
         .d-flex.space-between.bg-white.py-1
           .table-data-primary.mx-4.col-student
-            | Name
+            | {{application.name}}
           .table-data.mx-4.col-school
-            | {{user.organization.name}}
+            | {{application.school}}
           .table-data.mx-4.col-grade
-            | Grade
+            | {{application.graduation_year}}
           .table-data.mx-4.col-email
-            | {{user.email}}
+            | {{application.email}}
