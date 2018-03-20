@@ -24,18 +24,31 @@
           <input class="file-chooser" #file type="file" id="file" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" (onFileSelected)="selectedFile($event)" [disabled]="isSchool">
         </div>
         <div class="content">
-          <div class="item-info">
+          <div class="item-info" *ngIf="!isSchool">
             <div class="input-label">NAME
               <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !organizationForm.submitted)">Name is required</div>
             </div>
             <input class="organization-input" [ngClass]="{'input-disabled': isSchool }" [disabled]="isSchool" name="name" [(ngModel)]="organization.name" #name="ngModel" required>
           </div>
-          <div class="item-info">
+          <div class="item-info" *ngIf="isSchool">
+            <div class="input-label">NAME
+              <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !organizationForm.submitted)">Name is required</div>
+            </div>
+            <input class="input" [ngClass]="{'input-disabled': isSchool }" [disabled]="isSchool" name="name" [(ngModel)]="organization.name" #name="ngModel" required>
+          </div>
+          <div class="item-info" *ngIf="!isSchool">
             <div class="input-label">WEBSITE
               <div class="invalid-validation" [hidden]="link.valid || (link.pristine &amp;&amp; !organizationForm.submitted)">Website link is required</div>
               <div class="invalid-validation" [hidden]="!organization.url || organization.url === '' || validURL(organization.url) || (link.pristine &amp;&amp; !organizationForm.submitted)">Website link is not correct</div>
             </div>
             <input class="organization-input" [ngClass]="{'input-disabled': isSchool }" [disabled]="isSchool" [(ngModel)]="organization.url" name="link" #link="ngModel" required>
+          </div>
+          <div class="item-info" *ngIf="isSchool">
+            <div class="input-label">WEBSITE
+              <div class="invalid-validation" [hidden]="link.valid || (link.pristine &amp;&amp; !organizationForm.submitted)">Website link is required</div>
+              <div class="invalid-validation" [hidden]="!organization.url || organization.url === '' || validURL(organization.url) || (link.pristine &amp;&amp; !organizationForm.submitted)">Website link is not correct</div>
+            </div>
+            <input class="input" [ngClass]="{'input-disabled': isSchool }" [disabled]="isSchool" [(ngModel)]="organization.url" name="link" #link="ngModel" required>
           </div>
         </div>
       </div>
