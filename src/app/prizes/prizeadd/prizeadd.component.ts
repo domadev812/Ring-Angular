@@ -96,7 +96,7 @@ export class PrizeAddComponent implements OnInit {
     this.router.navigate(['prizes']);
   }
 
-  getPrize(id): void {
+  getPrize(id, flag = true): void {
     this.prizesService.getPrize(id).subscribe((res) => {
       this.prize = res;
       this.prize.details = 'Detail';
@@ -112,6 +112,7 @@ export class PrizeAddComponent implements OnInit {
       if (delivery) {
         this.selectedDelivery.push(delivery);
       }
+      this.disableFlag = flag;
     }, (errors) => {
       alert('Server error');
     });
