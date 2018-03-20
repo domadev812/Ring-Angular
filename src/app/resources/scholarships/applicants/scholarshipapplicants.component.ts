@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Routes, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Model } from '../../../app.models-list';
 import { ResourcesService } from '../../../app.services-list';
 import { NavbarService } from '../../../app.services-list';
@@ -15,7 +15,8 @@ export class ScholarshipApplicantsComponent implements OnInit {
   public scholarship: Model.Scholarship;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
+    private router: Router, 
     private resourcesService: ResourcesService,
     private navBarService: NavbarService,
   ) { }
@@ -34,9 +35,9 @@ export class ScholarshipApplicantsComponent implements OnInit {
 
   getApplications(id: string): void {
     this.resourcesService.getScholarshipApplications(id).subscribe((res) => {
-      this.applications = res;      
+      this.applications = res;       
     }, (errors) => {
-      alert('Server error');
+      alert(errors.message);
     });
   }
 
@@ -44,8 +45,14 @@ export class ScholarshipApplicantsComponent implements OnInit {
     this.resourcesService.getScholarship(id).subscribe((res) => {      
       this.scholarship = res;           
     }, (errors) => {
-      console.log('err', errors);
-      alert('Server error');
+      alert(errors.message);
     });
+  }
+
+  viewApplication(application: Model.Application): void {
+    if (application.in_app) {
+      this.resourcesService.setApplication(application);
+      this.router.navigate(['scholarshipapplication']);
+    }
   }
 }
