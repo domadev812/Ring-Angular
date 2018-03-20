@@ -1,6 +1,7 @@
 
 <div class="page-wrapper">
   <div class="content-wrapper" id="users">
+    <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate>
       <div class="header-nav">
         <h1 class="headers">{{ title }}</h1>
@@ -29,7 +30,7 @@
           <div class="input-label">USER TYPE
             <div class="invalid-validation" [hidden]="selectedType.length &gt; 0 || !userForm.submitted">Type is required</div>
           </div>
-          <angular2-multiselect name="type" [data]="typeList" [(ngModel)]="selectedType" [settings]="ktsTypeSettings" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)">                          </angular2-multiselect>
+          <angular2-multiselect name="type" [data]="filteredTypeList" [(ngModel)]="selectedType" [settings]="ktsTypeSettings" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)">                          </angular2-multiselect>
         </div>
         <div class="item-info">
           <div class="input-label">{{organizationTitle}}

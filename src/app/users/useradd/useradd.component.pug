@@ -1,5 +1,6 @@
 .page-wrapper
   #users.content-wrapper
+    ngx-loading([show]='creating')  
     form.form-group(#userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate)
       .header-nav
         h1.headers
@@ -30,7 +31,7 @@
               | Type is required
           angular2-multiselect(
             name = 'type'
-            [data]='typeList'
+            [data]='filteredTypeList'
             [(ngModel)]='selectedType'
             [settings]='ktsTypeSettings'
             (onSelect)='onTypeSelect($event)'
