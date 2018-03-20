@@ -36,6 +36,8 @@ export class NotificationAddComponent implements OnInit {
   public valueListTitle = '';
   public valueListVisibleFlag = false;
   public careerListVisibleFlag = false;
+  public creating = false;
+
   constructor(private route: ActivatedRoute,
     private notificationsService: NotificationsService,
     private router: Router,
@@ -114,6 +116,7 @@ export class NotificationAddComponent implements OnInit {
   }
 
   getNotification(id: string) {
+    this.creating = true;
     this.notificationsService.getNotification(id).subscribe((res) => {
       this.notification = res;
       this.selectedType.push(this.typeList.find(type => type.id === res.type));
@@ -125,7 +128,9 @@ export class NotificationAddComponent implements OnInit {
         });
       }
       this.changeState();
+      this.creating = false;
     }, (errors) => {
+      this.creating = false;
       alert('Server error');
     });
   }
@@ -159,10 +164,13 @@ export class NotificationAddComponent implements OnInit {
     } else {
       this.notification.type = null;
     }
+    this.creating = true;
     this.notificationsService.createNotification(this.notification).subscribe((res) => {
+      this.creating = false;
       alert('Create new notification successfully');
       this.router.navigate(['notifications']);
     }, (errors) => {
+      this.creating = false;
       alert('Server error');
     });
   }
