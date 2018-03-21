@@ -8,12 +8,12 @@
     <div class="table-header mx-4 col-view">&nbsp;</div>
   </div>
   <div class="table-content-without-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
-    <div class="list" *ngFor="let notification of notifications">
+    <div class="list" *ngFor="let notification of notifications" (click)="viewNotification(notification.id)">
       <div class="d-flex space-between bg-white py-1">
         <div class="table-data-primary mx-4 col-subject">{{notification.subject}}</div>
         <div class="table-data mx-4 col-message">{{notification.body}}</div>
         <div class="table-data mx-4 col-sent">{{notification.created_at}}</div>
-        <div class="table-data mx-4 col-view"><i class="fa fa-eye view-row" (click)="viewNotification(notification.id)"></i></div>
+        <div class="table-data mx-4 col-view"><i class="fa fa-eye edit-row"></i></div>
       </div>
     </div>
     <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>
