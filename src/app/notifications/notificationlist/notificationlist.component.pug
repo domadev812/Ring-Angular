@@ -10,7 +10,7 @@
     .table-header.mx-4.col-view
       | &nbsp;
   .table-content-without-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
-    .list(*ngFor="let notification of notifications" (click)='viewNotification(notification.id)')
+    .list(*ngFor="let notification of notifications")
       .d-flex.space-between.bg-white.py-1
         .table-data-primary.mx-4.col-subject
           | {{notification.subject}}
@@ -19,6 +19,6 @@
         .table-data.mx-4.col-sent
           | {{notification.created_at}}
         .table-data.mx-4.col-view
-          i.fa.fa-eye.edit-row
+          i.fa.fa-eye.view-row((click)='viewNotification(notification.id)')
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
       |Loading ...

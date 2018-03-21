@@ -22,8 +22,7 @@ export class ScholarshipApplicantsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.navBarService.show();
-    this.navBarService.activeTabChanged('resources');     
+    this.navBarService.show();    
     this.applications = new Array<Model.Application>();
     this.scholarship = new Model.Scholarship({});
 

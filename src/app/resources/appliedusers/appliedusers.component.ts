@@ -23,7 +23,6 @@ export class AppliedUserComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('resources');    
     this.resource = new Model.Resource({});
     this.applications = new Array<Model.Application>();
     

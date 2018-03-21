@@ -25,7 +25,6 @@ export class OrganizationsComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('organizations');
     this.tab = 'schools';
   }
 

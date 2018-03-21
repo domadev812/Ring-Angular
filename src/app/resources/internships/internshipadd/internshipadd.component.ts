@@ -44,7 +44,6 @@ export class InternshipAddComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('resources');    
     this.internship = new Model.Resource({});
     this.originalInternship = new Model.Resource({});
     this.careers = new Array<Model.Career>();

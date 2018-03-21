@@ -21,7 +21,6 @@ export class ResourcesComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('resources');    
     if (this.global.selectedTab === '') {
       this.selectedTab = 'scholarships';
     } else {

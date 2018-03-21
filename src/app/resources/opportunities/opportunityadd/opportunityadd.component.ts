@@ -43,7 +43,6 @@ export class OpportunityAddComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('resources'); 
     this.opportunity = new Model.Resource({});
     this.originalOpportunity = new Model.Resource({});
     this.careers = new Array<Model.Career>();

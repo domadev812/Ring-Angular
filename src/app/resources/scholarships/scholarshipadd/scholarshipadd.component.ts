@@ -42,15 +42,14 @@ export class ScholarshipAddComponent implements OnInit {
     private route: ActivatedRoute,
     private multiSelectService: MultiSelectService,
     private resourcesService: ResourcesService,
-    private navBarService: NavbarService,
+    private navBarSerice: NavbarService,
     public global: GlobalState,
     private currentUserService: CurrentUserService,
-    public authProvider: AuthService,
+    public authProvider: AuthService
   ) {
   }
   ngOnInit() {
-    this.navBarService.show();
-    this.navBarService.activeTabChanged('resources'); 
+    this.navBarSerice.show();
     this.scholarship = new Model.Scholarship({});
     this.originalScholarship = new Model.Scholarship({});
     this.schools = new Array<Model.Organization>();
@@ -146,6 +145,7 @@ export class ScholarshipAddComponent implements OnInit {
   getScholarship(id: string): void {
     this.resourcesService.getScholarship(id).subscribe((res) => {
       this.scholarship = res;
+      console.log('scholarship response', res);
       this.originalScholarship = Object.assign({}, res);
       this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
       this.selectedCareers = this.scholarship.careers.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));

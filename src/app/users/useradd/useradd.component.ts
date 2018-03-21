@@ -47,7 +47,6 @@ export class UserAddComponent implements OnInit {
 
   ngOnInit() { 
     this.navBarService.show();
-    this.navBarService.activeTabChanged('users');    
     this.title = 'New User';
     this.organizationTitle = 'School';
     this.user = new Model.User({});        
