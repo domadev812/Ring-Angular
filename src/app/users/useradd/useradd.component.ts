@@ -33,6 +33,7 @@ export class UserAddComponent implements OnInit {
   selectedType = [];
   ktsTypeSettings = {};
   ktsOrganizationSettings = {};
+  creating = false;
 
   constructor(
     public route: ActivatedRoute, 
@@ -47,6 +48,7 @@ export class UserAddComponent implements OnInit {
 
   ngOnInit() { 
     this.navBarService.show();
+    this.navBarService.activeTabChanged('users');    
     this.title = 'New User';
     this.organizationTitle = 'School';
     this.user = new Model.User({});        
@@ -119,6 +121,7 @@ export class UserAddComponent implements OnInit {
   }
 
   getUser(id): void {
+    this.creating = true;
     this.usersService.getUser(id).subscribe( (res) => {          
       this.user = res;
       this.originalUser = Object.assign({}, this.user);                  
@@ -133,7 +136,9 @@ export class UserAddComponent implements OnInit {
       } 
 
       this.disableFlag = true;
+      this.creating = false;
     }, (errors) => {      
+      this.creating = false;
       alert('Server error');
     });
   }
@@ -206,21 +211,27 @@ export class UserAddComponent implements OnInit {
   }
 
   createUser() {
+    this.creating = true;
     this.usersService.createUser(this.user).subscribe( (res) => {            
-      alert('User is created');          
+      this.creating = false;
+      alert('User is created');                
       this.router.navigate(['users']);       
     }, (errors) => {      
-      alert(errors.message);
+      this.creating = false;
+      alert(errors.message);      
     });
   }
 
   updateUser() {
     let updatedUser = Object.assign({}, this.user);
-    delete updatedUser.password;             
+    delete updatedUser.password;
+    this.creating = false;             
     this.usersService.updateUser(updatedUser).subscribe( (res) => {            
-      alert('User is updated');          
+      this.creating = false;
+      alert('User is updated');                
       this.router.navigate(['users']);       
     }, (errors) => {      
+      this.creating = false;
       alert(errors.message);
     }); 
   }

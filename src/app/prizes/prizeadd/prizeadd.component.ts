@@ -27,6 +27,7 @@ export class PrizeAddComponent implements OnInit {
   public selectedDelivery = [];
   public ktsSelectSettings: any = {};
   public ktsDeliverySelectSettings = {};
+  public creating = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -40,6 +41,7 @@ export class PrizeAddComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
+    this.navBarService.activeTabChanged('prizes');
     this.title = 'New Prize';
     this.prize = new Model.Prize({});
     this.editFlag = false;
@@ -96,7 +98,8 @@ export class PrizeAddComponent implements OnInit {
     this.router.navigate(['prizes']);
   }
 
-  getPrize(id): void {
+  getPrize(id, flag = true): void {
+    this.creating = true;
     this.prizesService.getPrize(id).subscribe((res) => {
       this.prize = res;
       this.prize.details = 'Detail';
@@ -112,7 +115,10 @@ export class PrizeAddComponent implements OnInit {
       if (delivery) {
         this.selectedDelivery.push(delivery);
       }
+      this.creating = false;
+      this.disableFlag = flag;
     }, (errors) => {
+      this.creating = false;
       alert('Server error');
     });
   }
@@ -161,15 +167,19 @@ export class PrizeAddComponent implements OnInit {
     }
 
     this.prize.organization_id = this.selectedSponsor[0].id;
+    this.creating = true;
     if (!this.prize.id) {
       this.prizesService.createPrize(this.prize).subscribe((res) => {
+        this.creating = false;
         alert('Prize is created');
         this.global.selectedTab = 'prizes';
         this.router.navigate(['prizes']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     } else {
+      this.creating = false;
       alert('Prize is updated');
       this.global.selectedTab = 'prizes';
       this.router.navigate(['prizes']);

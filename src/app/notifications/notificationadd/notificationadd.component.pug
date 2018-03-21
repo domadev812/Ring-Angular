@@ -1,5 +1,6 @@
 .page-wrapper
   #notification.content-wrapper
+    ngx-loading([show]='creating')
     form.form-group(#notificationForm="ngForm" (ngSubmit)="saveNotification(notificationForm.valid)" novalidate)
       .header-nav
         h1.headers

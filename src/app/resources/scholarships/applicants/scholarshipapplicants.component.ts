@@ -13,7 +13,7 @@ import { NavbarService } from '../../../app.services-list';
 export class ScholarshipApplicantsComponent implements OnInit {
   public applications: Array<Model.Application>;
   public scholarship: Model.Scholarship;
-
+  public creating: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router, 
@@ -22,10 +22,12 @@ export class ScholarshipApplicantsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.navBarService.show();    
+    this.navBarService.show();
+    this.navBarService.activeTabChanged('resources');     
     this.applications = new Array<Model.Application>();
     this.scholarship = new Model.Scholarship({});
-
+    this.creating = false;
+    
     const id = this.route.snapshot.paramMap.get('scholarshipId');
     if (id !== null) {
       this.getApplications(id);
@@ -34,18 +36,24 @@ export class ScholarshipApplicantsComponent implements OnInit {
   }
 
   getApplications(id: string): void {
+    this.creating = true;
     this.resourcesService.getScholarshipApplications(id).subscribe((res) => {
       this.applications = res;       
+      this.creating = false;
     }, (errors) => {
+      this.creating = false;
       alert(errors.message);
     });
   }
 
   getScholarship(id: string): void {
+    this.creating = true;
     this.resourcesService.getScholarship(id).subscribe((res) => {      
       this.scholarship = res;           
+      this.creating = false;
     }, (errors) => {
       alert(errors.message);
+      this.creating = false;
     });
   }
 

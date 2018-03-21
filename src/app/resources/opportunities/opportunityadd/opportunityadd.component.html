@@ -1,6 +1,7 @@
 
 <div class="page-wrapper resources">
   <div class="content-wrapper" id="opportunity">
+    <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #opportunityForm="ngForm" (ngSubmit)="saveOpportunity(opportunityForm.valid)" novalidate>
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>

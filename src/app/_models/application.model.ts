@@ -7,8 +7,10 @@ export class Application {
   school: string;
   in_app: boolean;
   
-  constructor(data) {
-    this.setData(data);
+  constructor(data = null) {
+    if (data) {
+      this.setData(data);
+    }
   }
 
   setData(data) {

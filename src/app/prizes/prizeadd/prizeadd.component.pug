@@ -1,5 +1,6 @@
 .page-wrapper
   #prizes.content-wrapper
+    ngx-loading([show]='creating') 
     form.form-group(#prizeForm="ngForm" (ngSubmit)="savePrize(prizeForm.valid)" novalidate)
       .header-nav
         h1.headers
@@ -49,5 +50,5 @@
             (onDeSelect)='onDeliveryDeSelect($event)'
           )  
     .campaign-content
-      app-campaign([prizeId]="prize.id" (refreshPage)="getPrize(prize.id)" [campaigns]="prize.prize_campaigns")       
+      app-campaign([prizeId]="prize.id" (refreshPage)="getPrize(prize.id, false)" [campaigns]="prize.prize_campaigns")       
                       

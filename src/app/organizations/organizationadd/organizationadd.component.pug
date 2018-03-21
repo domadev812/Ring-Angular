@@ -1,5 +1,6 @@
 .page-wrapper.organizations
   #organization.content-wrapper
+    ngx-loading([show]='creating')  
     form.form-group(#organizationForm="ngForm" (ngSubmit)="saveOrganization(organizationForm.valid)" novalidate)
       .header-nav
         h1.headers

@@ -31,6 +31,7 @@ export class InternshipAddComponent implements OnInit {
   public disableFlag: boolean;
   public opportunity = [];
   public currentCareers = [];
+  public creating = false;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -44,6 +45,7 @@ export class InternshipAddComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
+    this.navBarService.activeTabChanged('resources');    
     this.internship = new Model.Resource({});
     this.originalInternship = new Model.Resource({});
     this.careers = new Array<Model.Career>();
@@ -150,6 +152,7 @@ export class InternshipAddComponent implements OnInit {
   }
 
   getResource(id: string): void {
+    this.creating = true;
     this.resourcesService.getResource(id).subscribe((res) => {
       const parsedCareers = res.careers.map(careers => {
         careers.title = careers.title;
@@ -166,7 +169,9 @@ export class InternshipAddComponent implements OnInit {
         let org = this.organizationList.find(organization => organization.id === this.internship.organization_id);
         this.selectedOrganization.push(org);
       }
+      this.creating = false;
     }, (errors) => {
+      this.creating = false;
       alert('Server error');
     });
   }
@@ -209,25 +214,26 @@ export class InternshipAddComponent implements OnInit {
     this.internship.career_ids = this.selectedCareers.map((career) => {
       return career.id;
     });
-    console.log('this is the career ids', this.internship.career_ids);
 
-
-
-
+    this.creating = true;    
     if (!this.internship.id) {
       this.resourcesService.createResource(this.internship).subscribe((res) => {
+        this.creating = false;
         alert('Create new internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateResource(this.internship).subscribe((res) => {
+        this.creating = false;
         alert('Update internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     }

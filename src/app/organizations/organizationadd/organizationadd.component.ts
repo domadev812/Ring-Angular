@@ -2,7 +2,7 @@ import 'rxjs/add/observable/throw';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { error } from 'util';
-import { OrganizationService } from '../../app.services-list';
+import { OrganizationService, NavbarService } from '../../app.services-list';
 import { Model } from '../../app.models-list';
 import { GlobalState } from '../../global.state';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -23,13 +23,17 @@ export class OrganizationAddComponent implements OnInit {
   public isSchool = false;
   public filePreviewPath: SafeUrl;
   public testImg: string;
+  public creating = false;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private organizationService: OrganizationService,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private navBarService: NavbarService) { }
 
   ngOnInit() {
+    this.navBarService.show();
+    this.navBarService.activeTabChanged('organizations');
     this.organization = new Model.Organization({});
     this.uploader = this.organizationService.uploader;
     this.type = this.route.snapshot.paramMap.get('type');
@@ -48,16 +52,19 @@ export class OrganizationAddComponent implements OnInit {
   }
 
   createOrUpdateOrganization(): void {
+    this.creating = true;
     if (this.organization.id) {
       this.organizationService
         .updateOrganization(this.organization)
         .subscribe(this.handleOrganizationSuccess.bind(this));
+      this.creating = false;  
       alert('Organization Updated Successfully');
       this.router.navigate(['organizations']);
     } else {
       this.organizationService
         .createOrganization(this.organization)
         .subscribe(this.handleOrganizationSuccess.bind(this));
+      this.creating = false;  
       alert('Organization Created Successfully');
       this.router.navigate(['organizations']);
     }
@@ -83,6 +90,7 @@ export class OrganizationAddComponent implements OnInit {
   }
 
   getOrganization(id: string): void {
+    this.creating = true;
     this.organizationService.getOrganization(id).subscribe((organization: Model.Organization) => {
       this.organization = organization;
       this.filePreviewPath = this.sanitizer.bypassSecurityTrustUrl(this.organization.getImgUrl());
@@ -91,6 +99,10 @@ export class OrganizationAddComponent implements OnInit {
         this.isSchool = true;
         this.title = 'School Details';
       }
+      this.creating = false;
+    }, (errors) => {
+      this.creating = false;
+      alert('Server error');
     });
   }
 

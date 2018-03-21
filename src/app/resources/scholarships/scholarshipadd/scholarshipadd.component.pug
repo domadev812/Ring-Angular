@@ -1,5 +1,6 @@
 .page-wrapper.resources
   #scholarshipadd.content-wrapper
+    ngx-loading([show]='creating') 
     form.form-group(#scholarshipForm='ngForm' (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate)
       .header-nav.fixed-header
         h1.headers

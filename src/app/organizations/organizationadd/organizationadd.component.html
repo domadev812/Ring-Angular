@@ -1,6 +1,7 @@
 
 <div class="page-wrapper organizations">
   <div class="content-wrapper" id="organization">
+    <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #organizationForm="ngForm" (ngSubmit)="saveOrganization(organizationForm.valid)" novalidate>
       <div class="header-nav">
         <h1 class="headers">{{title}}</h1>

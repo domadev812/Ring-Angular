@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarService } from '../app.services-list';
 import * as Services from '../app.services-list';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-navbar',
@@ -9,20 +10,22 @@ import * as Services from '../app.services-list';
 })
 export class NavbarComponent implements OnInit {
 
-  tab: String;
+  tab: string;
   active: boolean;
-
+  
+  public subscription: Subscription;  
   constructor(
     public navBarService: NavbarService,
     private authService: Services.AuthService
   ) { }
 
   ngOnInit() {
-    this.tab = window.location.pathname.substring(1);
+    this.subscription = this.navBarService.tabEvent.subscribe(event => this.switchTab(event));
   }
 
-  switchTab(tab: String): void {
+  switchTab(tab: string): void {
     this.tab = tab;
+    this.navBarService.activeTab = tab;
   }
 
   logout(event) {

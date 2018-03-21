@@ -19,6 +19,7 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
+    this.navBarService.activeTabChanged('notifications');
     this.selectedTab = 'notifications';
   }
 

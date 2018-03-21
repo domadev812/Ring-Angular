@@ -30,6 +30,7 @@ export class OpportunityAddComponent implements OnInit {
   public editFlag: boolean;
   public disableFlag: boolean;
   public isAdmin: boolean;
+  public creating: boolean;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -43,6 +44,7 @@ export class OpportunityAddComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
+    this.navBarService.activeTabChanged('resources'); 
     this.opportunity = new Model.Resource({});
     this.originalOpportunity = new Model.Resource({});
     this.careers = new Array<Model.Career>();
@@ -50,6 +52,7 @@ export class OpportunityAddComponent implements OnInit {
     this.title = 'New Opportunity';
     this.editFlag = false;
     this.disableFlag = false;
+    this.creating = false;
 
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
     this.getCareers();
@@ -63,7 +66,6 @@ export class OpportunityAddComponent implements OnInit {
       this.disableFlag = true;
       this.getResource(id);
     }
-
   }
 
   getUser() {
@@ -142,6 +144,7 @@ export class OpportunityAddComponent implements OnInit {
   }
 
   getResource(id: string): void {
+    this.creating = true;
     this.resourcesService.getResource(id).subscribe((res) => {
       const parsedCareers = res.careers.map(careers => {
         careers.title = careers.title;
@@ -158,11 +161,12 @@ export class OpportunityAddComponent implements OnInit {
         let org = this.organizationList.find(organization => organization.id === this.opportunity.organization_id);
         this.selectedOrganization.push(org);
       }
+      this.creating = false;
     }, (errors) => {
+      this.creating = false;
       alert('Server error');
     });
   }
-
 
   getCareers(): void {
     this.multiSelectService.getDropdownCareers().subscribe((res: MultiSelectUtil.SelectItem[]) => {
@@ -206,21 +210,25 @@ export class OpportunityAddComponent implements OnInit {
       return career.id;
     });
 
-
+    this.creating = true;
     if (!this.opportunity.id) {
       this.resourcesService.createResource(this.opportunity).subscribe((res) => {
+        this.creating = false;
         alert('Create new opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateResource(this.opportunity).subscribe((res) => {
+        this.creating = false;
         alert('Update opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
+        this.creating = false;
         alert('Server error');
       });
     }
