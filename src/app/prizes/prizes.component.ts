@@ -43,7 +43,6 @@ export class PrizesComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('prizes'); 
     if (this.global.selectedTab === '') {
       this.selectedTab = 'prizes';
     } else {
