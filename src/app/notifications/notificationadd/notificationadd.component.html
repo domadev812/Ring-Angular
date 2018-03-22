@@ -6,8 +6,10 @@
       <div class="header-nav">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="notifications-btn primary-button feedback-btn" type="submit" *ngIf="!notification.id"> <span>Save</span></button>
-          <button class="notifications-btn secondary-button feedback-btn" type="button" (click)="cancelNotification()"> <span>Cancel  </span></button>
+          <button class="notifications-btn primary-button" type="submit" *ngIf="!notification.id">
+             Save</button>
+          <button class="notifications-btn secondary-button" type="button" (click)="cancelNotification()">
+             Cancel  </button>
         </div>
       </div>
       <div class="wrapper-content"> 

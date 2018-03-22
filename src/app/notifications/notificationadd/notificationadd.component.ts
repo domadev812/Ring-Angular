@@ -27,7 +27,9 @@ export class NotificationAddComponent implements OnInit {
   public typeList = [{ id: 'all', itemName: 'All' },
                      { id: 'gender', itemName: 'Gender' },
                      { id: 'graduation_year', itemName: 'Graduation Year' },
-                     { id: 'careers', itemName: 'Careers' }];
+                     { id: 'careers', itemName: 'Careers' },
+                     { id: 'opportunities', itemName: 'Opportunities' },
+                     { id: 'internships', itemName: 'Internships' }];
   public selectedType = [];
   public originalTypeValueList = [{ id: 'M', itemName: 'Male', category: 'gender' },
                                   { id: 'F', itemName: 'Female', category: 'gender' }];
@@ -93,6 +95,9 @@ export class NotificationAddComponent implements OnInit {
   }
 
   changeState(): void {
+    if (!this.selectedType[0]) {
+      return;
+    }
     this.valueListTitle = this.selectedType[0].itemName;
     if (this.selectedType[0].id === 'all') {
       this.valueListVisibleFlag = false;
@@ -120,8 +125,13 @@ export class NotificationAddComponent implements OnInit {
 
   getNotification(id: string) {
     this.creating = true;
-    this.notificationsService.getNotification(id).subscribe((res) => {
+    this.notificationsService.getNotification(id).subscribe((res) => {      
+      this.creating = false;
       this.notification = res;
+      let notificationType = this.typeList.find(type => type.id === res.type);      
+      if (!notificationType) {
+        return;
+      }
       this.selectedType.push(this.typeList.find(type => type.id === res.type));
       if (res.type === 'gender' || res.type === 'graduation_year') {
         this.selectedValueList.push(this.originalTypeValueList.find(value => value.id === res.resource['resource_value']));
@@ -130,8 +140,7 @@ export class NotificationAddComponent implements OnInit {
           return { id: career.id, itemName: career.title };
         });
       }
-      this.changeState();
-      this.creating = false;
+      this.changeState();      
     }, (errors) => {
       this.creating = false;
       alert('Server error');
