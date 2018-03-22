@@ -6,7 +6,7 @@
       <div class="header-nav">
         <h1 class="headers">{{ title }}</h1>
         <div class="button-group">
-          <button class="users-btn primary-button feedback-btn" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag"><span>Save</span></button>
+          <button class="users-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag"><span>Save</span></button>
           <button class="users-btn secondary-button feedback-btn" type="button" (click)="goBack()"> <span>Cancel   </span></button>
         </div>
       </div>

@@ -6,7 +6,7 @@
         h1.headers
           | {{ title }}
         .button-group
-          button.users-btn.primary-button.feedback-btn(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag")
+          button.users-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag")
             span
               | Save
           button.users-btn.secondary-button.feedback-btn(type="button" (click)="goBack()") 

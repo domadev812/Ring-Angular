@@ -4,12 +4,15 @@
       h1.headers
         | Resources
       .button-group
-          button.resource-button((click)='addNewScholarship()')
-            | New Scholarship
-          button.resource-button((click)='addNewResource("internshipadd")')
-            | New Internship
-          button.resource-button((click)='addNewResource("opportunityadd")')
-            | New Opportunities
+          button.resource-button.feedback-btn((click)='addNewScholarship()')
+            span
+              | New Scholarship
+          button.resource-button.feedback-btn((click)='addNewResource("internshipadd")')
+            span
+              | New Internship
+          button.resource-button.feedback-btn((click)='addNewResource("opportunityadd")')
+            span
+              | New Opportunities
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('scholarships')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'scholarships'}")
         | Scholarships

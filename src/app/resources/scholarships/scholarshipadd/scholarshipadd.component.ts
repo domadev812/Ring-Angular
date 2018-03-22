@@ -56,7 +56,7 @@ export class ScholarshipAddComponent implements OnInit {
     this.schools = new Array<Model.Organization>();
     this.organizations = new Array<Model.Organization>(null);
     this.title = 'New Scholarship';
-
+    
     const id = this.route.snapshot.paramMap.get('scholarshipId');
     if (id !== null) {
       this.title = 'Edit Scholarship';
