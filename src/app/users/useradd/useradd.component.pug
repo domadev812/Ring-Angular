@@ -6,10 +6,12 @@
         h1.headers
           | {{ title }}
         .button-group
-          button.users-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag")
-            | Save
-          button.users-btn.secondary-button(type="button" (click)="goBack()") 
-            | Cancel   
+          button.users-btn.primary-button.feedback-btn(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag")
+            span
+              | Save
+          button.users-btn.secondary-button.feedback-btn(type="button" (click)="goBack()") 
+            span
+              | Cancel   
       .wrapper-content 
         .item-info.names
           .item-info
