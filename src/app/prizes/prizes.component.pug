@@ -4,12 +4,15 @@
       h1.headers
         | Prizes
       .button-group
-        button.prizes-btn.primary-button((click)='addPrize()') 
-          | New Prizes
-        button.prizes-btn.primary-button((click)='openModal(template)') 
-          | Activate Key Cards
-        button.prizes-btn.primary-button((click)='openCsv(csv)')
-          | Awarded CSV
+        button.prizes-btn.primary-button.feedback-btn((click)='addPrize()') 
+          span
+            | New Prizes
+        button.prizes-btn.primary-button.feedback-btn((click)='openModal(template)') 
+          span
+            | Activate Key Cards
+        button.prizes-btn.primary-button.feedback-btn((click)='openCsv(csv)')
+          span
+            | Awarded CSV
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('prizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'prizes'}")
         | Prizes
@@ -28,8 +31,9 @@
         .input-label
           | KEY CARD NUMBER
         input.input([(ngModel)]='cardNumber')
-        button.prizes-btn.primary-button((click)='activate()')
-          | Activate
+        button.prizes-btn.primary-button.feedback-btn((click)='activate()')
+          span
+            | Activate
     ng-template(#csv)
       .modal-header.active-modal-header
         h6.modal-title
@@ -54,5 +58,6 @@
           | END DATE
         input.input(type="text" formControlName="endDate" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }")
         .button-export
-          button.prizes-btn.primary-button.csv((click)='export()')
-            | Export csv
+          button.prizes-btn.primary-button.csv.feedback-btn((click)='export()')
+            span
+              | Export csv

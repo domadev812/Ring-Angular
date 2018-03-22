@@ -1,8 +1,9 @@
 .header-nav
   .input-label.campaign-title
     | CAMPAIGNS
-  button.primary-button.prizes-btn.campaign-btn(type = "button" [ngClass]="{'btn-disabled': !prizeId}" [disabled]="!prizeId" (click)='openModal(template)') 
-    | New campaign 
+  button.primary-button.prizes-btn.campaign-btn(type = "button" [ngClass]="{'btn-disabled': !prizeId, 'feedback-btn': prizeId}" [disabled]="!prizeId" (click)='openModal(template)') 
+    span
+      | New campaign 
 .d-flex.space-between.py-1
     .table-header.mx-4.col-start-date
       | Start Date
@@ -59,8 +60,11 @@
             | Quantity is required
           .invalid-validation([hidden]="!editFlag || !qty.valid || checkValue() || (qty.pristine && !campaignForm.submitted)")
             | Quantity cannot be less than redeemed.
-        input.input(type="number" name="qty" [(ngModel)]='quantity' #qty="ngModel" required)           
-        button.prizes-btn.primary-button(type = "submit")
-          | Save
-        button.prizes-btn.secondary-button(type = "button" (click)='modalRef.hide()')
-          | Cancel
+        input.input(type="number" name="qty" [(ngModel)]='quantity' #qty="ngModel" required)          
+        .button-group 
+          button.prizes-btn.primary-button.feedback-btn(type = "submit")
+            span
+              | Save
+          button.prizes-btn.secondary-button.feedback-btn(type = "button" (click)='modalRef.hide()')
+            span
+              | Cancel

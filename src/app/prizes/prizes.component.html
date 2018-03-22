@@ -4,11 +4,9 @@
     <div class="header-nav">
       <h1 class="headers">Prizes</h1>
       <div class="button-group">
-        <button class="prizes-btn primary-button" (click)="addPrize()">
-           New Prizes</button>
-        <button class="prizes-btn primary-button" (click)="openModal(template)">
-           Activate Key Cards</button>
-        <button class="prizes-btn primary-button" (click)="openCsv(csv)">Awarded CSV</button>
+        <button class="prizes-btn primary-button feedback-btn" (click)="addPrize()"> <span>New Prizes</span></button>
+        <button class="prizes-btn primary-button feedback-btn" (click)="openModal(template)"> <span>Activate Key Cards</span></button>
+        <button class="prizes-btn primary-button feedback-btn" (click)="openCsv(csv)"><span>Awarded CSV</span></button>
       </div>
     </div>
     <div class="justify-start newTabs mb-4">
@@ -25,7 +23,7 @@
       <div class="modal-body active-modal-body">
         <div class="input-label">KEY CARD NUMBER</div>
         <input class="input" [(ngModel)]="cardNumber">
-        <button class="prizes-btn primary-button" (click)="activate()">Activate</button>
+        <button class="prizes-btn primary-button feedback-btn" (click)="activate()"><span>Activate</span></button>
       </div>
     </ng-template>
     <ng-template #csv>
@@ -47,7 +45,7 @@
         <div class="input-label mt-2">END DATE</div>
         <input class="input" type="text" formControlName="endDate" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
         <div class="button-export">
-          <button class="prizes-btn primary-button csv" (click)="export()">Export csv</button>
+          <button class="prizes-btn primary-button csv feedback-btn" (click)="export()"><span>Export csv</span></button>
         </div>
       </div>
     </ng-template>
