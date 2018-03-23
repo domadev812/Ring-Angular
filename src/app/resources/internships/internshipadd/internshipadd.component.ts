@@ -32,6 +32,7 @@ export class InternshipAddComponent implements OnInit {
   public opportunity = [];
   public currentCareers = [];
   public creating = false;
+  public internshipId: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -56,13 +57,13 @@ export class InternshipAddComponent implements OnInit {
 
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
 
-    const id = this.route.snapshot.paramMap.get('internshipId');
-    if (id !== null) {
+    this.internshipId = this.route.snapshot.paramMap.get('internshipId');
+    if (this.internshipId !== null) {
       this.title = 'Edit Internship';
       this.editFlag = true;
       this.disableFlag = true;
 
-      this.getResource(id);
+      this.getResource(this.internshipId);
     }
     this.getUser();
     this.getCareers();
@@ -74,7 +75,9 @@ export class InternshipAddComponent implements OnInit {
       if (res) {
         this.setAdminStatus(res.roles);
         const org = res.organization;
-        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.internship.id));
+        if (!this.internshipId) {
+          this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.internship.id));
+        }
       }
     }, err => {
       console.log('err', err);

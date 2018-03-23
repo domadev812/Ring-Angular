@@ -78,22 +78,24 @@ export class PrizeAddComponent implements OnInit {
     this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
   }
 
-
-
   onSponsorSelect(item: any) {
     this.prize.organization_id = item.id;
     this.onChange(item);
   }
+
   onSponsorDeSelect(item: any) {
     this.onChange(item);
   }
+
   onDeliverySelect(item: any) {
     this.prize.delivery_type = item.itemName;
     this.onChange(item);
   }
+
   onDeliveryDeSelect(item: any) {
     this.onChange(item);
   }
+  
   goBack(): void {
     this.router.navigate(['prizes']);
   }

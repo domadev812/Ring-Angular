@@ -31,6 +31,7 @@ export class OpportunityAddComponent implements OnInit {
   public disableFlag: boolean;
   public isAdmin: boolean;
   public creating: boolean;
+  public opportunityId: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -59,12 +60,12 @@ export class OpportunityAddComponent implements OnInit {
     this.getOrganizations();
     this.getUser();
 
-    const id = this.route.snapshot.paramMap.get('opportunityId');
-    if (id !== null) {
+    this.opportunityId = this.route.snapshot.paramMap.get('opportunityId');
+    if (this.opportunityId !== null) {
       this.title = 'Edit Opportunity';
       this.editFlag = true;
       this.disableFlag = true;
-      this.getResource(id);
+      this.getResource(this.opportunityId);
     }
   }
 
@@ -73,7 +74,9 @@ export class OpportunityAddComponent implements OnInit {
       if (res) {
         this.setAdminStatus(res.roles);
         const org = res.organization;
-        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.opportunity.id));
+        if (!this.opportunityId) {
+          this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.opportunity.id));
+        }
       }
     }, err => {
       console.log('err', err);

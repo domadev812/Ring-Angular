@@ -37,6 +37,7 @@ export class ScholarshipAddComponent implements OnInit {
   public editFlag: boolean;
   public disableFlag: boolean;
   public creating = false;
+  public scholarshipId: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -56,14 +57,14 @@ export class ScholarshipAddComponent implements OnInit {
     this.schools = new Array<Model.Organization>();
     this.organizations = new Array<Model.Organization>(null);
     this.title = 'New Scholarship';
-    
-    const id = this.route.snapshot.paramMap.get('scholarshipId');
-    if (id !== null) {
+
+    this.scholarshipId = this.route.snapshot.paramMap.get('scholarshipId');
+    if (this.scholarshipId !== null) {
       this.title = 'Edit Scholarship';
       this.editFlag = true;
       this.disableFlag = true;
 
-      this.getScholarship(id);
+      this.getScholarship(this.scholarshipId);
     }
 
     this.getUser();
@@ -74,13 +75,14 @@ export class ScholarshipAddComponent implements OnInit {
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
   }
 
-
   getUser() {
     this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
       if (res) {
         this.setAdminStatus(res.roles);
         const org = res.organization;
-        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.scholarship.organization_id));
+        if (!this.scholarshipId) {
+          this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.scholarship.organization_id));
+        }
       }
     }, err => {
       console.log('err', err);
@@ -98,6 +100,7 @@ export class ScholarshipAddComponent implements OnInit {
   onSchoolSelect(item: any) {
     this.onChange(item);
   }
+
   onSchoolDeSelect(item: any) {
     this.onChange(item);
   }
@@ -130,6 +133,7 @@ export class ScholarshipAddComponent implements OnInit {
     this.scholarship.organization_id = item.id;
     this.onChange(item);
   }
+
   onOrganizationDeSelect(item: any) {
     this.scholarship.organization_id = null;
     this.onChange(item);
@@ -294,7 +298,6 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   deleteScholarship(): void {
-
   }
 
   validURL(url: string) {
