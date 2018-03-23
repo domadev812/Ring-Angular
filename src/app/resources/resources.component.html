@@ -4,9 +4,9 @@
     <div class="header-nav">
       <h1 class="headers">Resources</h1>
       <div class="button-group">
-        <button class="resource-button" (click)="addNewScholarship()" *ngIf="canCreateScholarships">New Scholarship</button>
-        <button class="resource-button" (click)="addNewResource(&quot;internshipadd&quot;)" *ngIf="canCreateInternships">New Internship</button>
-        <button class="resource-button" (click)="addNewResource(&quot;opportunityadd&quot;)" *ngIf="canCreateOpportunities">New Opportunities</button>
+        <button class="resource-button feedback-btn" (click)="addNewScholarship()" *ngIf="canCreateScholarships"><span>New Scholarship</span></button>
+        <button class="resource-button feedback-btn" (click)="addNewResource(&quot;internshipadd&quot;)" *ngIf="canCreateInternships"><span>New Internship</span></button>
+        <button class="resource-button feedback-btn" (click)="addNewResource(&quot;opportunityadd&quot;)" *ngIf="canCreateOpportunities"><span>New Opportunities         </span></button>
       </div>
     </div>
     <div class="justify-start newTabs mb-4">

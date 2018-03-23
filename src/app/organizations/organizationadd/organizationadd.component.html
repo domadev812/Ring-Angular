@@ -6,10 +6,8 @@
       <div class="header-nav">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="organization-btn primary-button" type="submit" *ngIf="!isSchool">
-             Save</button>
-          <button class="organization-btn secondary-button" type="button" (click)="goBack($event)">
-             Cancel</button>
+          <button class="organization-btn primary-button feedback-btn" type="submit" *ngIf="!isSchool"> <span>Save</span></button>
+          <button class="organization-btn secondary-button feedback-btn" type="button" (click)="goBack($event)"> <span>Cancel</span></button>
         </div>
       </div>
       <div class="wrapper-content">

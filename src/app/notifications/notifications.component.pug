@@ -4,8 +4,9 @@
       h1.headers
         | Notifications
       .button-group
-          button.new-notification-button((click)='addNotification()')
-            | New Notification
+          button.new-notification-button.feedback-btn((click)='addNotification()')
+            span
+              | New Notification
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav([ngClass]="{'sub-nav-item-selected': selectedTab === 'notifications'}")
         | Notifications

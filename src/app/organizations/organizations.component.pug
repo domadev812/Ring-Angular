@@ -4,8 +4,9 @@
       h1.headers
         | Organizations
       .justify-end
-        .primary-button.center.newBtn((click)="addOrganization('sponsor')")
-          | New Sponsor
+        .primary-button.center.newBtn.feedback-btn((click)="addOrganization('sponsor')")
+          span
+            | New Sponsor
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('schools')" [ngClass]="{'sub-nav-item-selected': tab === 'schools'}")
         | Schools

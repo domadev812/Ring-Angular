@@ -4,8 +4,9 @@
       h1.headers
         | Users
       .button-group
-          button.users-button((click)='addNewUser()', *ngIf="canCreateNewUser")
-            | New User          
+          button.users-button.feedback-btn((click)='addNewUser()', *ngIf="canCreateNewUser")
+            span
+              | New User                 
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('student')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'student'}", *ngIf="canViewStudents" )
         | Students

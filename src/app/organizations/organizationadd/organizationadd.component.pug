@@ -6,10 +6,12 @@
         h1.headers
           | {{title}}
         .button-group
-            button.organization-btn.primary-button(type="submit", *ngIf="!isSchool") 
-              | Save
-            button.organization-btn.secondary-button(type="button" (click)="goBack($event)") 
-              | Cancel
+            button.organization-btn.primary-button.feedback-btn(type="submit", *ngIf="!isSchool") 
+              span
+                | Save
+            button.organization-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)") 
+              span
+                | Cancel
       .wrapper-content
         .logo-image(*ngIf="!isSchool") 
           .well.my-drop-zone(ng2FileDrop [ngClass]="{'upload-disabled': isSchool,'nv-file-over': hasBaseDropZoneOver}", (fileOver)="fileOverBase($event)", [uploader]="uploader", (onFileDrop)="selectedFile($event)")            

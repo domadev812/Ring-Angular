@@ -6,10 +6,12 @@
         h1.headers
           | {{title}}
         .button-group
-            button.notifications-btn.primary-button(type="submit", *ngIf="!notification.id") 
-              | Save
-            button.notifications-btn.secondary-button(type="button" (click)="cancelNotification()") 
-              | Cancel  
+            button.notifications-btn.primary-button.feedback-btn(type="submit", *ngIf="!notification.id") 
+              span
+                | Save
+            button.notifications-btn.secondary-button.feedback-btn(type="button" (click)="cancelNotification()") 
+              span
+                | Cancel  
       .wrapper-content 
         .item-info
           .input-label-top

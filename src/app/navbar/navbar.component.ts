@@ -11,15 +11,16 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class NavbarComponent implements OnInit {
 
-  tab: string;
-  active: boolean;
+  public tab: string;
+  public active: boolean;
 
   public subscription: Subscription;
-  canViewUsers: boolean;
-  canViewOrganizations: boolean;
-  canViewResources: boolean;
-  canViewAwardedPrizes: boolean;
-  canViewNotifications: boolean;
+  public subUserScription: Subscription;
+  public canViewUsers: boolean;
+  public canViewOrganizations: boolean;
+  public canViewResources: boolean;
+  public canViewAwardedPrizes: boolean;
+  public canViewNotifications: boolean;
   public loading = false;
 
   constructor(
@@ -32,21 +33,24 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.subscription = this.navBarService.tabEvent.subscribe(event => this.switchTab(event));
+    this.subUserScription = this.currentUserService.currentUserEvent.subscribe(event => this.changeNavState(event));
     this.getUser();
-
   }
 
   getUser() {
     this.currentUserService.getCurrentUser(this.authProvider, false).then((user: Model.User) => {
-      if (user) {
-        this.canViewUsers = this.access.getRoleAccess(user.getRole()).functionalityAccess.usersTab;
-        this.canViewOrganizations = this.access.getRoleAccess(user.getRole()).functionalityAccess.organizationTab;
-        this.canViewResources = this.access.getRoleAccess(user.getRole()).functionalityAccess.resourcesTab;
-        this.canViewAwardedPrizes = this.access.getRoleAccess(user.getRole()).functionalityAccess.prizesTab;
-        this.canViewNotifications = this.access.getRoleAccess(user.getRole()).functionalityAccess.notificationsTab;
-
-      }
+      this.changeNavState(user);
     });
+  }
+  
+  changeNavState(user: Model.User): void {
+    if (user) {
+      this.canViewUsers = this.access.getRoleAccess(user.getRole()).functionalityAccess.usersTab;
+      this.canViewOrganizations = this.access.getRoleAccess(user.getRole()).functionalityAccess.organizationTab;
+      this.canViewResources = this.access.getRoleAccess(user.getRole()).functionalityAccess.resourcesTab;
+      this.canViewAwardedPrizes = this.access.getRoleAccess(user.getRole()).functionalityAccess.prizesTab;
+      this.canViewNotifications = this.access.getRoleAccess(user.getRole()).functionalityAccess.notificationsTab;
+    }
   }
 
   switchTab(tab: string): void {
@@ -57,5 +61,4 @@ export class NavbarComponent implements OnInit {
   logout(event) {
     this.authService.logout();
   }
-
 }

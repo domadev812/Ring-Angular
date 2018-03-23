@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Model } from '../../app/app.models-list';
 import { tokenNotExpired } from 'angular2-jwt';
@@ -18,6 +18,8 @@ export class CurrentUserService {
   jwtHelper: JwtHelper = new JwtHelper();
 
   notifyObservable$ = this.notify.asObservable();
+  currentUserEvent: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(private http?: Http) {
     this.http = http;
   }
@@ -47,7 +49,7 @@ export class CurrentUserService {
 
   // stores the promise it receives as a new variable
   getCurrentUser(authProvider: AuthService, force: boolean = false): Promise<Model.User> {
-    let token = localStorage.getItem('Token');
+    let token = localStorage.getItem('Token');        
     if (!this.currentUserPromise || force) {
       this.currentUserPromise = new Promise((resolve, reject) => {
         if (this.currentUser && !force) {
@@ -83,8 +85,9 @@ export class CurrentUserService {
 
   set(token: string, user: API.IUser): boolean {
     window.localStorage.setItem('Token', token);
-    let parsedUser = new Model.User(user);
+    let parsedUser = new Model.User(user);    
     this.load(parsedUser);
+    this.currentUserChange();
     return this.authenticated();
   }
 
@@ -111,5 +114,9 @@ export class CurrentUserService {
 
   public emitUpdate() {
     this.notify.next(this.currentUser);
+  }
+
+  currentUserChange(): void {
+    this.currentUserEvent.emit(this.currentUser);
   }
 }
