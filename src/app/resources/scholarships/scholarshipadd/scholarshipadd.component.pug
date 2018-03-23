@@ -6,12 +6,10 @@
         h1.headers
           | {{title}}
         .button-group
-          button.save-button(type='submit' [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag")
-            span
-              | Save
-          button.cancel-button.feedback-btn((click)='goBack()' type='button') 
-            span
-              | Cancel 
+          button.save-button(type='submit' [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag")
+            | Save
+          button.cancel-button((click)='goBack()' type='button') 
+            | Cancel 
       .applicants-view.fixed-header(*ngIf="editFlag === true && scholarship.users" (click)="gotoApplicants(scholarship.id)")
         | Applicants: {{scholarship.users.length}} 
         img.link-arrow(src="../assets/imgs/link-arrow.svg")  

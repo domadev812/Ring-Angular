@@ -6,8 +6,9 @@
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
         <div class="button-group">
-          <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag"><span>Save</span></button>
-          <button class="cancel-button feedback-btn" (click)="goBack()" type="button"> <span>Cancel </span></button>
+          <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag">Save</button>
+          <button class="cancel-button" (click)="goBack()" type="button">
+             Cancel </button>
         </div>
       </div>
       <div class="applicants-view fixed-header" *ngIf="editFlag === true &amp;&amp; scholarship.users" (click)="gotoApplicants(scholarship.id)">Applicants: {{scholarship.users.length}} <img class="link-arrow" src="../assets/imgs/link-arrow.svg"></div>
