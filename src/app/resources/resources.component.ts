@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Routes, RouterModule } from '@angular/router';
 import { GlobalState } from '../global.state';
-import { NavbarService } from '../app.services-list';
+import { NavbarService, CurrentUserService, AuthService, AccessService } from '../app.services-list';
+import { Model } from '../app.models-list';
 
 @Component({
   selector: 'app-resources',
@@ -12,11 +13,21 @@ import { NavbarService } from '../app.services-list';
 export class ResourcesComponent implements OnInit {
 
   selectedTab: String = '';
+  userRole: boolean;
+  canViewScholarships: boolean;
+  canViewInternships: boolean;
+  canviewOtherOpportunities: boolean;
+  canCreateScholarships: boolean;
+  canCreateInternships: boolean;
+  canCreateOpportunities: boolean;
 
   constructor(
     private router: Router,
     public global: GlobalState,
     private navBarService: NavbarService,
+    private currentUserService: CurrentUserService,
+    private authProvider: AuthService,
+    public access: AccessService
   ) { }
 
   ngOnInit() {
@@ -28,7 +39,22 @@ export class ResourcesComponent implements OnInit {
       this.selectedTab = this.global.selectedTab;
     }
     this.global.selectedTab = '';
+    this.getUser();
   }
+
+  getUser() {
+    this.currentUserService.getCurrentUser(this.authProvider).then((user: Model.User) => {
+      if (user) {
+        this.canViewScholarships = this.access.getRoleAccess(user.getRole()).functionalityAccess.scholarshipsTab;
+        this.canViewInternships = this.access.getRoleAccess(user.getRole()).functionalityAccess.internshipsTab;
+        this.canviewOtherOpportunities = this.access.getRoleAccess(user.getRole()).functionalityAccess.otherOpportunitiesTab;
+        this.canCreateInternships = this.access.getRoleAccess(user.getRole()).functionalityAccess.newInternshipButton;
+        this.canCreateOpportunities = this.access.getRoleAccess(user.getRole()).functionalityAccess.newOpportunityButton;
+        this.canCreateScholarships = this.access.getRoleAccess(user.getRole()).functionalityAccess.newScholarshipButton;
+      }
+    });
+  }
+
 
   addNewResource(pathName): void {
     this.router.navigate([pathName]);

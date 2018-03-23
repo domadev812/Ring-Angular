@@ -4,14 +4,16 @@
     <div class="header-nav">
       <h1 class="headers">Prizes</h1>
       <div class="button-group">
-        <button class="prizes-btn primary-button feedback-btn" (click)="addPrize()"> <span>New Prizes</span></button>
-        <button class="prizes-btn primary-button feedback-btn" (click)="openModal(template)"> <span>Activate Key Cards</span></button>
-        <button class="prizes-btn primary-button feedback-btn" (click)="openCsv(csv)"><span>Awarded CSV</span></button>
+        <button class="prizes-btn primary-button" (click)="addPrize()" *ngIf="canCreateNewPrize">
+           New Prizes</button>
+        <button class="prizes-btn primary-button" (click)="openModal(template)" *ngIf="canActivateKeycard">
+           Activate Key Cards</button>
+        <button class="prizes-btn primary-button" (click)="openCsv(csv)" *ngIf="canUseAwardedCsv">Awarded CSV</button>
       </div>
     </div>
     <div class="justify-start newTabs mb-4">
       <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('prizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'prizes'}">Prizes</div>
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('awardedprizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'awardedprizes'}">Awarded Prizes</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('awardedprizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'awardedprizes'}" *ngIf="canViewAwardedPrizes">Awarded Prizes</div>
     </div>
     <app-prizesindex *ngIf="selectedTab === 'prizes'">     </app-prizesindex>
     <app-awardedprizesindex *ngIf="selectedTab === 'awardedprizes'">     </app-awardedprizesindex>
@@ -23,7 +25,7 @@
       <div class="modal-body active-modal-body">
         <div class="input-label">KEY CARD NUMBER</div>
         <input class="input" [(ngModel)]="cardNumber">
-        <button class="prizes-btn primary-button feedback-btn" (click)="activate()"><span>Activate</span></button>
+        <button class="prizes-btn primary-button" (click)="activate()">Activate</button>
       </div>
     </ng-template>
     <ng-template #csv>
@@ -45,7 +47,7 @@
         <div class="input-label mt-2">END DATE</div>
         <input class="input" type="text" formControlName="endDate" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
         <div class="button-export">
-          <button class="prizes-btn primary-button csv feedback-btn" (click)="export()"><span>Export csv</span></button>
+          <button class="prizes-btn primary-button csv" (click)="export()">Export csv</button>
         </div>
       </div>
     </ng-template>

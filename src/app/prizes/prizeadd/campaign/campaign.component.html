@@ -1,7 +1,8 @@
 
 <div class="header-nav">
   <div class="input-label campaign-title">CAMPAIGNS</div>
-  <button class="primary-button prizes-btn campaign-btn" type="button" [ngClass]="{'btn-disabled': !prizeId, 'feedback-btn': prizeId}" [disabled]="!prizeId" (click)="openModal(template)"> <span>New campaign </span></button>
+  <button class="primary-button prizes-btn campaign-btn" type="button" [ngClass]="{'btn-disabled': !prizeId}" [disabled]="!prizeId" (click)="openModal(template)">
+     New campaign </button>
 </div>
 <div class="d-flex space-between py-1">
   <div class="table-header mx-4 col-start-date">Start Date</div>
@@ -44,10 +45,8 @@
           <div class="invalid-validation" [hidden]="!editFlag || !qty.valid || checkValue() || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity cannot be less than redeemed.</div>
         </div>
         <input class="input" type="number" name="qty" [(ngModel)]="quantity" #qty="ngModel" required>
-        <div class="button-group"> 
-          <button class="prizes-btn primary-button feedback-btn" type="submit"><span>Save</span></button>
-          <button class="prizes-btn secondary-button feedback-btn" type="button" (click)="modalRef.hide()"><span>Cancel</span></button>
-        </div>
+        <button class="prizes-btn primary-button" type="submit">Save</button>
+        <button class="prizes-btn secondary-button" type="button" (click)="modalRef.hide()">Cancel</button>
       </form>
     </div>
   </ng-template>

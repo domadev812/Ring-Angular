@@ -4,14 +4,14 @@
     <div class="header-nav">
       <h1 class="headers">Users</h1>
       <div class="button-group">
-        <button class="users-button feedback-btn" (click)="addNewUser()"><span>New User          </span></button>
+        <button class="users-button" (click)="addNewUser()" *ngIf="canCreateNewUser">New User          </button>
       </div>
     </div>
     <div class="justify-start newTabs mb-4">
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('student')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'student'}">Students</div>
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('key_contact')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'key_contact'}">Key Contacts</div>
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('counselor')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselor'}">Counselors</div>
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('business_owner')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'business_owner'}">Business Owners</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('student')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'student'}" *ngIf="canViewStudents">Students</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('key_contact')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'key_contact'}" *ngIf="canViewKeyContacts">Key Contacts</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('counselor')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselor'}" *ngIf="canViewCounselors">Counselors</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('business_owner')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'business_owner'}" *ngIf="canViewBusinessOwners">Business Owners</div>
     </div>
     <app-students *ngIf="selectedTab === 'student'"></app-students>
     <app-keycontacts *ngIf="selectedTab === 'key_contact'"></app-keycontacts>

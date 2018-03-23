@@ -90,6 +90,7 @@ export class InternshipAddComponent implements OnInit {
   }
 
 
+
   onCareerSelect(item: any) {
     this.onChange(item);
     console.log('on select careers', this.selectedCareers);

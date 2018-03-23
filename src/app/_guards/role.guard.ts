@@ -15,7 +15,7 @@ export class RoleGuard implements CanActivate {
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     try {
-      let user = await this.currentUserService.getCurrentUser(this.authService, true);
+      let user = await this.currentUserService.getCurrentUser(this.authService);
       for (let role of user.roles) {
         let userRoles = this.accessService.getRoleAccess(role);
         if (userRoles.routeAccess.find(x => x === state.url.split('/')[1])) {

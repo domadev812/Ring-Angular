@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private navBarService: NavbarService,
-  ) { 
+  ) {
   }
 
   ngOnInit() {
@@ -26,22 +26,20 @@ export class LoginComponent implements OnInit {
     this.loginForm = new FormGroup({
       email: new FormControl(),
       password: new FormControl()
-   });
+    });
   }
 
   login(): void {
-      this.authService.login(this.loginForm.value)
-        .subscribe((response) => {
-          if (this.authService.redirectUrl) {
-            this.router.navigate([this.authService.redirectUrl]);                              
-          } else {
-            this.router.navigate(['/users']);
-          }
-        }, (err) => {
-          let message = err.message ? `: ${err.message}` : '';
-          alert(message);
+    this.authService.login(this.loginForm.value)
+      .subscribe((response) => {
+        {
+          this.router.navigate(['resources']);
+        }
+      }, (err) => {
+        let message = err.message ? `: ${err.message}` : '';
+        alert(message);
 
-          // loader.dismiss();
-        });
-    }
+        // loader.dismiss();
+      });
+  }
 }

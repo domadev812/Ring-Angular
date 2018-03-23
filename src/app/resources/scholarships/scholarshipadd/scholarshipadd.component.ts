@@ -25,7 +25,7 @@ export class ScholarshipAddComponent implements OnInit {
   public schools: Array<Model.Organization>;
   public organizations: Array<Model.Organization>;
   public ktsSelectSettings: any = {};
-  public ktsMultiSettings = {};
+  public ktsMultiSettings: any = {};
   public selectedEthnicities = [];
   public careerList = [];
   public selectedCareers = [];
@@ -37,7 +37,6 @@ export class ScholarshipAddComponent implements OnInit {
   public editFlag: boolean;
   public disableFlag: boolean;
   public creating = false;
-  public scholarshipId: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -58,13 +57,13 @@ export class ScholarshipAddComponent implements OnInit {
     this.organizations = new Array<Model.Organization>(null);
     this.title = 'New Scholarship';
 
-    this.scholarshipId = this.route.snapshot.paramMap.get('scholarshipId');
-    if (this.scholarshipId !== null) {
+    const id = this.route.snapshot.paramMap.get('scholarshipId');
+    if (id !== null) {
       this.title = 'Edit Scholarship';
       this.editFlag = true;
       this.disableFlag = true;
 
-      this.getScholarship(this.scholarshipId);
+      this.getScholarship(id);
     }
 
     this.getUser();
@@ -75,14 +74,13 @@ export class ScholarshipAddComponent implements OnInit {
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
   }
 
+
   getUser() {
     this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
       if (res) {
         this.setAdminStatus(res.roles);
         const org = res.organization;
-        if (!this.scholarshipId) {
-          this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.scholarship.organization_id));
-        }
+        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.scholarship.organization_id));
       }
     }, err => {
       console.log('err', err);
@@ -100,7 +98,6 @@ export class ScholarshipAddComponent implements OnInit {
   onSchoolSelect(item: any) {
     this.onChange(item);
   }
-
   onSchoolDeSelect(item: any) {
     this.onChange(item);
   }
@@ -133,7 +130,6 @@ export class ScholarshipAddComponent implements OnInit {
     this.scholarship.organization_id = item.id;
     this.onChange(item);
   }
-
   onOrganizationDeSelect(item: any) {
     this.scholarship.organization_id = null;
     this.onChange(item);
@@ -298,6 +294,7 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   deleteScholarship(): void {
+
   }
 
   validURL(url: string) {

@@ -2,19 +2,19 @@
   .logo-img
     img.logo(src='../assets/logos/Logo_Full_Red.png')
   ul.nav-list.justify-end
-    li.nav-item((click)="switchTab('users')" [ngClass]="{'nav-item-selected': tab === 'users'}")
+    li.nav-item((click)="switchTab('users')" [ngClass]="{'nav-item-selected': tab === 'users'}", *ngIf="canViewUsers")
       a([routerLink]="['/users']" ) Users
 
-    li.nav-item((click)="switchTab('organizations')" [ngClass]="{'nav-item-selected': tab === 'organizations'}")
+    li.nav-item((click)="switchTab('organizations')" [ngClass]="{'nav-item-selected': tab === 'organizations'}", *ngIf="canViewOrganizations")
       a([routerLink]="['/organizations']" ) Organizations
 
-    li.nav-item((click)="switchTab('resources')" [ngClass]="{'nav-item-selected': tab === 'resources'}")
+    li.nav-item((click)="switchTab('resources')" [ngClass]="{'nav-item-selected': tab === 'resources'}", *ngIf="canViewResources")
       a([routerLink]="['/resources']" ) Resources
 
-    li.nav-item((click)="switchTab('prizes')" [ngClass]="{'nav-item-selected': tab === 'prizes'}")
+    li.nav-item((click)="switchTab('prizes')" [ngClass]="{'nav-item-selected': tab === 'prizes'}" *ngIf="canViewAwardedPrizes" )
       a([routerLink]="['/prizes']" ) Prizes
 
-    li.nav-item((click)="switchTab('notifications')" [ngClass]="{'nav-item-selected': tab === 'notifications'}")
+    li.nav-item((click)="switchTab('notifications')" [ngClass]="{'nav-item-selected': tab === 'notifications'}" *ngIf="canViewNotifications")
       a([routerLink]="['/notifications']" ) Notifications
 
     li.nav-item.fa.fa-cog((click)="active=!active" )

@@ -19,7 +19,7 @@
               | NAME
               .invalid-validation([hidden]="name.valid || (name.pristine && !scholarshipForm.submitted)")
                 | Name is required
-            input.resources-input(type="text" name="name" [(ngModel)]='scholarship.title' (ngModelChange)="onChange($event)" #name='ngModel' required)
+            input.resources-input(name="name" [(ngModel)]='scholarship.title' (ngModelChange)="onChange($event)" #name='ngModel' required)
           .item-info
             .input-label
               | DESCRIPTION
@@ -82,7 +82,7 @@
               (onDeSelect)='onSchoolDeSelect($event)'
             )     
           .item-info  
-            input(type='checkbox' [(ngModel)]='scholarship.in_app' (ngModelChange)="onChange($event)" id='in_app' name='checkbox')
+            input(type='checkbox' [(ngModel)]='scholarship.in_app' [disabled]="editFlag" (ngModelChange)="onChange($event)" id='in_app' name='checkbox')
             label(for='in_app')
               | In App
           .item-info

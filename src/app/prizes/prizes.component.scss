@@ -10,7 +10,6 @@
 }
 .prizes-btn {
   @extend .new-button-group;
-  width: 160px;
 }
 .prizes {
   position: relative;
@@ -33,13 +32,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding-bottom: 20px;
-  .close {
-    span{
-      color: gray;
-      font-weight: 100;
-      font-size: 0.8rem;
-    }
+
+  span{
+    color: gray;
+    font-weight: 100;
+    font-size: 0.8rem;
   }
   button {
     margin-top: 10px;
@@ -78,5 +75,5 @@
     .csv {
       width: 200px;
     }
-  }  
+  }
 }  

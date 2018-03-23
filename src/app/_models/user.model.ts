@@ -29,4 +29,8 @@ export class User extends BaseUser {
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');
   }
+
+  getRole(): string {
+    return this.roles[0];
+  }
 }

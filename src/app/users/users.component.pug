@@ -4,17 +4,16 @@
       h1.headers
         | Users
       .button-group
-          button.users-button.feedback-btn((click)='addNewUser()')
-            span
-              | New User          
+          button.users-button((click)='addNewUser()', *ngIf="canCreateNewUser")
+            | New User          
     .justify-start.newTabs.mb-4
-      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('student')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'student'}")
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('student')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'student'}", *ngIf="canViewStudents" )
         | Students
-      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('key_contact')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'key_contact'}")
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('key_contact')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'key_contact'}", *ngIf="canViewKeyContacts")
         | Key Contacts
-      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('counselor')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselor'}")
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('counselor')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselor'}", *ngIf="canViewCounselors")
         | Counselors
-      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('business_owner')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'business_owner'}")
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('business_owner')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'business_owner'}", *ngIf="canViewBusinessOwners")
         | Business Owners
     app-students(*ngIf="selectedTab === 'student'")
     app-keycontacts(*ngIf="selectedTab === 'key_contact'")

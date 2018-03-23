@@ -6,12 +6,10 @@
         h1.headers
           | {{title}}
         .button-group
-            button.save-button(type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag") 
-              span
-                | Save
-            button.cancel-button.feedback-btn(type="button" (click)="goBack()") 
-              span
-                | Cancel
+            button.save-button(type="submit" [ngClass]="{'btn-disabled': disableFlag === true}" [disabled]="disableFlag") 
+              | Save
+            button.cancel-button(type="button" (click)="goBack()") 
+              | Cancel
       .applicants-view.fixed-header(*ngIf="editFlag === true && internship.users" (click)="gotoApplicants(internship.id)")
         | Applicants: {{internship.users.length}}         
         img.link-arrow(src="../assets/imgs/link-arrow.svg") 

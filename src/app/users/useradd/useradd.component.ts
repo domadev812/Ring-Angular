@@ -1,5 +1,5 @@
 import 'rxjs/add/observable/throw';
-import { Component, OnInit, TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
 import { error } from 'util';
 import { MultiSelectService, UsersService, NavbarService, AuthService, CurrentUserService } from '../../app.services-list';
@@ -13,9 +13,9 @@ import { GlobalState } from '../../global.state';
   styleUrls: ['./useradd.component.scss']
 })
 
-export class UserAddComponent implements OnInit { 
+export class UserAddComponent implements OnInit {
   currentUser: Model.User;
-  user: Model.User; 
+  user: Model.User;
   originalUser: Model.User;
   title: string;
   organizationTitle: string;
@@ -25,10 +25,10 @@ export class UserAddComponent implements OnInit {
   sponsorList = [];
   organizationList = [];
   selectedOrganization = [];
-  typeList = [{itemName: 'Student', id: 'student'},
-                      {itemName: 'Key Contact', id: 'key_contact'},
-                      {itemName: 'Counselor', id: 'counselor'},
-                      {itemName: 'Business Owner', id: 'business_owner'}];
+  typeList = [{ itemName: 'Student', id: 'student' },
+  { itemName: 'Key Contact', id: 'key_contact' },
+  { itemName: 'Counselor', id: 'counselor' },
+  { itemName: 'Business Owner', id: 'business_owner' }];
   filteredTypeList = [];
   selectedType = [];
   ktsTypeSettings = {};
@@ -36,7 +36,7 @@ export class UserAddComponent implements OnInit {
   creating = false;
 
   constructor(
-    public route: ActivatedRoute, 
+    public route: ActivatedRoute,
     public router: Router,
     public usersService: UsersService,
     public multiSelectService: MultiSelectService,
@@ -46,25 +46,25 @@ export class UserAddComponent implements OnInit {
     public currentUserService: CurrentUserService,
   ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('users');    
+    this.navBarService.activeTabChanged('users');
     this.title = 'New User';
     this.organizationTitle = 'School';
-    this.user = new Model.User({});        
-    this.originalUser = new Model.User({});    
+    this.user = new Model.User({});
+    this.originalUser = new Model.User({});
     this.editFlag = false;
-    this.disableFlag = false;         
-    this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);    
-    this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);  
+    this.disableFlag = false;
+    this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);
+    this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);
 
     const id = this.route.snapshot.paramMap.get('userId');
     this.getCurrentUser();
     if (id !== null) {
       this.title = 'User Details';
-      this.editFlag = true;                    
-      this.ktsTypeSettings['disabled'] = true;  
-      this.ktsOrganizationSettings['disabled'] = true;    
+      this.editFlag = true;
+      this.ktsTypeSettings['disabled'] = true;
+      this.ktsOrganizationSettings['disabled'] = true;
       this.getUser(id);
     }
     this.getSchools();
@@ -72,7 +72,7 @@ export class UserAddComponent implements OnInit {
   }
 
   onSchoolSelect(item: any) {
-    this.user.organization_id = item.id;    
+    this.user.organization_id = item.id;
     this.onChange(item);
   }
 
@@ -81,8 +81,8 @@ export class UserAddComponent implements OnInit {
   }
 
   onTypeSelect(item: any) {
-    this.user.type = item.id; 
-    this.changeOrganizationList();       
+    this.user.type = item.id;
+    this.changeOrganizationList();
     this.onChange(item);
     this.global.selectedTab = item.id;
   }
@@ -96,24 +96,24 @@ export class UserAddComponent implements OnInit {
     this.router.navigate(['users']);
   }
 
-  getCurrentUser(): void {   
+  getCurrentUser(): void {
     this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
-      this.currentUser = res;      
-      let roles = this.currentUser.roles.map(role => role); 
-      this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);    
-      this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);          
+      this.currentUser = res;
+      let roles = this.currentUser.roles.map(role => role);
+      this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);
+      this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);
       if (roles.indexOf('admin') !== -1) {
         this.filteredTypeList = this.typeList.map(type => type);
       } else if (roles.indexOf('key_contact') !== -1) {
         this.filteredTypeList = this.typeList.filter(type => type.id === 'counselor' || type.id === 'student');
-        this.selectedOrganization.push({id: this.currentUser.organization_id, itemName: this.currentUser.organization.name});         
-        this.ktsOrganizationSettings['disabled'] = true;        
+        this.selectedOrganization.push({ id: this.currentUser.organization_id, itemName: this.currentUser.organization.name });
+        this.ktsOrganizationSettings['disabled'] = true;
       } else if (roles.indexOf('counselor') !== -1) {
         this.filteredTypeList = this.typeList.filter(type => type.id === 'student');
-        this.selectedOrganization.push({id: this.currentUser.organization_id, itemName: this.currentUser.organization.name});
+        this.selectedOrganization.push({ id: this.currentUser.organization_id, itemName: this.currentUser.organization.name });
         this.selectedType.push(this.filteredTypeList[0]);
-        this.ktsTypeSettings['disabled'] = true;  
-        this.ktsOrganizationSettings['disabled'] = true; 
+        this.ktsTypeSettings['disabled'] = true;
+        this.ktsOrganizationSettings['disabled'] = true;
       } else if (roles.indexOf('business_owner') !== -1) {
         this.filteredTypeList = this.typeList.map(type => type);
       }
@@ -122,9 +122,9 @@ export class UserAddComponent implements OnInit {
 
   getUser(id): void {
     this.creating = true;
-    this.usersService.getUser(id).subscribe( (res) => {          
+    this.usersService.getUser(id).subscribe((res) => {
       this.user = res;
-      this.originalUser = Object.assign({}, this.user);                  
+      this.originalUser = Object.assign({}, this.user);
       let userRole = this.getUserRole();
 
       if (userRole) {
@@ -133,11 +133,11 @@ export class UserAddComponent implements OnInit {
 
       if (this.organizationList.length > 0) {
         this.selectOrganizations();
-      } 
+      }
 
       this.disableFlag = true;
       this.creating = false;
-    }, (errors) => {      
+    }, (errors) => {
       this.creating = false;
       alert('Server error');
     });
@@ -146,7 +146,7 @@ export class UserAddComponent implements OnInit {
   getUserRole(): any {
     return this.typeList.find(type => {
       let role = this.user.roles.find(roleItem => roleItem === type.id);
-      return role ? true : false;      
+      return role ? true : false;
     });
   }
 
@@ -161,15 +161,15 @@ export class UserAddComponent implements OnInit {
     let org = this.organizationList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
     if (org) {
       this.selectedOrganization.push(org);
-    } 
+    }
   }
 
   onChange(event): void {
-    if (this.editFlag && this.user && this.originalUser) {           
+    if (this.editFlag && this.user && this.originalUser) {
       if (this.user.first_name !== this.originalUser.first_name) {
         this.disableFlag = false;
         return;
-      }      
+      }
       if (this.user.last_name !== this.originalUser.last_name) {
         this.disableFlag = false;
         return;
@@ -181,25 +181,25 @@ export class UserAddComponent implements OnInit {
     }
   }
 
-  saveUser(formValid: boolean): void { 
+  saveUser(formValid: boolean): void {
     if (!formValid) {
       return;
-    } 
-    
+    }
+
     this.getMultiselectValues();
-    
-    if (!this.user.id) {      
+
+    if (!this.user.id) {
       this.createUser();
-    } else { 
-      this.updateUser();            
+    } else {
+      this.updateUser();
     }
   }
 
   getMultiselectValues() {
     if (this.selectedOrganization.length === 0 || this.selectedType.length === 0) {
       return;
-    }    
-    
+    }
+
     this.user.organization_id = this.selectedOrganization[0].id;
 
     if (!this.user.roles) {
@@ -212,35 +212,35 @@ export class UserAddComponent implements OnInit {
 
   createUser() {
     this.creating = true;
-    this.usersService.createUser(this.user).subscribe( (res) => {            
+    this.usersService.createUser(this.user).subscribe((res) => {
       this.creating = false;
-      alert('User is created');                
-      this.router.navigate(['users']);       
-    }, (errors) => {      
+      alert('User is created');
+      this.router.navigate(['users']);
+    }, (errors) => {
       this.creating = false;
-      alert(errors.message);      
+      alert(errors.message);
     });
   }
 
   updateUser() {
     let updatedUser = Object.assign({}, this.user);
     delete updatedUser.password;
-    this.creating = false;             
-    this.usersService.updateUser(updatedUser).subscribe( (res) => {            
+    this.creating = false;
+    this.usersService.updateUser(updatedUser).subscribe((res) => {
       this.creating = false;
-      alert('User is updated');                
-      this.router.navigate(['users']);       
-    }, (errors) => {      
+      alert('User is updated');
+      this.router.navigate(['users']);
+    }, (errors) => {
       this.creating = false;
       alert(errors.message);
-    }); 
+    });
   }
 
   getSchools(): void {
     this.multiSelectService.getDropdownSchools().subscribe((res: MultiSelectUtil.SelectItem[]) => {
-      this.schoolList = res;      
-      if (this.editFlag && this.user.organization_id && this.schoolList.length > 0) {        
-        let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));                
+      this.schoolList = res;
+      if (this.editFlag && this.user.organization_id && this.schoolList.length > 0) {
+        let org = this.schoolList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
         if (org) {
           this.selectedOrganization.push(org);
         }
@@ -253,14 +253,14 @@ export class UserAddComponent implements OnInit {
 
   getSponsors(): void {
     this.multiSelectService.getDropdownSponsors().subscribe((res: MultiSelectUtil.SelectItem[]) => {
-      this.sponsorList = res;      
-      if (this.editFlag && this.user.organization_id && this.sponsorList.length > 0) {        
-        let org = this.sponsorList.find(organization => organization.id === parseInt(this.user.organization_id, 0));                
+      this.sponsorList = res;
+      if (this.editFlag && this.user.organization_id && this.sponsorList.length > 0) {
+        let org = this.sponsorList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
         if (org) {
           this.selectedOrganization.push(org);
         }
       }
-      this.changeOrganizationList();      
+      this.changeOrganizationList();
     }, err => {
       console.log('err', err);
     });
@@ -269,7 +269,7 @@ export class UserAddComponent implements OnInit {
   changeOrganizationList(): void {
     if (this.selectedType.length > 0 && this.selectedType[0].id === 'business_owner') {
       this.organizationTitle = 'Organization';
-      this.organizationList = this.sponsorList.map(sponsor => sponsor);      
+      this.organizationList = this.sponsorList.map(sponsor => sponsor);
     } else {
       this.organizationTitle = 'School';
       this.organizationList = this.schoolList.map(school => school);

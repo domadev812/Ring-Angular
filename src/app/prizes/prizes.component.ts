@@ -8,7 +8,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Model } from '../app.models-list';
 import { error } from 'util';
 import { PrizesService } from '../app.services-list';
-import { NavbarService } from '../app.services-list';
+import { NavbarService, CurrentUserService, AuthService, AccessService } from '../app.services-list';
 import { GlobalState } from '../global.state';
 
 @Component({
@@ -25,6 +25,10 @@ export class PrizesComponent implements OnInit {
   private endDate: Date = new Date();
   private validPick: boolean;
   private checked = true;
+  canCreateNewPrize: boolean;
+  canUseAwardedCsv: boolean;
+  canActivateKeycard: boolean;
+  canViewAwardedPrizes: boolean;
   private config = {
     animated: true,
     keyboard: true,
@@ -39,6 +43,9 @@ export class PrizesComponent implements OnInit {
     private prizesService: PrizesService,
     private global: GlobalState,
     private navBarService: NavbarService,
+    private currentUserService: CurrentUserService,
+    private authProvider: AuthService,
+    public access: AccessService
   ) { }
 
   ngOnInit() {
@@ -55,12 +62,25 @@ export class PrizesComponent implements OnInit {
       allCheck: new FormControl(true),
       startDate: new FormControl(),
       endDate: new FormControl()
-   });
-   this.exportForm.controls['startDate'].disable();
-   this.exportForm.controls['endDate'].disable();
-   this.startDate = new Date();
-   this.endDate = new Date();
-   this.validPick = true;
+    });
+    this.exportForm.controls['startDate'].disable();
+    this.exportForm.controls['endDate'].disable();
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.validPick = true;
+    this.getUser();
+  }
+
+
+  getUser() {
+    this.currentUserService.getCurrentUser(this.authProvider).then((user: Model.User) => {
+      if (user) {
+        this.canCreateNewPrize = this.access.getRoleAccess(user.getRole()).functionalityAccess.newPrizeButton;
+        this.canUseAwardedCsv = this.access.getRoleAccess(user.getRole()).functionalityAccess.awardedCsvButton;
+        this.canActivateKeycard = this.access.getRoleAccess(user.getRole()).functionalityAccess.activateKeycardButton;
+        this.canViewAwardedPrizes = this.access.getRoleAccess(user.getRole()).functionalityAccess.awardedPrizesIndex;
+      }
+    });
   }
 
   switchTab(selectedTab: String): void {
@@ -94,9 +114,9 @@ export class PrizesComponent implements OnInit {
   export(): void {
     if (this.startDate < this.endDate || this.checked) {
       this.prizesService.exportCSV(this.exportForm.value)
-      .subscribe((err) => {
-        let message = err;
-      });
+        .subscribe((err) => {
+          let message = err;
+        });
     } else {
       this.validPick = false;
     }
