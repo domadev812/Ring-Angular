@@ -12,8 +12,10 @@ export class Organization {
   created_at: any;
   updated_at: any;  
   
-  constructor(data) { 
-    this.setData(data);
+  constructor(data = null) { 
+    if (data) {
+      this.setData(data);
+    }
   }
 
   setData(data) {    

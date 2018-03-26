@@ -20,7 +20,7 @@
         .table-data-primary.mx-4.col-resource
           | {{internship.title}}
         .table-data.mx-4.col-organization
-          | {{getOrganizationNameById(internship.organization_id)}}
+          | {{internship.organization.name}}
         .table-data.mx-4.col-link
           | {{internship.link}}
         .table-data.mx-4.col-created

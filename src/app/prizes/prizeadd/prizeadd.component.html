@@ -19,12 +19,6 @@
           <input class="prize-input" type="text" name="name" [(ngModel)]="prize.title" (ngModelChange)="onChange($event)" #name="ngModel" required>
         </div>
         <div class="item-info">
-          <div class="input-label">DESCRIPTION
-            <div class="invalid-validation" [hidden]="details.valid || (details.pristine &amp;&amp; !prizeForm.submitted)">Description is required</div>
-          </div>
-          <textarea class="prize-textarea" rows="6" name="details" [(ngModel)]="prize.details" (ngModelChange)="onChange($event)" #details="ngModel" required>                 </textarea>
-        </div>
-        <div class="item-info">
           <div class="input-label">SPONSOR
             <div class="invalid-validation" [hidden]="selectedSponsor.length &gt; 0 || !prizeForm.submitted">Sponsor is required</div>
           </div>

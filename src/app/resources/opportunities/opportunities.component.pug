@@ -20,7 +20,7 @@
         .table-data-primary.mx-4.col-resource
           | {{opportunity.title}}
         .table-data.mx-4.col-organization
-          | {{getOrganizationNameById(opportunity.organization_id)}}
+          | {{opportunity.organization.name}}
         .table-data.mx-4.col-link
           | {{opportunity.link}}
         .table-data.mx-4.col-created

@@ -75,9 +75,9 @@ export class PrizesIndexComponent implements OnInit {
   }
 
   getKeyValue(campaign: Model.Campaign, key: string): any {
-    if (campaign) {
+    if (campaign && campaign[key]) {
       return campaign[key];
     }
-    return null;
+    return '';
   }
 }

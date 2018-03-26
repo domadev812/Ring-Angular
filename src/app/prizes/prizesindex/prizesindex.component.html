@@ -17,7 +17,7 @@
     <div class="list" *ngFor="let prize of prizes">
       <div class="d-flex space-between bg-white py-1 pointer" (click)="editPrize(prize.id)">
         <div class="table-data-primary mx-4 col-prize">{{prize.title}}</div>
-        <div class="table-data mx-4 col-sponsor">{{prize.sponsor}}</div>
+        <div class="table-data mx-4 col-sponsor">{{prize.organization.name}}</div>
         <div class="table-data mx-4 col-delivery">{{prize.delivery_type}}</div>
         <div class="table-data mx-4 col-quantity">{{getKeyValue(prize.current_campaign, 'number_available')}}</div>
         <div class="table-data mx-4 col-redeemed">{{getKeyValue(prize.current_campaign, 'redeemed')}}</div>

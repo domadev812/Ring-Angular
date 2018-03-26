@@ -27,7 +27,7 @@ export class InternshipsComponent implements OnInit {
     this.organizations = new Array<Model.Organization>();
     this.limit = 50;
     this.offset = 0;
-    this.getOrganizationSize();
+    this.getInternships();
     this.loading = true;
   }
 
@@ -68,27 +68,4 @@ export class InternshipsComponent implements OnInit {
     this.infiniteScrollLoading = false;
   }
 
-  getOrganizationSize(): void {
-    this.resourcesService.getOrganizationSize().subscribe((res) => {
-      this.getOrganizations(res);
-    }, (errors) => {
-      this.loading = false;
-      alert('Server error');
-    });
-  }
-
-  getOrganizations(size): void {
-    this.resourcesService.getOrganizations(size).subscribe((res) => {
-      this.organizations = res.map(organization => organization);
-      this.getInternships();
-    }, (errors) => {
-      this.loading = false;
-      alert('Server error');
-    });
-  }
-
-  getOrganizationNameById(id): string {
-    let findOrganization = this.organizations.find(organization => organization.id === id);
-    return findOrganization.name;
-  }
 }

@@ -17,15 +17,16 @@ export class RoleGuard implements CanActivate {
     try {
       let user = await this.currentUserService.getCurrentUser(this.authService);
       for (let role of user.roles) {
-        let userRoles = this.accessService.getRoleAccess(role);
-        if (userRoles.routeAccess.find(x => x === state.url.split('/')[1])) {
+        let userRoles = this.accessService.getAccess(role);
+        if (userRoles.routeAccess[state.url.split('/')[1]]) {
           return true;
         }
         return false;
       }
     } catch (err) {
       if (err) {
-        console.log('ERROR');
+        console.log(err);
+        this.currentUserService.clearCurrentUserPromise();
       }
     }
   }

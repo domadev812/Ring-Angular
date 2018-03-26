@@ -43,11 +43,11 @@ export class UsersComponent implements OnInit {
   getUser() {
     this.currentUserService.getCurrentUser(this.authProvider).then((user: Model.User) => {
       if (user) {
-        this.canViewKeyContacts = this.access.getRoleAccess(user.getRole()).functionalityAccess.keyContactsTab;
-        this.canViewBusinessOwners = this.access.getRoleAccess(user.getRole()).functionalityAccess.businessOwnersTab;
-        this.canViewCounselors = this.access.getRoleAccess(user.getRole()).functionalityAccess.counselorsTab;
-        this.canViewStudents = this.access.getRoleAccess(user.getRole()).functionalityAccess.studentsTab;
-        this.canCreateNewUser = this.access.getRoleAccess(user.getRole()).functionalityAccess.newUserButton;
+        this.canViewKeyContacts = this.access.getAccess(user.getRole()).functionalityAccess.keyContactsTab;
+        this.canViewBusinessOwners = this.access.getAccess(user.getRole()).functionalityAccess.businessOwnersTab;
+        this.canViewCounselors = this.access.getAccess(user.getRole()).functionalityAccess.counselorsTab;
+        this.canViewStudents = this.access.getAccess(user.getRole()).functionalityAccess.studentsTab;
+        this.canCreateNewUser = this.access.getAccess(user.getRole()).functionalityAccess.newUserButton;
       }
     }, err => {
       console.log('err', err);

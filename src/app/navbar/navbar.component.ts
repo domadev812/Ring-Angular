@@ -45,11 +45,11 @@ export class NavbarComponent implements OnInit {
   
   changeNavState(user: Model.User): void {
     if (user) {
-      this.canViewUsers = this.access.getRoleAccess(user.getRole()).functionalityAccess.usersTab;
-      this.canViewOrganizations = this.access.getRoleAccess(user.getRole()).functionalityAccess.organizationTab;
-      this.canViewResources = this.access.getRoleAccess(user.getRole()).functionalityAccess.resourcesTab;
-      this.canViewAwardedPrizes = this.access.getRoleAccess(user.getRole()).functionalityAccess.prizesTab;
-      this.canViewNotifications = this.access.getRoleAccess(user.getRole()).functionalityAccess.notificationsTab;
+      this.canViewUsers = this.access.getAccess(user.getRole()).functionalityAccess.usersTab;
+      this.canViewOrganizations = this.access.getAccess(user.getRole()).functionalityAccess.organizationTab;
+      this.canViewResources = this.access.getAccess(user.getRole()).functionalityAccess.resourcesTab;
+      this.canViewAwardedPrizes = this.access.getAccess(user.getRole()).functionalityAccess.prizesTab;
+      this.canViewNotifications = this.access.getAccess(user.getRole()).functionalityAccess.notificationsTab;
     }
   }
 

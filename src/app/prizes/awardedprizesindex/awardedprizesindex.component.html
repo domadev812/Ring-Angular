@@ -1,7 +1,7 @@
 
 <div id="keycardindex">
   <div class="search-bar"><i class="fa fa-search search-icon"></i>
-    <input class="search-text" type="text" placeholder="Search Awarded Prizes..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+    <input class="search-text" type="text" placeholder="Search Awarded Prizes..." [(ngModel)]="searchText" (keyup.enter)="searchItems($event)">
   </div>
   <ngx-loading [show]="loading"></ngx-loading>
   <div class="d-flex space-between py-1">

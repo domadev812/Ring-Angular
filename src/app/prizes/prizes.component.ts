@@ -75,10 +75,10 @@ export class PrizesComponent implements OnInit {
   getUser() {
     this.currentUserService.getCurrentUser(this.authProvider).then((user: Model.User) => {
       if (user) {
-        this.canCreateNewPrize = this.access.getRoleAccess(user.getRole()).functionalityAccess.newPrizeButton;
-        this.canUseAwardedCsv = this.access.getRoleAccess(user.getRole()).functionalityAccess.awardedCsvButton;
-        this.canActivateKeycard = this.access.getRoleAccess(user.getRole()).functionalityAccess.activateKeycardButton;
-        this.canViewAwardedPrizes = this.access.getRoleAccess(user.getRole()).functionalityAccess.awardedPrizesIndex;
+        this.canCreateNewPrize = this.access.getAccess(user.getRole()).functionalityAccess.newPrizeButton;
+        this.canUseAwardedCsv = this.access.getAccess(user.getRole()).functionalityAccess.awardedCsvButton;
+        this.canActivateKeycard = this.access.getAccess(user.getRole()).functionalityAccess.activateKeycardButton;
+        this.canViewAwardedPrizes = this.access.getAccess(user.getRole()).functionalityAccess.awardedPrizesIndex;
       }
     });
   }

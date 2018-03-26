@@ -33,7 +33,6 @@ export class CurrentUserService {
     if (this.currentUser === undefined || this.token === undefined) {
       this.token = window.localStorage.getItem('Token');
       if (user) {
-
         this.currentUser = user;
         this.emitUpdate();
       }
@@ -49,7 +48,7 @@ export class CurrentUserService {
 
   // stores the promise it receives as a new variable
   getCurrentUser(authProvider: AuthService, force: boolean = false): Promise<Model.User> {
-    let token = localStorage.getItem('Token');        
+    let token = localStorage.getItem('Token');   
     if (!this.currentUserPromise || force) {
       this.currentUserPromise = new Promise((resolve, reject) => {
         if (this.currentUser && !force) {
@@ -77,6 +76,12 @@ export class CurrentUserService {
       });
     }
     return this.currentUserPromise;
+  }
+
+  // On login, we have to clear current user promise after it returns "user is not logged in". 
+  // That way, it doesn't always return this after a successfull login
+  clearCurrentUserPromise(): void {
+    this.currentUserPromise = null;
   }
 
   hasCurrentUser(): boolean {

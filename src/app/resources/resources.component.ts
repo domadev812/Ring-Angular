@@ -45,12 +45,12 @@ export class ResourcesComponent implements OnInit {
   getUser() {
     this.currentUserService.getCurrentUser(this.authProvider).then((user: Model.User) => {
       if (user) {
-        this.canViewScholarships = this.access.getRoleAccess(user.getRole()).functionalityAccess.scholarshipsTab;
-        this.canViewInternships = this.access.getRoleAccess(user.getRole()).functionalityAccess.internshipsTab;
-        this.canviewOtherOpportunities = this.access.getRoleAccess(user.getRole()).functionalityAccess.otherOpportunitiesTab;
-        this.canCreateInternships = this.access.getRoleAccess(user.getRole()).functionalityAccess.newInternshipButton;
-        this.canCreateOpportunities = this.access.getRoleAccess(user.getRole()).functionalityAccess.newOpportunityButton;
-        this.canCreateScholarships = this.access.getRoleAccess(user.getRole()).functionalityAccess.newScholarshipButton;
+        this.canViewScholarships = this.access.getAccess(user.getRole()).functionalityAccess.scholarshipsTab;
+        this.canViewInternships = this.access.getAccess(user.getRole()).functionalityAccess.internshipsTab;
+        this.canviewOtherOpportunities = this.access.getAccess(user.getRole()).functionalityAccess.otherOpportunitiesTab;
+        this.canCreateInternships = this.access.getAccess(user.getRole()).functionalityAccess.newInternshipButton;
+        this.canCreateOpportunities = this.access.getAccess(user.getRole()).functionalityAccess.newOpportunityButton;
+        this.canCreateScholarships = this.access.getAccess(user.getRole()).functionalityAccess.newScholarshipButton;
       }
     });
   }

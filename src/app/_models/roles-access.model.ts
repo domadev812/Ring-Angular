@@ -1,7 +1,7 @@
 
 export class RolesAccess {
   role: string;
-  routeAccess: Array<string>;
+  routeAccess: RouteAccess;
   functionalityAccess: FunctionalityAccess;
 }
 
@@ -33,6 +33,28 @@ export class FunctionalityAccess {
   newOpportunityButton?: boolean;
   newUserButton?: boolean;
   awardedPrizesIndex?: boolean;
+}
 
-
+export class RouteAccess {
+  users?: boolean;
+  useradd?: boolean;
+  organizations?: boolean;
+  organizationadd?: boolean;
+  organizationedit?: boolean;
+  resources?: boolean;
+  prizes?: boolean;
+  prizeadd?: boolean;
+  prizeedit?: boolean;
+  notifications?: boolean;
+  notificationadd?: boolean;
+  notificationview?: boolean;
+  internshipadd?: boolean;
+  internshipedit?: boolean;
+  opportunityadd?: boolean;
+  opportunityedit?: boolean;
+  scholarshipadd?: boolean;
+  scholarshipedit?: boolean;
+  scholarshipapplicants?: boolean;
+  scholarshipapplication?: boolean;
+  applicants?: boolean;
 }

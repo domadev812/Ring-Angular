@@ -28,7 +28,7 @@ export class PrizeAddComponent implements OnInit {
   public ktsSelectSettings: any = {};
   public ktsDeliverySelectSettings = {};
   public creating = false;
-
+  
   constructor(private route: ActivatedRoute,
     private router: Router,
     private prizesService: PrizesService,
@@ -63,7 +63,9 @@ export class PrizeAddComponent implements OnInit {
       if (res) {
         this.setAdminStatus(res.roles);
         const org = res.organization;
-        this.selectedSponsor.push(new MultiSelectUtil.SelectItem(org.name, this.prize.id));
+        if (!this.editFlag) {
+          this.selectedSponsor.push(new MultiSelectUtil.SelectItem(org.name, this.prize.id));
+        }
       }
     }, err => {
       console.log('err', err);
@@ -103,9 +105,7 @@ export class PrizeAddComponent implements OnInit {
   getPrize(id, flag = true): void {
     this.creating = true;
     this.prizesService.getPrize(id).subscribe((res) => {
-      this.prize = res;
-      this.prize.details = 'Detail';
-      this.prize.delivery_type = 'Third Party';
+      this.prize = res;   
       this.originalPrize = Object.assign({}, this.prize);
       if (this.sponsorList.length > 0) {
         let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.organization_id, 0));
@@ -128,11 +128,6 @@ export class PrizeAddComponent implements OnInit {
   onChange(event): void {
     if (this.editFlag) {
       if (this.prize.title !== this.originalPrize.title) {
-        this.disableFlag = false;
-        return;
-      }
-
-      if (this.prize.details !== this.originalPrize.details) {
         this.disableFlag = false;
         return;
       }

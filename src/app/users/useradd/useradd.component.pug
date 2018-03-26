@@ -9,7 +9,7 @@
           button.users-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag")
             span
               | Save
-          button.users-btn.secondary-button.feedback-btn(type="button" (click)="goBack()") 
+          button.users-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)") 
             span
               | Cancel   
       .wrapper-content 
