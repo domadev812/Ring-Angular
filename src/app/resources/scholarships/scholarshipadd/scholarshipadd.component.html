@@ -58,11 +58,11 @@
           <angular2-multiselect name="schools" [data]="schoolList" [(ngModel)]="selectedSchools" [settings]="ktsMultiSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)">    </angular2-multiselect>
         </div>
         <div class="item-info"> 
-          <input type="checkbox" [(ngModel)]="scholarship.in_app" [disabled]="editFlag" (ngModelChange)="onChange($event)" id="in_app" name="checkbox">
+          <input type="checkbox" [(ngModel)]="scholarship.in_app" [disabled]="editFlag &amp;&amp; originalScholarship.in_app" (ngModelChange)="onChange($event)" id="in_app" name="in_app">
           <label for="in_app">In App</label>
         </div>
         <div class="item-info">
-          <input type="checkbox" [(ngModel)]="scholarship.active" (ngModelChange)="onChange($event)" id="active" name="checkbox">
+          <input type="checkbox" [(ngModel)]="scholarship.active" (ngModelChange)="onChange($event)" id="active" name="active">
           <label for="active">Active  </label>
         </div>
       </div>
