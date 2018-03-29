@@ -4,6 +4,7 @@ import { Model } from '../app.models-list';
 import * as Services from '../app.services-list';
 import { Subscription } from 'rxjs/Subscription';
 
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -59,6 +60,14 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(event) {
+    this.active = false;
     this.authService.logout();
   }
+  
+  detectClick(data) {
+    if(this.active == true && data == true)
+      data = false
+    this.active = data
+  }
+
 }

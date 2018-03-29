@@ -17,8 +17,8 @@
     li.nav-item((click)="switchTab('notifications')" [ngClass]="{'nav-item-selected': tab === 'notifications'}" *ngIf="canViewNotifications")
       a([routerLink]="['/notifications']" ) Notifications
 
-    li.nav-item.fa.fa-cog((click)="active=!active" )
+    li.nav-item.fa.fa-cog((detectClick)="detectClick($event)")
       .triangle(*ngIf="active")
-      .dropdown(*ngIf="active") 
+      .dropdown(*ngIf="active")
         a((click)="logout()") Logout
 

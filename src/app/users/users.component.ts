@@ -60,5 +60,6 @@ export class UsersComponent implements OnInit {
 
   switchTab(selectedTab: String): void {
     this.selectedTab = selectedTab;
+    this.global.selectedTab = selectedTab;
   }
 }

@@ -20,6 +20,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { GlobalState } from './global.state';
 import { LoadingModule } from 'ngx-loading';
+import { SharedModule } from './shared.module';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { LoadingModule } from 'ngx-loading';
     AngularMultiSelectModule,
     NotificationsModule,
     OrganizationsModule,
-    LoadingModule
+    LoadingModule,
+    SharedModule
 
   ],
   providers: [
