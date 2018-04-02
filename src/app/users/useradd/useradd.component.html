@@ -25,6 +25,12 @@
             <input class="user-input" type="text" name="lastName" [(ngModel)]="user.last_name" (ngModelChange)="onChange($event)" #lastName="ngModel" required>
           </div>
         </div>
+        <div class="item-info" *ngIf="adminFlag">
+          <div class="input-label">POINTS
+            <div class="invalid-validation" [hidden]="points.valid || (points.pristine &amp;&amp; !userForm.submitted)">Points is required</div>
+          </div>
+          <input class="user-input" type="number" [(ngModel)]="user.points" name="points" #points="ngModel" (ngModelChange)="onChange($event)" required>
+        </div>
         <div class="item-info" *ngIf="!editFlag">
           <div class="input-label">USER TYPE
             <div class="invalid-validation" [hidden]="selectedType.length &gt; 0 || !userForm.submitted">Type is required</div>
