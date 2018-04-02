@@ -1,24 +1,24 @@
 #notificationslist
   ngx-loading([show]='loading') 
-  .d-flex.space-between.py-1
-    .table-header.mx-4.col-subject
+  .d-flex.space-between.px-4.py-1
+    .table-header.col-subject
       | SUBJECT
-    .table-header.mx-4.col-message
+    .table-header.col-message
       | MESSAGE
-    .table-header.mx-4.col-sent
+    .table-header.col-sent
       | SENT
-    .table-header.mx-4.col-view
+    .table-header.col-view
       | &nbsp;
   .table-content-without-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let notification of notifications" (click)='viewNotification(notification.id)')
-      .d-flex.space-between.bg-white.py-1
-        .table-data-primary.mx-4.col-subject
+      .d-flex.space-between.bg-white.px-4.py-1
+        .table-data-primary.col-subject
           | {{notification.subject}}
-        .table-data.mx-4.col-message
+        .table-data.col-message
           | {{notification.body}}
-        .table-data.mx-4.col-sent
+        .table-data.col-sent
           | {{notification.created_at}}
-        .table-data.mx-4.col-view
+        .table-data.col-view
           i.fa.fa-eye.edit-row
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
       | Loading ...

@@ -3,29 +3,29 @@
     i.fa.fa-search.search-icon
     input.search-text(type="text" placeholder="Search internships..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
   ngx-loading([show]='loading')  
-  .d-flex.space-between.py-1
-    .table-header.mx-4.col-resource
+  .d-flex.space-between.px-4.py-1
+    .table-header.col-resource
       | Resource
-    .table-header.mx-4.col-organization
+    .table-header.col-organization
       | Organization
-    .table-header.mx-4.col-link
+    .table-header.col-link
       | Link
-    .table-header.mx-4.col-created
+    .table-header.col-created
       | Created
-    .table-header.mx-4.col-edit
+    .table-header.col-edit
       | &nbsp;
   .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let internship of internships")
-      .d-flex.space-between.bg-white.py-1.pointer((click)='editInternship(internship.id)')
-        .table-data-primary.mx-4.col-resource
+      .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='editInternship(internship.id)')
+        .table-data-primary.col-resource
           | {{internship.title}}
-        .table-data.mx-4.col-organization
+        .table-data.col-organization
           | {{internship.organization.name}}
-        .table-data.mx-4.col-link
+        .table-data.col-link
           | {{internship.link}}
-        .table-data.mx-4.col-created
+        .table-data.col-created
           | {{internship.created_at}}
-        .table-data.mx-3.col-edit
+        .table-data.col-edit
           i.fa.fa-pencil.edit-row((click)='editInternship(internship.id)')
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
       |Loading ...
