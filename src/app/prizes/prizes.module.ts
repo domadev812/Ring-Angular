@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { LoadingModule } from 'ngx-loading';
+import { TooltipModule } from 'ngx-bootstrap';
 
 import * as Services from '../app.services-list';
 import { routing } from '../app.routing';
@@ -36,6 +37,7 @@ import { AwardedPrizesIndexComponent } from './awardedprizesindex/awardedprizesi
     SharedModule,
     ModalModule.forRoot(),
     ButtonsModule.forRoot(),
+    TooltipModule.forRoot(),
     BsDatepickerModule.forRoot()
   ],
   providers: [
