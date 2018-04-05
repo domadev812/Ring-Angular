@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { InfiniteScrollerDirective } from './_directives/infinite-scroll.directive';
 import { ImagePreviewDirective } from './_directives/image-upload-preview.directive';
 import { DetectClickDirective } from './_directives/detect-click.directive';
+import { MouseWheelDirective } from './_directives/mousewheel.directive';
 
 
 @NgModule({
   declarations: [
     InfiniteScrollerDirective,
     ImagePreviewDirective,
-    DetectClickDirective
+    DetectClickDirective,
+    MouseWheelDirective
   ],
   imports: [
   ],
@@ -19,7 +21,8 @@ import { DetectClickDirective } from './_directives/detect-click.directive';
   exports: [
     InfiniteScrollerDirective,
     ImagePreviewDirective,
-    DetectClickDirective
+    DetectClickDirective,
+    MouseWheelDirective
   ]
 })
 export class SharedModule { }

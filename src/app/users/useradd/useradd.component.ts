@@ -26,15 +26,14 @@ export class UserAddComponent implements OnInit {
   organizationList = [];
   selectedOrganization = [];
   typeList = [{ itemName: 'Student', id: 'student' },
-              { itemName: 'Key Contact', id: 'key_contact' },
-              { itemName: 'Counselor', id: 'counselor' },
-              { itemName: 'Business Owner', id: 'business_owner' }];
+  { itemName: 'Key Contact', id: 'key_contact' },
+  { itemName: 'Counselor', id: 'counselor' },
+  { itemName: 'Business Owner', id: 'business_owner' }];
   filteredTypeList = [];
   selectedType = [];
   ktsTypeSettings = {};
   ktsOrganizationSettings = {};
   creating = false;
-  adminFlag = false;
 
   constructor(
     public route: ActivatedRoute,
@@ -105,7 +104,6 @@ export class UserAddComponent implements OnInit {
       this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);
       if (roles.indexOf('admin') !== -1) {
         this.filteredTypeList = this.typeList.map(type => type);
-        this.adminFlag = true;
       } else if (roles.indexOf('key_contact') !== -1) {
         this.filteredTypeList = this.typeList.filter(type => type.id === 'counselor' || type.id === 'student');
         this.selectedOrganization.push({ id: this.currentUser.organization_id, itemName: this.currentUser.organization.name });
@@ -173,10 +171,6 @@ export class UserAddComponent implements OnInit {
         return;
       }
       if (this.user.last_name !== this.originalUser.last_name) {
-        this.disableFlag = false;
-        return;
-      }
-      if (this.user.points !== this.originalUser.points) {
         this.disableFlag = false;
         return;
       }

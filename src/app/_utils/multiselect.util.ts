@@ -3,7 +3,7 @@ import { Model } from '../app.models-list';
 export module MultiSelectUtil {
 
   export const multiSettings = {
-    text: 'MAKE SELECTION',
+    text: 'ALL or MAKE SELECTION',
     enableCheckAll: false,
     enableSearchFilter: true,
     classes: 'kts-multiselect',

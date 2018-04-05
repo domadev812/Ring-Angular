@@ -23,6 +23,7 @@ import { ScholarshipApplicantsComponent } from './scholarships/applicants/schola
 import { ScholarshipApplicationComponent } from './scholarships/application/scholarshipapplication.component';
 import { InfiniteScrollerDirective } from '../_directives/infinite-scroll.directive';
 import { SharedModule } from '../shared.module';
+import { MouseWheelDirective } from '../_directives/mousewheel.directive';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { SharedModule } from '../shared.module';
     AppliedUserComponent,
     ScholarshipAddComponent,
     ScholarshipApplicantsComponent,
-    ScholarshipApplicationComponent,
+    ScholarshipApplicationComponent
   ],
   imports: [
     CommonModule,

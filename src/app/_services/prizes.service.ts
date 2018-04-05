@@ -132,19 +132,6 @@ export class PrizesService {
       });
   }
 
-  deleteCampaign(prizeId: string, campaignId: number) {
-    let url = `${environment.apiUrl}/api/prizes/${prizeId}/campaign/${campaignId}`;
-    return this.http.delete(url)
-      .map((response: Response) => {
-        const json = response.json();
-        if (json && json.data) {
-          return true;
-        } else {
-          Observable.throw({ messages: 'Internal Server Error', response });
-        }
-      });
-  }
-
   saveData(data, fileName) {
     let a = document.createElement('a');
     document.body.appendChild(a);

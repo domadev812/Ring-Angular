@@ -26,12 +26,6 @@
               .invalid-validation([hidden]="lastName.valid || (lastName.pristine && !userForm.submitted)")
                 | Last Name is required
             input.user-input(type="text" name="lastName" [(ngModel)]='user.last_name' (ngModelChange)="onChange($event)" #lastName="ngModel" required)    
-        .item-info(*ngIf="adminFlag")
-          .input-label
-            | POINTS
-            .invalid-validation([hidden]="points.valid || (points.pristine && !userForm.submitted)")
-              | Points is required
-          input.user-input(type="number" [(ngModel)]="user.points" name="points" #points="ngModel" (ngModelChange)="onChange($event)" required ) 
         .item-info(*ngIf="!editFlag")
           .input-label
             | USER TYPE

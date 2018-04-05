@@ -71,7 +71,7 @@ export class ScholarshipAddComponent implements OnInit {
     this.getCareers();
     this.getSchools();
     this.getOrganizations();
-    
+
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
   }
 

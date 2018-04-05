@@ -84,10 +84,10 @@
               (onDeSelect)='onSchoolDeSelect($event)'
             )     
           .item-info  
-            input(type='checkbox' [(ngModel)]='scholarship.in_app' [disabled]="editFlag" (ngModelChange)="onChange($event)" id='in_app' name='in_app')
+            input(type='checkbox' [(ngModel)]='scholarship.in_app' [disabled]="editFlag" (ngModelChange)="onChange($event)" id='in_app' name='checkbox')
             label(for='in_app')
               | In App
           .item-info
-            input(type='checkbox' [(ngModel)]='scholarship.active' (ngModelChange)="onChange($event)" id='active' name='active')
+            input(type='checkbox' [(ngModel)]='scholarship.active' (ngModelChange)="onChange($event)" id='active' name='checkbox')
             label(for='active')
               | Active  

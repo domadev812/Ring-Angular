@@ -30,7 +30,7 @@
         | {{campaign.redeemed}}
       .table-data.mx-4.col-status
         | {{getStatus(campaign.activation_start, campaign.activation_end)}}
-      .table-data.mx-4.col-delete
+      .table-data.mx-4.col-edit
         i.fa.fa-pencil.edit-row((click)='openModal(template, ind)' [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'")
   ng-template(#template)
     .modal-header.active-modal-header
@@ -65,9 +65,6 @@
           button.prizes-btn.primary-button.feedback-btn(type = "submit")
             span
               | Save
-          button.prizes-btn.delete-btn.primary-button.feedback-btn([tooltip]="tooltip(redeemed)" [ngClass]="{'btn-disabled': redeemed}" type = "button" (click)='deleteCampaign(redeemed, id, prizes_id)')
-            span
-              | Delete
           button.prizes-btn.secondary-button.feedback-btn(type = "button" (click)='modalRef.hide()')
             span
               | Cancel

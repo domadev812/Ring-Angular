@@ -26,5 +26,14 @@ export class NotificationsComponent implements OnInit {
   addNotification(): void {
     this.router.navigate(['notificationadd']);
   }
+
+  mouseWheelUp(): void {
+    let scrollArea = document.getElementsByClassName('table-content-without-search');
+    scrollArea[0].scrollTop = scrollArea[0].scrollTop - 40;
+  }
+  mouseWheelDown(): void {
+    let scrollArea = document.getElementsByClassName('table-content-without-search');
+    scrollArea[0].scrollTop = scrollArea[0].scrollTop + 40;
+  }
 }
 

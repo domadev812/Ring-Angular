@@ -62,4 +62,13 @@ export class UsersComponent implements OnInit {
     this.selectedTab = selectedTab;
     this.global.selectedTab = selectedTab;
   }
+
+  mouseWheelUp(): void {
+    let scrollArea = document.getElementsByClassName('table-content-with-search');
+    scrollArea[0].scrollTop = scrollArea[0].scrollTop - 40;
+  }
+  mouseWheelDown(): void {
+    let scrollArea = document.getElementsByClassName('table-content-with-search');
+    scrollArea[0].scrollTop = scrollArea[0].scrollTop + 40;
+  }
 }

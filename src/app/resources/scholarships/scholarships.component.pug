@@ -3,29 +3,29 @@
     i.fa.fa-search.search-icon
     input.search-text(type="text" placeholder="Search scholarships..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
   ngx-loading([show]='loading')  
-  .d-flex.space-between.px-4.py-1
-    .table-header.col-resource
+  .d-flex.space-between.py-1
+    .table-header.mx-4.col-resource
       | Resource
-    .table-header.col-organization
+    .table-header.mx-4.col-organization
       | Organization
-    .table-header.col-link
+    .table-header.mx-4.col-link
       | Link
-    .table-header.col-created
+    .table-header.mx-4.col-created
       | Created
-    .table-header.col-edit
+    .table-header.mx-4.col-edit
       | &nbsp;
   .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let scholarship of scholarships")
-      .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='editScholarship(scholarship.id)')
-        .table-data-primary.col-resource
+      .d-flex.space-between.bg-white.py-1.pointer((click)='editScholarship(scholarship.id)')
+        .table-data-primary.mx-4.col-resource
           | {{scholarship.title}}
-        .table-data.col-organization
+        .table-data.mx-4.col-organization
           | {{scholarship.organization.name}}
-        .table-data.col-link
+        .table-data.mx-4.col-link
           | {{scholarship.url}}
-        .table-data.col-created
+        .table-data.mx-4.col-created
           | {{scholarship.created_at}}
-        .table-data.col-edit
+        .table-data.mx-3.col-edit
           i.fa.fa-pencil.edit-row
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
       |Loading ...

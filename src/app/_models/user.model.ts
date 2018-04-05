@@ -9,7 +9,6 @@ export class User extends BaseUser {
   type: string;
   created_at: any;
   updated_at: any;
-  points: any;
 
   constructor(data) {
     super();
@@ -23,7 +22,6 @@ export class User extends BaseUser {
     this.organization_id = data.organization_id || this.organization_id;
     this.organization = data.organization || this.organization;
     this.type = data.type || this.type;
-    this.points = data.points;
     this.created_at = data.created_at ? moment(data.created_at, moment.ISO_8601)
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');
