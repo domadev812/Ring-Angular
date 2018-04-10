@@ -42,10 +42,13 @@ input {
   width: 18%;
 }
 .col-redeemed {
-  width: 18%;
+  width: 15%;
 }
 .col-status {
-  width: 19%;
+  width: 17%;
+}
+.col-delete {
+  width: 5%;
 }
 .col-edit {
   width: 5%;
@@ -72,5 +75,29 @@ input {
   margin-bottom: 0;
 }
 .button-group {
+  display: flex;
+  flex-wrap: wrap;
   margin-top: 30px;
+  .prizes-btn{
+    flex: 1;
+  }
+}
+.delete-btn {
+  position: relative;
+}
+.tooltip {
+  visibility: hidden;
+  left: 0;
+  bottom: 100%;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 99999999999;
+}
+.delete-btn:hover .tooltip{
+  visibility: visible;
 }

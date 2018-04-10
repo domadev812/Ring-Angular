@@ -1,13 +1,15 @@
 @import "~assets/stylesheets/style-guide";
 @import "~assets/stylesheets/mixins";
 @import "~assets/stylesheets/shared-classes";
+
 .header-nav {  
   display: flex;
   align-items: center;
   font-family: $font-primary;
   justify-content: space-between;
   padding-top: 8px;
-  padding-bottom: 45px;
+  align-items: flex-end;
+  padding-bottom: 20px;
   
 }
 .button-group {
@@ -16,7 +18,7 @@
   justify-content: flex-end;
   @include space-between;
   align-items: center;
-  font-family: $font-primary;
+  font-family: $font-primary; 
 }
 
 .notifications-btn {
@@ -25,7 +27,7 @@
   cursor: pointer;
 }
 
-.notification-input {
+.message-input {
   @extend .input;
   padding: 10px;
   outline: none;
@@ -33,28 +35,8 @@
   margin-left: 0;
 }
 
-.notification-input-dropdown { 
-  @extend .notification-input;
-  height: 46px;
-  padding-left: 18px;
-  padding-top: 14px;
-}
-
-.notification-input-dropdown::placeholder {
-  @extend .placeholder;
-}
-
-
-.notification-textarea {
-  @extend .notification-input;
-  height: auto;
-  width: 100%;
-  background: #FFF;
-  color: #000;
-}
-
 .item-info {
-  margin-bottom: 30px;
+  padding-top: 45px;
 }
 
 .input-label {
@@ -64,5 +46,22 @@
 
 .content-wrapper {
   min-height: 820px;
+}
+
+.current-message-header {
+  padding-bottom: 20px;
+  height: 17px;	
+  width: 124px;	
+  color: #19233C;	
+  font-size: 14px;	
+  font-weight: bold;	
+  line-height: 17px;
+}
+
+.current-message {
+  font-size: 14px;	
+  font-style: italic;	
+  font-weight: 500;
+  color: #19233C;
 }
 

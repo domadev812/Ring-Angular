@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit {
       this.changeNavState(user);
     });
   }
-  
+
   changeNavState(user: Model.User): void {
     if (user) {
       this.canViewUsers = this.access.getAccess(user.getRole()).functionalityAccess.usersTab;
@@ -63,11 +63,11 @@ export class NavbarComponent implements OnInit {
     this.active = false;
     this.authService.logout();
   }
-  
-  detectClick(data) {
-    if(this.active == true && data == true)
-      data = false
-    this.active = data
-  }
 
+  detectClick(data) {
+    if (this.active === true && data === true) {
+      data = false;
+      this.active = data;
+    }
+  }
 }

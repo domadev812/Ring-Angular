@@ -8,6 +8,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { error } from 'util';
 import { PrizesService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
+import { Campaign } from '../../../_models/campaign.model';
 
 @Component({
   selector: 'app-campaign',
@@ -43,7 +44,7 @@ export class CampaignComponent implements OnInit {
   ngOnInit() {      
     this.modalType = 0;
     this.modalTitle = 'New Campaign';   
-    this.today = moment().format('YYYY-MM-DD');         
+    this.today = moment().format('YYYY-MM-DD');
   } 
 
   openModal(template: TemplateRef<any>, index: number = -1): void {
@@ -63,6 +64,14 @@ export class CampaignComponent implements OnInit {
       this.quantity = this.campaigns[index].number_available;      
       this.redeemed = this.campaigns[index].redeemed;
     }   
+  }
+
+  tooltip(redeemed: boolean): string {
+    if (redeemed) {
+      return 'You cannot delete a campaign with redeemed items.';
+    } else {
+      return '';
+    }
   }
 
   formatDate(date: any): string {
@@ -134,5 +143,16 @@ export class CampaignComponent implements OnInit {
       this.endDate = moment(value).toDate();
       this.endDate.setDate(this.endDate.getDate() + 1);
     }        
+  }
+
+  deleteCampaign(redeemed: number, campaignId: number, prizeId: string): void {
+    if (!redeemed) {
+      this.prizesService.deleteCampaign(prizeId, campaignId).subscribe( (res) => {                 
+        alert('Campaign is deleted');
+        this.refreshPage.emit();
+      }, (errors) => {              
+        alert(errors.message);
+      });
+    }
   }
 }

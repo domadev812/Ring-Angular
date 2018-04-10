@@ -14,6 +14,7 @@ import { AuthGuard } from '../_guards/auth.guard';
 import { routing } from '../app.routing';
 import { NotificationsComponent } from './notifications.component';
 import { NotificationAddComponent } from './notificationadd/notificationadd.component';
+import { MessageBoardComponent } from './messageboard/messageboard.component';
 import { NotificationlistComponent } from './notificationlist/notificationlist.component';
 import { SharedModule } from '../../app/shared.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multiselect.component';
@@ -24,6 +25,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multisel
     NotificationsComponent,
     NotificationAddComponent,
     NotificationlistComponent,
+    MessageBoardComponent,
 
   ],
   imports: [
@@ -39,6 +41,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multisel
   ],
   providers: [
     Services.NotificationsService,
+    Services.MessageBoardService,
   ]
 })
 export class NotificationsModule { }

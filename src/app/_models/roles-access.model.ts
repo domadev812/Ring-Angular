@@ -33,6 +33,7 @@ export class FunctionalityAccess {
   newOpportunityButton?: boolean;
   newUserButton?: boolean;
   awardedPrizesIndex?: boolean;
+  newMessage?: boolean;
 }
 
 export class RouteAccess {
@@ -57,4 +58,5 @@ export class RouteAccess {
   scholarshipapplicants?: boolean;
   scholarshipapplication?: boolean;
   applicants?: boolean;
+  messageboard?: boolean;
 }

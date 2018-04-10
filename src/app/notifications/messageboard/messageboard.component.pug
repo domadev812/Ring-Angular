@@ -1,0 +1,28 @@
+.page-wrapper
+  #message.content-wrapper
+    ngx-loading([show]='creating')
+    form.form-group(#messageForm="ngForm" (ngSubmit)="sendMessage()" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+            button.notifications-btn.primary-button.feedback-btn(type="submit") 
+              span
+                | Send
+            button.notifications-btn.secondary-button.feedback-btn(type="button" (click)="cancelMessage()") 
+              span
+                | Cancel  
+      .wrapper-content 
+        .current-message-header
+          | CURRENT MESSAGE
+        .current-message
+          | {{currentMessage}}
+        .item-info
+          .input-label
+            | New Message
+          input.message-input(type="text" name="message" [(ngModel)]='messageBoard.message' #message='ngModel' required)
+        .item-info
+            .input-label
+              | Message Link
+        input.message-input([(ngModel)]='messageBoard.link' name="link" #url='ngModel')
+                

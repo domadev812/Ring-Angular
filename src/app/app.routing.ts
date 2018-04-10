@@ -16,6 +16,7 @@ import { ScholarshipApplicationComponent } from './resources/scholarships/applic
 import { PrizeAddComponent } from './prizes/prizeadd/prizeadd.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationAddComponent } from './notifications/notificationadd/notificationadd.component';
+import { MessageBoardComponent } from './notifications/messageboard/messageboard.component';
 import { RoleGuard } from './_guards/role.guard';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { OrganizationAddComponent } from './organizations/organizationadd/organizationadd.component';
@@ -66,6 +67,8 @@ const appRoutes: Routes = [
   { path: 'organizationadd/:type', component: OrganizationAddComponent, canActivate: [AuthGuard] },
 
   { path: 'organizationedit/:id', component: OrganizationAddComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'messageboard', component: MessageBoardComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: '**', redirectTo: '/login' }
 ];

@@ -34,8 +34,9 @@ export class AccessService {
         scholarshipedit: true,
         scholarshipapplicants: true,
         scholarshipapplication: true,
-        applicants: true
-    },
+        applicants: true,
+        messageboard: true,
+      },
       functionalityAccess: {
         internshipsTab: true,
         scholarshipsTab: true,
@@ -57,6 +58,7 @@ export class AccessService {
         newScholarshipButton: true,
         newUserButton: true,
         awardedPrizesIndex: true,
+        newMessage: true,
       }
     },
     key_contact: {
@@ -91,7 +93,7 @@ export class AccessService {
         newUserButton: true,
         prizesTab: true,
         awardedPrizesIndex: true,
-        activateKeycardButton: true,        
+        activateKeycardButton: true,
       }
     },
     counselor: {
@@ -111,11 +113,11 @@ export class AccessService {
         notificationview: true,
         notifications: true
       },
-      functionalityAccess: {        
+      functionalityAccess: {
         usersTab: true,
         studentsTab: true,
         counselorsTab: true,
-        keyContactsTab: true,        
+        keyContactsTab: true,
         notificationsTab: true,
         resourcesTab: true,
         newOpportunityButton: true,
@@ -126,7 +128,7 @@ export class AccessService {
         newUserButton: true,
         prizesTab: true,
         awardedPrizesIndex: true,
-        activateKeycardButton: true,        
+        activateKeycardButton: true,
       }
     },
     business_owner: {
