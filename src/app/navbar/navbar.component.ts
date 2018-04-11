@@ -65,9 +65,10 @@ export class NavbarComponent implements OnInit {
   }
 
   detectClick(data) {
-    if (this.active === true && data === true) {
+    // tslint:disable-next-line:curly
+    if (this.active === true && data === true)
       data = false;
-      this.active = data;
-    }
+    this.active = data;
   }
 }
+
