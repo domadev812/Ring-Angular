@@ -13,6 +13,8 @@
       | Quantity    
     .table-header.mx-4.col-redeemed
       | Redeemed
+    .table-header.mx-4.col-redeemed
+      | Released
     .table-header.mx-4.col-status
       | Status
     .table-header.mx-4.col-edit
@@ -28,6 +30,8 @@
         | {{campaign.number_available}}
       .table-data.mx-4.col-redeemed
         | {{campaign.redeemed}}
+      .table-data.mx-4.col-redeemed
+        | {{campaign.released}}
       .table-data.mx-4.col-status
         | {{getStatus(campaign.activation_start, campaign.activation_end)}}
       .table-data.mx-4.col-delete
@@ -53,7 +57,12 @@
         input.form-control(name="end-date" [disabled]="campaignId > 0" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }")        
         .input-label([hidden]="campaignId === 0")
           | REDEEMED
-        input.input.redeemed-input(name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0")      
+        input.input.redeemed-input(name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0")
+
+        .input-label([hidden]="campaignId === 0")
+          | RELEASED
+        input.input.redeemed-input(name="released" disabled [ngModel]="released" [hidden]="campaignId === 0")
+
         .input-label
           | QUANTITY
           .invalid-validation([hidden]="qty.valid || (qty.pristine && !campaignForm.submitted)")
