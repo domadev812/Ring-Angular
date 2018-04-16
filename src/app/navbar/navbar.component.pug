@@ -17,6 +17,9 @@
     li.nav-item((click)="switchTab('notifications')" [ngClass]="{'nav-item-selected': tab === 'notifications'}" *ngIf="canViewNotifications")
       a([routerLink]="['/notifications']" ) Notifications
 
+    li.nav-item((click)="switchTab('Schedule')" [ngClass]="{'nav-item-selected': tab === 'Schedule'}" *ngIf="canViewSchedule")
+      a(target="_blank" href="https://goo.gl/forms/RHcE0f3B2OmXiMuq2") Schedule
+
     li.nav-item.fa.fa-cog((detectClick)="detectClick($event)")
       .triangle(*ngIf="active")
       .dropdown(*ngIf="active")

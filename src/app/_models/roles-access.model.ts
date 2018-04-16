@@ -34,6 +34,7 @@ export class FunctionalityAccess {
   newUserButton?: boolean;
   awardedPrizesIndex?: boolean;
   newMessage?: boolean;
+  scheduleTab?: boolean;
 }
 
 export class RouteAccess {

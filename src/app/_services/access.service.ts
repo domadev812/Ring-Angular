@@ -59,6 +59,7 @@ export class AccessService {
         newUserButton: true,
         awardedPrizesIndex: true,
         newMessage: true,
+        scheduleTab: true
       }
     },
     key_contact: {
@@ -94,6 +95,7 @@ export class AccessService {
         prizesTab: true,
         awardedPrizesIndex: true,
         activateKeycardButton: true,
+        scheduleTab: true
       }
     },
     counselor: {

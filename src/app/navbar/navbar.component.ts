@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   public canViewResources: boolean;
   public canViewAwardedPrizes: boolean;
   public canViewNotifications: boolean;
+  public canViewSchedule: boolean;
   public loading = false;
 
   constructor(
@@ -51,6 +52,7 @@ export class NavbarComponent implements OnInit {
       this.canViewResources = this.access.getAccess(user.getRole()).functionalityAccess.resourcesTab;
       this.canViewAwardedPrizes = this.access.getAccess(user.getRole()).functionalityAccess.prizesTab;
       this.canViewNotifications = this.access.getAccess(user.getRole()).functionalityAccess.notificationsTab;
+      this.canViewSchedule = this.access.getAccess(user.getRole()).functionalityAccess.scheduleTab;
     }
   }
 
