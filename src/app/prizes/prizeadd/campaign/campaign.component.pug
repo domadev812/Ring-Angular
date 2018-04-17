@@ -74,7 +74,7 @@
           button.prizes-btn.primary-button.feedback-btn(type = "submit")
             span
               | Save
-          button.prizes-btn.delete-btn.primary-button.feedback-btn([tooltip]="tooltip(redeemed)" [ngClass]="{'btn-disabled': redeemed}" type = "button" (click)='deleteCampaign(redeemed, id, prizes_id)')
+          button.prizes-btn.delete-btn.primary-button.feedback-btn([tooltip]="tooltip(redeemed)" [ngClass]="{'btn-disabled': redeemed > 0}" type = "button" (click)='deleteCampaign( id, prizes_id)')
             span
               | Delete
           button.prizes-btn.secondary-button.feedback-btn(type = "button" (click)='modalRef.hide()')
