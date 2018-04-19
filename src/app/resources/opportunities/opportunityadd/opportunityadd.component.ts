@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { error } from 'util';
-import { MultiSelectService, ResourcesService, CurrentUserService, AuthService } from '../../../app.services-list';
+import { MultiSelectService, ResourcesService, CurrentUserService, AuthService, AccessService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { GlobalState } from '../../../global.state';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
@@ -23,7 +23,7 @@ export class OpportunityAddComponent implements OnInit {
   public organizationList = [];
   public selectedOrganization = [];
   public ktsSelectSettings: any = {};
-  public ktsMultiSettings = {};
+  public ktsMultiSettings: any = {};
   public careerList = [];   //Selectable Career List
   public selectedCareers = [];    //Selected Career List
   public title: string;
@@ -32,6 +32,12 @@ export class OpportunityAddComponent implements OnInit {
   public isAdmin: boolean;
   public creating: boolean;
   public opportunityId: string;
+  public approved: boolean;
+  public approveBtn: boolean;
+  public saveBtn: boolean;
+  public currentRoute: string;
+  public currentUser: any;
+  public canViewApproveReject: boolean;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -40,56 +46,128 @@ export class OpportunityAddComponent implements OnInit {
     public global: GlobalState,
     public navBarService: NavbarService,
     private currentUserService: CurrentUserService,
-    private authProvider: AuthService
+    private authProvider: AuthService,
+    public access: AccessService,
   ) { }
 
-  ngOnInit() {
-    this.navBarService.show();
-    this.navBarService.activeTabChanged('resources'); 
-    this.opportunity = new Model.Resource({});
-    this.originalOpportunity = new Model.Resource({});
-    this.careers = new Array<Model.Career>();
-    this.organizations = new Array<Model.Organization>();
-    this.title = 'New Opportunity';
-    this.editFlag = false;
-    this.disableFlag = false;
-    this.creating = false;
+  async ngOnInit(): Promise<void> {
+    try {
+      this.opportunityId = this.route.snapshot.paramMap.get('opportunityId');
+      this.navBarService.show();
+      this.navBarService.activeTabChanged('resources');
+      this.opportunity = new Model.Resource({});
+      this.originalOpportunity = new Model.Resource({});
+      this.careers = new Array<Model.Career>();
+      this.organizations = new Array<Model.Organization>();
+      this.title = 'New Opportunity';
+      this.editFlag = false;
+      this.disableFlag = false;
+      this.creating = false;
+      this.approved = true;
+      this.currentRoute = this.route.snapshot.url[0].path;
+      this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
+      this.setUpForView(this.currentUser.roles);
+      this.getCareers();
+      this.getOrganizations();
+    } catch (err) { }
+  }
 
-    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
-    this.getCareers();
-    this.getOrganizations();
-    this.getUser();
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null): void {
+    this.ktsSelectSettings.disabled = sDisabled;
+    this.ktsMultiSettings.disabled = mDisabled;
+  }
 
-    this.opportunityId = this.route.snapshot.paramMap.get('opportunityId');
-    if (this.opportunityId !== null) {
-      this.title = 'Edit Opportunity';
-      this.editFlag = true;
-      this.disableFlag = true;
-      this.getResource(this.opportunityId);
+  setTitle(title: string = null) {
+    if (title) {
+      this.title = title;
+    } else if (!this.approved) {
+      this.title = this.opportunity.organization.name;
+    } else if (this.opportunityId !== null) {
+      this.title = 'Edit opportunity';
     }
   }
 
-  getUser() {
-    this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
-      if (res) {
-        this.setAdminStatus(res.roles);
-        const org = res.organization;
-        if (!this.opportunityId) {
-          this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.opportunity.id));
-        }
-      }
-    }, err => {
-      console.log('err', err);
-    });
+  showButtonGroup() {
+    if (this.opportunityId === null) {
+      this.approveBtn = true;
+    }
+    if (!this.approved) {
+      this.approveBtn = false;
+      this.saveBtn = true;
+    } else {
+      this.approveBtn = true;
+    }
   }
 
-  setAdminStatus(roles: Array<string>): void {
-    const filtered = roles.filter(role => {
-      if (role === 'admin') { return true; }
-    });
+  setMultiSelect() {
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
+    this.ktsSelectSettings.disabled = !this.approved;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.ktsMultiSettings.disabled = !this.approved;
   }
+
+  multiSelectPreFlight(): void {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+
+    if (isAdmin && this.opportunityId && !this.approved) {
+      this.setMsSettings(true, true);
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id));
+    } else if (isAdmin && !this.opportunityId) {
+      this.setMsSettings(false, false);
+    } else if (isAdmin && this.opportunityId && this.approved) {
+      this.setMsSettings(false, false);
+    } else if (!isAdmin && !this.opportunityId) {
+      this.setMsSettings(true, false);
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id));
+    }
+  }
+
+
+
+  setUpForView(roles: Array<string>): void {
+    console.log('setupforview');
+    this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
+    const userType = roles.includes('admin') ? 'admin' : 'other';
+    const selector = `${userType + '_' + this.currentRoute}`;
+    console.log(userType, this.currentRoute);
+    const setupIndex = {
+      'admin_opportunityedit': this.adminopportunityEdit.bind(this),
+      'admin_opportunityadd': this.adminopportunityAdd.bind(this),
+      'other_opportunityadd': this.useropportunityAdd.bind(this),
+      'other_opportunityedit': this.useropportunityEdit.bind(this),
+
+    };
+    return setupIndex[selector]();
+  }
+
+  adminopportunityEdit(): void {
+    console.log('here i am!');
+    if (this.opportunityId) this.getResource(this.opportunityId);
+    if (this.approved) this.showButtonGroup();
+    this.approveBtn = false;
+
+  }
+  useropportunityEdit(): void {
+    if (this.opportunityId) this.getResource(this.opportunityId);
+
+  }
+
+  adminopportunityAdd(): void {
+    if (!this.opportunityId)
+      this.multiSelectPreFlight();
+    this.setTitle('New opportunity');
+    this.showButtonGroup();
+  }
+
+  useropportunityAdd(): void {
+    if (!this.opportunityId)
+      this.multiSelectPreFlight();
+    this.setTitle('New opportunity');
+    this.showButtonGroup();
+  }
+
 
   onCareerSelect(item: any) {
     this.onChange(item);
@@ -149,13 +227,17 @@ export class OpportunityAddComponent implements OnInit {
   getResource(id: string): void {
     this.creating = true;
     this.resourcesService.getResource(id).subscribe((res) => {
+      this.opportunity = res;
+      this.approved = res.approved;
+      this.setTitle();
+      this.showButtonGroup();
+      this.multiSelectPreFlight();
       const parsedCareers = res.careers.map(careers => {
         careers.title = careers.title;
         careers.id = careers.id;
         return careers;
       });
       this.selectedCareers = MultiSelectUtil.SelectItem.buildFromData(parsedCareers, 'Career');
-      this.opportunity = res;
       this.originalOpportunity = Object.assign({}, res);
       if (!this.originalOpportunity.is_active) {
         this.originalOpportunity.is_active = false;
@@ -235,6 +317,24 @@ export class OpportunityAddComponent implements OnInit {
         alert('Server error');
       });
     }
+  }
+
+  approve(id: string) {
+    this.resourcesService.opportunityApprove(this.opportunityId).subscribe((res) => {
+      alert('Opportunity Approved');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
+    });
+  }
+
+  reject(id: string) {
+    this.resourcesService.opportunityReject(this.opportunityId).subscribe((res) => {
+      alert('Opportunity Rejected');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
+    });
   }
 
   goBack(): void {

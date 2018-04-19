@@ -21,6 +21,7 @@ export class MessageBoardComponent implements OnInit {
   link: string;
   message: string;
   currentMessage: string;
+  public creating = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,10 +43,13 @@ export class MessageBoardComponent implements OnInit {
     this.navBarService.activeTabChanged('notifications');
     this.getMessage();
     this.global.selectedTab = 'notifications';
+
   }
 
   getMessage() {
+    this.creating = true;
     this.messageBoardService.getMessage().subscribe((res: Model.MessageBoard) => {
+      this.creating = false;
       this.currentMessage = res.message;
     }, (errors) => {
       alert('Server error');
@@ -53,7 +57,9 @@ export class MessageBoardComponent implements OnInit {
   }
 
   sendMessage() {
+    this.creating = true;
     this.messageBoardService.updateMessage(this.messageBoard).subscribe((res) => {
+      this.creating = false;
       alert('The message has been posted!');
       this.router.navigate(['notifications']);
     }, (errors) => {

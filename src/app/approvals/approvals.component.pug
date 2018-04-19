@@ -1,0 +1,35 @@
+.page-wrapper.approvals
+  #approvals.content-wrapper
+    .header-nav
+      h1.headers
+        | Approvals
+    .justify-start.newTabs.mb-4
+      .sub-nav-item.center.mr-4.newSubNav([ngClass]="{'sub-nav-item-selected': selectedTab === 'approvals'}")
+        | Approvals
+    ngx-loading([show]='loading') 
+    .d-flex.space-between.px-4.py-1
+      .table-header.col-resource
+        | CONTENT TYPE
+      .table-header.col-organization
+        | TITLE
+      .table-header.col-link
+        | CREATOR
+      .table-header.col-created
+        | CREATED AT
+      .table-header.col-edit
+        | &nbsp;
+    .table-content-with-search
+      .list(*ngFor="let approval of approvals")
+        .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='approveItem(approval.content_type, approval.resource_id)')
+          .table-data-primary.col-resource
+            | {{approval.content_type}}
+          .table-data.col-organization
+            | {{approval.resource.title}}
+          .table-data.col-link
+            | {{approval.organization_name}}
+          .table-data.col-created
+            | {{approval.created_at}}
+          .table-data.col-edit
+            i.fa.fa-eye.edit-row((click)='approveItem(approval.content_type, approval.resource_id)')
+      .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+        |Loading ...

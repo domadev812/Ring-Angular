@@ -11,7 +11,7 @@ export class Resource {
   type: string;
   images: Array<string>;
   is_active: boolean;
-  organization_id: Array<string>;
+  organization_id: string;
   created_at: any;
   updated_at: any;
   careers: Array<Career>;
@@ -22,6 +22,9 @@ export class Resource {
   career_titles: Array<number>;
   career_ids: Array<number>;
   career_title: Array<string>;
+  approved: boolean;
+
+
   constructor(data) {
     this.setData(data);
   }
@@ -40,6 +43,7 @@ export class Resource {
     this.career_ids = data.careers || this.careers;
     this.users = data.users || this.users;
     this.organization = data.organization || this.organization;
+    this.approved = data.approved || this.approved;
     this.created_at = data.created_at ? moment(data.created_at, moment.ISO_8601)
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');

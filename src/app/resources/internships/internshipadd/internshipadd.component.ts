@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { error } from 'util';
-import { MultiSelectService, ResourcesService, CurrentUserService, AuthService } from '../../../app.services-list';
+import { MultiSelectService, ResourcesService, CurrentUserService, AuthService, AccessService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { GlobalState } from '../../../global.state';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
@@ -23,7 +23,7 @@ export class InternshipAddComponent implements OnInit {
   public organizationList = [];
   public selectedOrganization = [];
   public ktsSelectSettings: any = {};
-  public ktsMultiSettings = {};
+  public ktsMultiSettings: any = {};
   public careerList = [];   //Selectable Career List
   public selectedCareers = [];    //Selected Career List
   public title: string;
@@ -33,6 +33,12 @@ export class InternshipAddComponent implements OnInit {
   public currentCareers = [];
   public creating = false;
   public internshipId: string;
+  public approved: boolean;
+  public approveBtn: boolean;
+  public saveBtn: boolean;
+  public currentRoute: string;
+  public currentUser: any;
+  public canViewApproveReject: boolean;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -41,62 +47,125 @@ export class InternshipAddComponent implements OnInit {
     public global: GlobalState,
     public navBarService: NavbarService,
     private currentUserService: CurrentUserService,
-    private authProvider: AuthService
+    private authProvider: AuthService,
+    public access: AccessService,
+
   ) { }
 
-  ngOnInit() {
-    this.navBarService.show();
-    this.navBarService.activeTabChanged('resources');    
-    this.internship = new Model.Resource({});
-    this.originalInternship = new Model.Resource({});
-    this.careers = new Array<Model.Career>();
-    this.career_ids = new Array<Model.Career>();
-    this.title = 'New Internship';
-    this.editFlag = false;
-    this.disableFlag = false;
+  async ngOnInit(): Promise<void> {
+    try {
+      this.internshipId = this.route.snapshot.paramMap.get('internshipId');
+      this.navBarService.show();
+      this.navBarService.activeTabChanged('resources');
+      this.internship = new Model.Resource({});
+      this.originalInternship = new Model.Resource({});
+      this.careers = new Array<Model.Career>();
+      this.career_ids = new Array<Model.Career>();
+      this.editFlag = false;
+      this.disableFlag = false;
+      this.approved = true;
+      this.currentRoute = this.route.snapshot.url[0].path;
+      this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
+      this.setUpForView(this.currentUser.roles);
+      this.getCareers();
+      this.getOrganizations();
+    } catch (err) { }
+  }
 
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null): void {
+    this.ktsSelectSettings.disabled = sDisabled;
+    this.ktsMultiSettings.disabled = mDisabled;
+  }
+
+  setTitle(title: string = null) {
+    if (title) {
+      this.title = title;
+    } else if (!this.approved) {
+      this.title = this.internship.organization.name;
+    } else if (this.internshipId !== null) {
+      this.title = 'Edit Internship';
+    }
+  }
+
+  showButtonGroup() {
+    if (this.internshipId === null) {
+      this.approveBtn = true;
+    }
+    if (!this.approved) {
+      this.approveBtn = false;
+      this.saveBtn = true;
+    } else {
+      this.approveBtn = true;
+    }
+  }
+
+  setMultiSelect() {
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsSelectSettings.disabled = !this.approved;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.ktsMultiSettings.disabled = !this.approved;
+  }
+
+  multiSelectPreFlight(): void {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
 
-    this.internshipId = this.route.snapshot.paramMap.get('internshipId');
-    if (this.internshipId !== null) {
-      this.title = 'Edit Internship';
-      this.editFlag = true;
-      this.disableFlag = true;
-
-      this.getResource(this.internshipId);
+    if (isAdmin && this.internshipId && !this.approved) {
+      this.setMsSettings(true, true);
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.internship.organization_id));
+    } else if (isAdmin && !this.internshipId) {
+      this.setMsSettings(false, false);
+    } else if (isAdmin && this.internshipId && this.approved) {
+      this.setMsSettings(false, false);
+    } else if (!isAdmin && !this.internshipId) {
+      this.setMsSettings(true, false);
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.internship.organization_id));
     }
-    this.getUser();
-    this.getCareers();
-    this.getOrganizations();
-  }
-
-  getUser() {
-    this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
-      if (res) {
-        this.setAdminStatus(res.roles);
-        const org = res.organization;
-        if (!this.internshipId) {
-          this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.internship.id));
-        }
-      }
-    }, err => {
-      console.log('err', err);
-    });
-  }
-
-  setAdminStatus(roles: Array<string>): void {
-    const filtered = roles.filter(role => {
-      if (role === 'admin') { return true; }
-    });
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
   }
 
 
+  setUpForView(roles: Array<string>): void {
+    this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
+    const userType = roles.includes('admin') ? 'admin' : 'other';
+    const selector = `${userType + '_' + this.currentRoute}`;
+    const setupIndex = {
+      'admin_internshipedit': this.admininternshipEdit.bind(this),
+      'admin_internshipadd': this.admininternshipAdd.bind(this),
+      'other_internshipadd': this.userinternshipAdd.bind(this),
+      'other_internshipedit': this.userinternshipEdit.bind(this),
+
+    };
+    return setupIndex[selector]();
+  }
+
+  admininternshipEdit(): void {
+    if (this.internshipId) this.getResource(this.internshipId);
+    if (this.approved) this.showButtonGroup();
+    this.approveBtn = false;
+
+  }
+  userinternshipEdit(): void {
+    if (this.internshipId) this.getResource(this.internshipId);
+
+  }
+
+  admininternshipAdd(): void {
+    if (!this.internshipId)
+      this.multiSelectPreFlight();
+    this.setTitle('New internship');
+    this.showButtonGroup();
+  }
+
+  userinternshipAdd(): void {
+    if (!this.internshipId)
+      this.multiSelectPreFlight();
+    this.setTitle('New internship');
+    this.showButtonGroup();
+  }
 
   onCareerSelect(item: any) {
     this.onChange(item);
-    console.log('on select careers', this.selectedCareers);
   }
   onCareerDeSelect(item: any) {
     this.onChange(item);
@@ -158,13 +227,17 @@ export class InternshipAddComponent implements OnInit {
   getResource(id: string): void {
     this.creating = true;
     this.resourcesService.getResource(id).subscribe((res) => {
+      this.internship = res;
+      this.approved = res.approved;
+      this.setTitle();
+      this.showButtonGroup();
+      this.multiSelectPreFlight();
       const parsedCareers = res.careers.map(careers => {
         careers.title = careers.title;
         careers.id = careers.id;
         return careers;
       });
       this.selectedCareers = MultiSelectUtil.SelectItem.buildFromData(parsedCareers, 'Career');
-      this.internship = res;
       this.originalInternship = Object.assign({}, res);
       if (!this.originalInternship.is_active) {
         this.originalInternship.is_active = false;
@@ -219,7 +292,7 @@ export class InternshipAddComponent implements OnInit {
       return career.id;
     });
 
-    this.creating = true;    
+    this.creating = true;
     if (!this.internship.id) {
       this.resourcesService.createResource(this.internship).subscribe((res) => {
         this.creating = false;
@@ -241,6 +314,24 @@ export class InternshipAddComponent implements OnInit {
         alert('Server error');
       });
     }
+  }
+
+  approve(id: string) {
+    this.resourcesService.opportunityApprove(this.internshipId).subscribe((res) => {
+      alert('Internship Approved');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
+    });
+  }
+
+  reject(id: string) {
+    this.resourcesService.opportunityReject(this.internshipId).subscribe((res) => {
+      alert('Internship Rejected');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
+    });
   }
 
   goBack(): void {

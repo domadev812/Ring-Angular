@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { error } from 'util';
-import { MultiSelectService, ResourcesService, CurrentUserService, AuthService } from '../../../app.services-list';
+import { MultiSelectService, ResourcesService, CurrentUserService, AuthService, AccessService, } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { NavbarService } from '../../../app.services-list';
 import { GlobalState } from '../../../global.state';
 // import { userInfo } from 'os';
 import { User } from '../../../_models/user.model';
+import { Scholarship } from '../../../_models/scholarship.model';
 
 @Component({
   selector: 'app-scholarshipadd',
@@ -38,6 +39,13 @@ export class ScholarshipAddComponent implements OnInit {
   public disableFlag: boolean;
   public creating = false;
   public scholarshipId: string;
+  public canViewApproveReject: boolean;
+  public approved: boolean;
+  public showElement: boolean;
+  public approveBtn: boolean;
+  public saveBtn: boolean;
+  public currentRoute: string;
+  public currentUser: any;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -47,55 +55,124 @@ export class ScholarshipAddComponent implements OnInit {
     public global: GlobalState,
     private currentUserService: CurrentUserService,
     public authProvider: AuthService,
+    public access: AccessService,
   ) {
   }
-  ngOnInit() {
-    this.navBarService.show();
-    this.navBarService.activeTabChanged('resources'); 
-    this.scholarship = new Model.Scholarship({});
-    this.originalScholarship = new Model.Scholarship({});
-    this.schools = new Array<Model.Organization>();
-    this.organizations = new Array<Model.Organization>(null);
-    this.title = 'New Scholarship';
 
-    this.scholarshipId = this.route.snapshot.paramMap.get('scholarshipId');
-    if (this.scholarshipId !== null) {
+  async ngOnInit(): Promise<void> {
+    try {
+      this.scholarshipId = this.route.snapshot.paramMap.get('scholarshipId');
+      this.navBarService.show();
+      this.navBarService.activeTabChanged('resources');
+      this.scholarship = new Model.Scholarship({});
+      this.originalScholarship = new Model.Scholarship({});
+      this.schools = new Array<Model.Organization>();
+      this.organizations = new Array<Model.Organization>(null);
+      this.approved = true;
+      this.currentRoute = this.route.snapshot.url[0].path;
+      this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
+      this.setUpForView(this.currentUser.roles);
+      this.getCareers();
+      this.getSchools();
+      this.getOrganizations();
+    } catch (err) { }
+  }
+
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null): void {
+    this.ktsSelectSettings.disabled = sDisabled;
+    this.ktsMultiSettings.disabled = mDisabled;
+  }
+
+  setTitle(title: string = null) {
+    if (title) {
+      this.title = title;
+    } else if (!this.approved) {
+      this.title = this.scholarship.organization.name;
+    } else if (this.scholarshipId !== null) {
       this.title = 'Edit Scholarship';
-      this.editFlag = true;
-      this.disableFlag = true;
-
-      this.getScholarship(this.scholarshipId);
     }
-
-    this.getUser();
-    this.getCareers();
-    this.getSchools();
-    this.getOrganizations();
-    
-    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
   }
 
-  getUser() {
-    this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
-      if (res) {
-        this.setAdminStatus(res.roles);
-        const org = res.organization;
-        if (!this.scholarshipId) {
-          this.selectedOrganization.push(new MultiSelectUtil.SelectItem(org.name, this.scholarship.organization_id));
-        }
-      }
-    }, err => {
-      console.log('err', err);
-    });
+  showButtonGroup() {
+    if (this.scholarshipId === null) {
+      this.approveBtn = true;
+    }
+    if (!this.approved) {
+      this.approveBtn = false;
+      this.saveBtn = true;
+    } else {
+      this.approveBtn = true;
+    }
   }
 
-  setAdminStatus(roles: Array<string>): void {
-    const filtered = roles.filter(role => {
-      if (role === 'admin') { return true; }
-    });
+  setMultiSelect() {
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
+    this.ktsSelectSettings.disabled = !this.approved;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.ktsMultiSettings.disabled = !this.approved;
   }
+
+  multiSelectPreFlight(): void {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+
+    if (isAdmin && this.scholarshipId && !this.approved) {
+      this.setMsSettings(true, true);
+    } else if (isAdmin && !this.scholarshipId) {
+      this.setMsSettings(false, false);
+    } else if (isAdmin && this.scholarshipId && this.approved) {
+      this.setMsSettings(false, false);
+    } else if (!isAdmin && !this.scholarshipId) {
+      this.setMsSettings(true, false);
+    }
+  }
+
+
+  setUpForView(roles: Array<string>): void {
+    if (!this.scholarshipId && !this.currentUser.roles.includes('admin')) {
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.scholarship.organization_id));
+    }
+    this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
+    const userType = roles.includes('admin') ? 'admin' : 'other';
+    const selector = `${userType + '_' + this.currentRoute}`;
+    const setupIndex = {
+      'admin_scholarshipedit': this.adminScholarshipEdit.bind(this),
+      'admin_scholarshipadd': this.adminScholarshipAdd.bind(this),
+      'other_scholarshipadd': this.userScholarshipAdd.bind(this),
+      'other_scholarshipedit': this.userScholarshipEdit.bind(this),
+
+    };
+    return setupIndex[selector]();
+  }
+
+  adminScholarshipEdit(): void {
+    if (this.scholarshipId) this.getScholarship(this.scholarshipId);
+    if (this.approved) this.showButtonGroup();
+    this.approveBtn = false;
+
+  }
+  userScholarshipEdit(): void {
+    if (this.scholarshipId) this.getScholarship(this.scholarshipId);
+
+  }
+
+  adminScholarshipAdd(): void {
+    if (!this.scholarshipId)
+      this.multiSelectPreFlight();
+    this.setTitle('New Scholarship');
+    this.showButtonGroup();
+  }
+
+  userScholarshipAdd(): void {
+    if (!this.scholarshipId)
+      this.multiSelectPreFlight();
+    this.setTitle('New Scholarship');
+    this.showButtonGroup();
+  }
+
+
+
 
   onSchoolSelect(item: any) {
     this.onChange(item);
@@ -147,17 +224,27 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
+  scholarshipSuccess(scholarship: Scholarship) {
+    this.scholarship = scholarship;
+    this.approved = scholarship.approved;
+    this.setTitle();
+    this.showButtonGroup();
+    this.multiSelectPreFlight();
+    this.originalScholarship = Object.assign({}, scholarship);
+    this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
+    this.selectedCareers = this.scholarship.careers.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
+    if (this.scholarship.organization) {
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name,
+        this.scholarship.organization_id));
+    }
+  }
+
   getScholarship(id: string): void {
+    this.editFlag = true;
+    this.disableFlag = true;
     this.creating = true;
     this.resourcesService.getScholarship(id).subscribe((res) => {
-      this.scholarship = res;
-      this.originalScholarship = Object.assign({}, res);
-      this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
-      this.selectedCareers = this.scholarship.careers.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
-      if (this.scholarship.organization) {
-        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name,
-          this.scholarship.organization_id));
-      }
+      this.scholarshipSuccess(res);
       this.creating = false;
     }, (errors) => {
       this.creating = false;
@@ -291,6 +378,24 @@ export class ScholarshipAddComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['resources']);
+  }
+
+  approve(id: string) {
+    this.resourcesService.scholarshipApprove(this.scholarshipId).subscribe((res) => {
+      alert('Scholarship Approved');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
+    });
+  }
+
+  reject(id: string) {
+    this.resourcesService.scholarshipReject(this.scholarshipId).subscribe((res) => {
+      alert('Scholarship Rejected');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
+    });
   }
 
   gotoApplicants(id): void {

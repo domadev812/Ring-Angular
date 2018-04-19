@@ -11,6 +11,7 @@ import { User as ApiUser } from './_models/user.model';
 import { AwardedPrize as ApiAwardedPrize } from './_models/awarded-prize.model';
 import { Application as ApiApplication } from './_models/application.model';
 import { MessageBoard as ApiMessageBoard } from './_models/messageboard.model';
+import { Approval as ApiApproval } from './_models/approval.model';
 
 export module Model {
     export type User = ApiUser;
@@ -40,6 +41,8 @@ export module Model {
     export const Application = ApiApplication;
     export type MessageBoard = ApiMessageBoard;
     export const MessageBoard = ApiMessageBoard;
+    export type Approval = ApiApproval;
+    export const Approval = ApiApproval;
 
     export function initializeArray<T>(array: T[], type: string): any[] {
         let newArray: T[] = [];

@@ -35,6 +35,8 @@ export class FunctionalityAccess {
   awardedPrizesIndex?: boolean;
   newMessage?: boolean;
   scheduleTab?: boolean;
+  approvalsTab?: boolean;
+  approveRejectButtons?: boolean;
 }
 
 export class RouteAccess {
@@ -60,4 +62,5 @@ export class RouteAccess {
   scholarshipapplication?: boolean;
   applicants?: boolean;
   messageboard?: boolean;
+  approvals?: boolean;
 }

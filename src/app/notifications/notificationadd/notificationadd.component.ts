@@ -1,9 +1,9 @@
 import 'rxjs/add/observable/throw';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { NotificationsService, MultiSelectService } from '../../app.services-list';
+import { NotificationsService, MultiSelectService, CurrentUserService, AuthService, AccessService } from '../../app.services-list';
 import { error } from 'util';
 import { Model } from '../../app.models-list';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
@@ -22,54 +22,156 @@ export class NotificationAddComponent implements OnInit {
   public careers: Array<Model.Career>;
   public careerList = [];
   public selectedCareers = [];
-  public ktsSelectSettings = {};
-  public ktsMultiSettings = {};
+  public ktsSelectSettings: any = {};
+  public notificationRecipientCategory: any = {};
+  public ktsMultiSettings: any = {};
   public typeList = [{ id: 'all', itemName: 'All' },
-                     { id: 'gender', itemName: 'Gender' },
-                     { id: 'graduation_year', itemName: 'Graduation Year' },
-                     { id: 'careers', itemName: 'Careers' },
-                     { id: 'opportunities', itemName: 'Opportunities' },
-                     { id: 'internships', itemName: 'Internships' }];
+  { id: 'gender', itemName: 'Gender' },
+  { id: 'graduation_year', itemName: 'Graduation Year' },
+  { id: 'careers', itemName: 'Careers' }];
   public selectedType = [];
   public originalTypeValueList = [{ id: 'M', itemName: 'Male', category: 'gender' },
-                                  { id: 'F', itemName: 'Female', category: 'gender' }];
+  { id: 'F', itemName: 'Female', category: 'gender' }];
   public typeValueList = [];
   public selectedValueList = [];
   public valueListTitle = '';
   public valueListVisibleFlag = false;
   public careerListVisibleFlag = false;
   public creating = false;
+  public canViewApproveReject: boolean;
+  public approved: boolean;
+  public showElement: boolean;
+  public approveBtn: boolean;
+  public saveBtn: boolean;
+  public currentRoute: string;
+  public currentUser: any;
+  public notificationId: string;
 
   constructor(private route: ActivatedRoute,
     private notificationsService: NotificationsService,
     private router: Router,
     private multiSelectService: MultiSelectService,
     private navBarService: NavbarService,
+    private currentUserService: CurrentUserService,
+    public authProvider: AuthService,
+    public access: AccessService,
+    public cdr: ChangeDetectorRef
   ) {
   }
 
-  ngOnInit() {
-    this.navBarService.show();
-    this.navBarService.activeTabChanged('notifications');
-    this.notification = new Model.Notification({});
-    this.careers = new Array<Model.Career>();    
-    let notificationId = this.route.snapshot.paramMap.get('notificationId');
-    this.title = 'New Notification';
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+  async ngOnInit(): Promise<void> {
+    try {
+      this.navBarService.show();
+      this.navBarService.activeTabChanged('notifications');
+      this.notification = new Model.Notification({});
+      this.careers = new Array<Model.Career>();
+      this.notificationId = this.route.snapshot.paramMap.get('notificationId');
+      this.approved = true;
+      this.currentRoute = this.route.snapshot.url[0].path;
+      this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
+      this.setUpForView(this.currentUser.roles);
+      this.title = 'New Notification';
+      this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+      this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+      this.notificationRecipientCategory = MultiSelectUtil.notificationRecipientCategory;
 
-    this.getCareers();
-    for (let year = this.min; year <= this.max; year++) {
-      this.originalTypeValueList.push({ id: year.toString(), itemName: year.toString(), category: 'graduation_year' });
-    }
-    
-    if (notificationId) {
+      this.getCareers();
+      for (let year = this.min; year <= this.max; year++) {
+        this.originalTypeValueList.push({ id: year.toString(), itemName: year.toString(), category: 'graduation_year' });
+      }
+    } catch (err) { }
+  }
+
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null, dDisabled: boolean = null): void {
+    this.ktsSelectSettings.disabled = sDisabled;
+    this.ktsMultiSettings.disabled = mDisabled;
+    this.notificationRecipientCategory.disabled = dDisabled;
+  }
+
+  setTitle(title: string = null) {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    if (title) {
+      this.title = title;
+    } else if (!this.approved && isAdmin) {
+      this.title = this.notification.organization_name;
+    } else if (this.notificationId) {
       this.title = 'View Notification';
-      this.getNotification(notificationId);
-      this.ktsSelectSettings['disabled'] = true;
-      this.ktsMultiSettings['disabled'] = true;
     }
   }
+
+  showButtonGroup() {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    if (!this.notificationId) {
+      this.approveBtn = true;
+    } else if (!isAdmin && !this.notificationId) {
+      this.approveBtn = false;
+      this.saveBtn = true;
+    } else {
+      this.approveBtn = false;
+      this.saveBtn = true;
+    }
+  }
+
+  multiSelectPreFlight(): void {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.notificationRecipientCategory = MultiSelectUtil.notificationRecipientCategory;
+
+    if (isAdmin && this.notificationId && !this.approved) {
+      this.setMsSettings(true, true, true);
+    } else if (isAdmin && !this.notificationId) {
+      this.setMsSettings(false, false);
+    } else if (isAdmin && this.notificationId || this.approved) {
+      this.setMsSettings(true, true);
+    } else if (!isAdmin && !this.notificationId) {
+      this.setMsSettings(true, true, true);
+    }
+
+  }
+
+  setUpForView(roles: Array<string>): void {
+    this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
+    const userType = roles.includes('admin') ? 'admin' : 'other';
+    const selector = `${userType + '_' + this.currentRoute}`;
+    const setupIndex = {
+      'admin_notificationview': this.adminNotificationView.bind(this),
+      'admin_notificationadd': this.adminNotificationAdd.bind(this),
+      'other_notificationadd': this.userNotificationAdd.bind(this),
+      'other_notificationview': this.userNotificationView.bind(this),
+
+    };
+    return setupIndex[selector]();
+  }
+
+  async adminNotificationView(): Promise<void> {
+    try {
+      if (this.notificationId) await this.getNotification(this.notificationId);
+      if (this.approved) this.showButtonGroup();
+      this.approveBtn = false;
+      if (!this.approved)
+        this.ktsMultiSettings.disabled = true;
+      this.notificationRecipientCategory.disabled = true;
+    } catch (err) { }
+  }
+  userNotificationView(): void {
+    if (this.notificationId) this.getNotification(this.notificationId);
+
+  }
+
+  adminNotificationAdd(): void {
+    if (!this.notificationId)
+      this.multiSelectPreFlight();
+    this.setTitle('New notification');
+    this.showButtonGroup();
+  }
+
+  userNotificationAdd(): void {
+    if (!this.notificationId)
+      this.setTitle('New notification');
+    this.showButtonGroup();
+  }
+
 
   onTypeSelect(item: any) {
     this.selectedValueList = [];
@@ -125,10 +227,14 @@ export class NotificationAddComponent implements OnInit {
 
   getNotification(id: string) {
     this.creating = true;
-    this.notificationsService.getNotification(id).subscribe((res) => {      
-      this.creating = false;
+    this.notificationsService.getNotification(id).subscribe((res) => {
       this.notification = res;
-      let notificationType = this.typeList.find(type => type.id === res.type);      
+      this.approved = res.approved;
+      this.creating = false;
+      this.setTitle();
+      this.showButtonGroup();
+      this.multiSelectPreFlight();
+      let notificationType = this.typeList.find(type => type.id === res.type);
       if (!notificationType) {
         return;
       }
@@ -140,7 +246,7 @@ export class NotificationAddComponent implements OnInit {
           return { id: career.id, itemName: career.title };
         });
       }
-      this.changeState();      
+      this.changeState();
     }, (errors) => {
       this.creating = false;
       alert('Server error');
@@ -184,6 +290,27 @@ export class NotificationAddComponent implements OnInit {
     }, (errors) => {
       this.creating = false;
       alert('Server error');
+    });
+  }
+
+
+  approve(id: string) {
+    this.notificationsService.notificationApprove(this.notificationId).subscribe((res) => {
+      this.creating = false;
+      alert('Notification Approved');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
+    });
+  }
+
+  reject(id: string) {
+    this.notificationsService.notificationReject(this.notificationId).subscribe((res) => {
+      this.creating = false;
+      alert('Notification Rejected');
+      this.router.navigate(['approvals']);
+    }, err => {
+      alert(err);
     });
   }
 

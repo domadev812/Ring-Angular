@@ -7,7 +7,8 @@ export class Scholarship {
   title: string;
   amount: number;
   number_available: number;
-  active: boolean;  
+  active: boolean;
+  approved: any;
   in_app: boolean;
   type: string;
   url: string;
@@ -15,15 +16,19 @@ export class Scholarship {
   organization_id: string;
   organization: Organization;
   schools: Array<Organization>;
-  careers: Array<Career>;  
-  images: Array<string>;  
+  careers: Array<Career>;
+  images: Array<string>;
   created_at: any;
   updated_at: any;
   career_ids: Array<number>;
   school_ids: Array<number>;
   users: Array<User>;
-  constructor(data) {
-    this.setData(data);
+
+
+  constructor(data = null) {
+    if (data) {
+      this.setData(data);
+    }
   }
 
   setData(data) {
@@ -31,12 +36,13 @@ export class Scholarship {
     this.title = data.title || this.title;
     this.amount = data.amount || this.amount;
     this.number_available = data.number_available || this.number_available;
-    this.active = data.active || this.active;
-    this.in_app = data.in_app || this.in_app;
+    this.active = data.active;
+    this.in_app = data.in_app;
     this.type = data.type || this.type;
     this.url = data.url || this.url;
-    this.description = data.description || this.description;    
+    this.description = data.description || this.description;
     this.organization_id = data.organization_id || this.organization_id;
+    this.approved = data.approved;
     this.organization = data.organization || this.organization;
     if (data.schools) {
       this.schools = data.schools.map(school => school);
@@ -44,7 +50,7 @@ export class Scholarship {
     } else {
       this.schools = [];
       this.school_ids = [];
-    }    
+    }
     if (data.careers) {
       this.careers = data.careers.map(career => career);
       this.career_ids = data.careers.map(career => career.id);
@@ -52,7 +58,7 @@ export class Scholarship {
       this.careers = [];
       this.career_ids = [];
     }
-    this.users = data.users || this.users;   
+    this.users = data.users || this.users;
     this.created_at = data.created_at ? moment(data.created_at, moment.ISO_8601)
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');

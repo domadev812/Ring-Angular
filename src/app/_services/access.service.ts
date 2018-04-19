@@ -36,6 +36,7 @@ export class AccessService {
         scholarshipapplication: true,
         applicants: true,
         messageboard: true,
+        approvals: true,
       },
       functionalityAccess: {
         internshipsTab: true,
@@ -59,7 +60,9 @@ export class AccessService {
         newUserButton: true,
         awardedPrizesIndex: true,
         newMessage: true,
-        scheduleTab: true
+        scheduleTab: true,
+        approvalsTab: true,
+        approveRejectButtons: true,
       }
     },
     key_contact: {

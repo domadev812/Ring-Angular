@@ -11,7 +11,7 @@ export class NotificationsService {
 
   constructor(private http: Http) { }
 
-  getNotifications(offset: number = 0, limit: number = 50): Observable<Model.Notification[]> {    
+  getNotifications(offset: number = 0, limit: number = 50): Observable<Model.Notification[]> {
     let url = `${environment.apiUrl}/api/notifications/all?offset=${offset}&limit=${limit}`;
     return this.http.get(url)
       .map((response: Response) => {
@@ -25,7 +25,7 @@ export class NotificationsService {
   }
 
   createNotification(notification: Model.Notification): Observable<Model.Notification> {
-    let url = environment.apiUrl + '/api/notifications/';    
+    let url = environment.apiUrl + '/api/notifications/';
     return this.http.post(url, notification)
       .map((response: Response) => {
         const json = response.json();
@@ -44,6 +44,31 @@ export class NotificationsService {
         const json = response.json();
         if (json && json.data) {
           return new Model.Notification(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+  notificationReject(id: string): Observable<Model.Approval> {
+    let url = `${environment.apiUrl}/api/notifications/${id}/reject`;
+    return this.http.delete(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Approval(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
+  notificationApprove(id: string): Observable<Model.Resource> {
+    let url = `${environment.apiUrl}/api/notifications/${id}/approve`;
+    return this.http.patch(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Resource(json.data);
         } else {
           Observable.throw({ messages: 'Internal Server Error', response });
         }

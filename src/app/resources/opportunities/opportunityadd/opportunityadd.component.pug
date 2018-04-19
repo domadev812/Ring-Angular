@@ -5,13 +5,20 @@
       .header-nav.fixed-header
         h1.headers
           | {{title}}
-        .button-group
-            button.save-button(type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag") 
-              span
-                | Save
-            button.cancel-button.feedback-btn(type="button" (click)="goBack()") 
-              span
-                | Cancel
+        .button-group([hidden]="saveBtn")
+          button.save-button(type='submit' [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag")
+            span
+              | Save
+          button.cancel-button.feedback-btn((click)='goBack()' type='button') 
+            span
+              | Cancel 
+        .button-group([hidden]="approveBtn")
+          button.save-button.feedback-btn((click)='approve()' type='button' )
+            span
+              | Approve
+          button.cancel-button.feedback-btn((click)='reject()' type='button') 
+            span
+              | Reject 
       .applicants-view.fixed-header(*ngIf="editFlag === true && opportunity.users" (click)="gotoApplicants(opportunity.id)")
         | Applicants: {{opportunity.users.length}}         
         img.link-arrow(src="../assets/imgs/link-arrow.svg") 
@@ -21,7 +28,7 @@
             | NAME
             .invalid-validation([hidden]="name.valid || (name.pristine && !opportunityForm.submitted)")
               | Name is required
-          input.resources-input(type="text" name="name" [(ngModel)]="opportunity.title" (ngModelChange)="onChange($event)" #name="ngModel" required) 
+          input.resources-input(type="text" name="name" [disabled]="!approved" [ngClass]="{'disabled': !approved}" [(ngModel)]="opportunity.title" (ngModelChange)="onChange($event)" #name="ngModel" required) 
         .item-info
           .input-label
             | ORGANIZATION
@@ -40,7 +47,7 @@
             | DESCRIPTION
             .invalid-validation([hidden]="details.valid || (details.pristine && !opportunityForm.submitted)")
               | Description is required
-          textarea.resources-textarea(rows="6" name="details" [(ngModel)]="opportunity.details" (ngModelChange)="onChange($event)"  #details="ngModel" required)
+          textarea.resources-textarea(rows="6" name="details" [disabled]="!approved" [ngClass]="{'disabled': !approved}" [(ngModel)]="opportunity.details" (ngModelChange)="onChange($event)"  #details="ngModel" required)
         .item-info
           .input-label
             | APPLICATION LINK
@@ -48,7 +55,7 @@
               | Application link is required
             .invalid-validation([hidden]="!opportunity.link || opportunity.link === '' || validURL(opportunity.link) || (link.pristine && !opportunityForm.submitted)")
               | Application link is not correct
-          input.resources-input([(ngModel)]="opportunity.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required)
+          input.resources-input([(ngModel)]="opportunity.link" [disabled]="!approved" [ngClass]="{'disabled': !approved}" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required)
         .item-info
           .input-label-dropdown
               | CAREERS
@@ -61,7 +68,7 @@
             (onDeSelect)='onCareerDeSelect($event)'
           )     
         .item-info
-          input(type='checkbox' id='active' [(ngModel)]='opportunity.is_active' [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
+          input(type='checkbox' id='active' [(ngModel)]='opportunity.is_active' [disabled]="!approved" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
           label(for='active')
             | Active  
  

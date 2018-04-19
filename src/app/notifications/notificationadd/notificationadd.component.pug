@@ -5,26 +5,33 @@
       .header-nav
         h1.headers
           | {{title}}
-        .button-group
+        .button-group([hidden]="saveBtn")
             button.notifications-btn.primary-button.feedback-btn(type="submit", *ngIf="!notification.id") 
               span
                 | Save
             button.notifications-btn.secondary-button.feedback-btn(type="button" (click)="cancelNotification()") 
               span
-                | Cancel  
+                | Cancel 
+        .button-group([hidden]="approveBtn")
+            button.notifications-btn.primary-button.feedback-btn(type='button'  (click)='approve()' )
+              span
+                | Approve
+            button.notifications-btn.secondary-button.feedback-btn((click)='reject()' type='button') 
+              span
+                | Reject  
       .wrapper-content 
         .item-info
           .input-label-top
             | SUBJECT
             .invalid-validation([hidden]="subject.valid || (subject.pristine && !notificationForm.submitted)")
               | Subject is required
-          input.notification-input(type="text" name="subject" [(ngModel)]='notification.subject' #subject="ngModel" [disabled]="notification.id" required)
+          input.notification-input(type="text" name="subject"  [ngClass]="{'disabled': !approved || notification.id}" [(ngModel)]='notification.subject' #subject="ngModel" [disabled]="notification.id  || !approved" required)
         .item-info
           .input-label
             | MESSAGE
             .invalid-validation([hidden]="message.valid || (message.pristine && !notificationForm.submitted)")
               | Message is required
-          textarea.notification-textarea(rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id" required)
+          textarea.notification-textarea(rows="6" name="message" [ngClass]="{'disabled': !approved || notification.id}" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id || !approved" required)
         .item-info
           .input-label
             | Recipient Category
@@ -34,10 +41,9 @@
             name = 'types'
             [data]='typeList'
             [(ngModel)]='selectedType'
-            [settings]='ktsSelectSettings'
+            [settings]='notificationRecipientCategory'
             (onSelect)='onTypeSelect($event)'
             (onDeSelect)='onTypeDeSelect($event)'
-            [disabled]="notification.id"
           )
         .item-info(*ngIf="valueListVisibleFlag")
           .input-label-dropdown

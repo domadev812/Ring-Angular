@@ -96,6 +96,7 @@ export class ResourcesService {
       });
   }
 
+
   getOpportunities(offset: number, limit: number = 0): Observable<Model.Resource[]> {
     let url = `${environment.apiUrl}/api/opportunities?offset=${offset}&limit=${limit}`;
     return this.http.get(url)
@@ -162,11 +163,11 @@ export class ResourcesService {
   }
 
   createScholarship(scholarship: Model.Scholarship): Observable<Model.Scholarship> {
-    let url = `${environment.apiUrl}/api/scholarships`;    
+    let url = `${environment.apiUrl}/api/scholarships`;
     return this.http.post(url, scholarship)
       .map((response: Response) => {
         const json = response.json();
-        if (json && json.data) {          
+        if (json && json.data) {
           return new Model.Scholarship(json.data);
         } else {
           Observable.throw({ messages: 'Internal Server Error', response });
@@ -213,11 +214,87 @@ export class ResourcesService {
       });
   }
 
+  scholarshipApprove(id: string): Observable<Model.Scholarship> {
+    let url = `${environment.apiUrl}/api/scholarships/${id}/approve`;
+    return this.http.patch(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Scholarship(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
+  scholarshipReject(id: string): Observable<Model.Approval> {
+    let url = `${environment.apiUrl}/api/scholarships/${id}/reject`;
+    return this.http.delete(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Approval(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
+  internshipApprove(id: string): Observable<Model.Resource> {
+    let url = `${environment.apiUrl}/api/internships/${id}/approve`;
+    return this.http.patch(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Resource(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+  opportunityApprove(id: string): Observable<Model.Approval> {
+    let url = `${environment.apiUrl}/api/opportunities/${id}/approve`;
+    return this.http.patch(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Approval(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
+  internshipReject(id: string): Observable<Model.Approval> {
+    let url = `${environment.apiUrl}/api/internships/${id}/reject`;
+    return this.http.delete(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Approval(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+  opportunityReject(id: string): Observable<Model.Approval> {
+    let url = `${environment.apiUrl}/api/opportunities/${id}/reject`;
+    return this.http.delete(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Approval(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
   setApplication(application: Model.Application): void {
     this.selectedApplication = application;
   }
 
-  getApplication(): Model.Application {    
+  getApplication(): Model.Application {
     return this.selectedApplication ? this.selectedApplication : new Model.Application();
   }
 }

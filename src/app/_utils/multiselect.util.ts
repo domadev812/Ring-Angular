@@ -9,7 +9,6 @@ export module MultiSelectUtil {
     classes: 'kts-multiselect',
     unSelectAllText: 'UnSelect All',
     singleSelection: false,
-
   };
 
   export const singleSelection = {
@@ -28,6 +27,16 @@ export module MultiSelectUtil {
     classes: 'kts-multiselect',
     unSelectAllText: 'UnSelect All',
     singleSelection: true,
+
+  };
+  export const notificationRecipientCategory = {
+    text: 'MAKE SELECTION',
+    enableCheckAll: false,
+    enableSearchFilter: true,
+    classes: 'kts-multiselect',
+    unSelectAllText: 'UnSelect All',
+    singleSelection: true,
+
   };
 
   export class SelectItem {

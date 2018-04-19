@@ -14,6 +14,7 @@ import { UsersModule } from './users/users.module';
 import { PrizesModule } from './prizes/prizes.module';
 import { ResourcesModule } from './resources/resources.module';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { ApprovalsModule } from './approvals/approvals.module';
 import { Component } from '@angular/core/src/metadata/directives';
 import { Api } from './_providers/api.provider';
 import { NotificationsModule } from './notifications/notifications.module';
@@ -42,6 +43,7 @@ import { SharedModule } from './shared.module';
     AngularMultiSelectModule,
     NotificationsModule,
     OrganizationsModule,
+    ApprovalsModule,
     LoadingModule,
     SharedModule
 
