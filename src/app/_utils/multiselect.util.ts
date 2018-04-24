@@ -10,6 +10,14 @@ export module MultiSelectUtil {
     unSelectAllText: 'UnSelect All',
     singleSelection: false,
   };
+  export const selectAllMultiSettings = {
+    text: 'MAKE SELECTION',
+    enableCheckAll: true,
+    enableSearchFilter: true,
+    classes: 'kts-multiselect',
+    unSelectAllText: 'UnSelect All',
+    singleSelection: false,
+  };
 
   export const singleSelection = {
     text: 'MAKE SELECTION',

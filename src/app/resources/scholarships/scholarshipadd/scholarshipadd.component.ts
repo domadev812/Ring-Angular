@@ -27,6 +27,7 @@ export class ScholarshipAddComponent implements OnInit {
   public organizations: Array<Model.Organization>;
   public ktsSelectSettings: any = {};
   public ktsMultiSettings: any = {};
+  public selectAllMultiSettings: any = {};
   public selectedEthnicities = [];
   public careerList = [];
   public selectedCareers = [];
@@ -78,9 +79,10 @@ export class ScholarshipAddComponent implements OnInit {
     } catch (err) { }
   }
 
-  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null): void {
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null, checkAll: boolean = null): void {
     this.ktsSelectSettings.disabled = sDisabled;
     this.ktsMultiSettings.disabled = mDisabled;
+    this.selectAllMultiSettings.enableCheckAll = checkAll;
   }
 
   setTitle(title: string = null) {
@@ -105,26 +107,21 @@ export class ScholarshipAddComponent implements OnInit {
     }
   }
 
-  setMultiSelect() {
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsSelectSettings.disabled = !this.approved;
-    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
-    this.ktsMultiSettings.disabled = !this.approved;
-  }
 
   multiSelectPreFlight(): void {
     const isAdmin = this.currentUser.roles.includes('admin');
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings;
 
     if (isAdmin && this.scholarshipId && !this.approved) {
-      this.setMsSettings(true, true);
+      this.setMsSettings(true, true, true);
     } else if (isAdmin && !this.scholarshipId) {
-      this.setMsSettings(false, false);
+      this.setMsSettings(false, false, true);
     } else if (isAdmin && this.scholarshipId && this.approved) {
-      this.setMsSettings(false, false);
+      this.setMsSettings(false, false, false);
     } else if (!isAdmin && !this.scholarshipId) {
-      this.setMsSettings(true, false);
+      this.setMsSettings(true, false, false);
     }
   }
 
