@@ -1,0 +1,31 @@
+#keycardindex
+  .search-bar
+      i.fa.fa-search.search-icon
+      input.search-text(type="text" placeholder="Search Key Cards..." [(ngModel)]='searchText' (keyup.enter)='searchItems($event)')
+  ngx-loading([show]='loading')
+  .d-flex.space-between.py-1
+    .table-header.mx-4.col
+      | Code
+    .table-header.mx-4.col
+      | Activated At
+    .table-header.mx-4.col
+      | Redeemed At
+    .table-header.mx-4.col
+      | Activated By
+    .table-header.mx-4.col
+      | Redeemed By
+  .table-content-with-search(#scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+      .list(*ngFor="let KeycardRecipient of KeycardRecipients")
+        .d-flex.space-between.bg-white.py-1
+          .table-data-primary.mx-4.col
+            | {{KeycardRecipient.code}}
+          .table-data.mx-4.col
+            | {{KeycardRecipient.activated_at}}
+          .table-data.mx-4.col
+            | {{KeycardRecipient.redeemed_at}}
+          .table-data.mx-4.col
+            | {{KeycardRecipient.activated_by_user.email}}
+          .table-data.mx-4.col
+            | {{KeycardRecipient.redeemed_by_user.email}}
+      .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+        |Loading ...  

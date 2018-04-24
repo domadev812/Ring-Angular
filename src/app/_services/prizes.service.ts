@@ -174,4 +174,19 @@ export class PrizesService {
         this.saveData(response, 'Export.csv');
       });
   }
+
+  getKeycardIndex(offset: number, limit: number = 50, search: string = ''):
+    Observable<Model.KeycardRecipient[]> {
+    let paramSearch = search !== '' ? `search=${search}` : '';
+    let url = `${environment.apiUrl}/api/keycard?offset=${offset}&limit=${limit}&${paramSearch}`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return Model.initializeArray(json.data, 'KeycardRecipient');
+        } else {
+          Observable.throw({ message: 'Internal Server Error', response });
+        }
+      });
+  }
 }
