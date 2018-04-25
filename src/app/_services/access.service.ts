@@ -47,7 +47,7 @@ export class AccessService {
         notificationsTab: true,
         organizationTab: true,
         resourcesTab: true,
-        businessOwnersTab: true,
+        communitiesTab: true,
         keyContactsTab: true,
         studentsTab: true,
         counselorsTab: true,
@@ -63,6 +63,7 @@ export class AccessService {
         scheduleTab: true,
         approvalsTab: true,
         approveRejectButtons: true,
+        keycardCsv: true,
       }
     },
     key_contact: {
@@ -136,8 +137,8 @@ export class AccessService {
         activateKeycardButton: true,
       }
     },
-    business_owner: {
-      role: 'business_owner',
+    community: {
+      role: 'community',
       routeAccess: {
         resources: true,
         internshipadd: true,

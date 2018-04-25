@@ -8,7 +8,7 @@ export class RolesAccess {
 export class Roles {
   admin: RolesAccess;
   key_contact: RolesAccess;
-  business_owner: RolesAccess;
+  community: RolesAccess;
   counselor: RolesAccess;
 }
 
@@ -24,7 +24,7 @@ export class FunctionalityAccess {
   studentsTab?: boolean;
   keyContactsTab?: boolean;
   counselorsTab?: boolean;
-  businessOwnersTab?: boolean;
+  communitiesTab?: boolean;
   newPrizeButton?: boolean;
   awardedCsvButton?: boolean;
   activateKeycardButton?: boolean;
@@ -37,6 +37,8 @@ export class FunctionalityAccess {
   scheduleTab?: boolean;
   approvalsTab?: boolean;
   approveRejectButtons?: boolean;
+  keycardCsv?: boolean;
+
 }
 
 export class RouteAccess {
