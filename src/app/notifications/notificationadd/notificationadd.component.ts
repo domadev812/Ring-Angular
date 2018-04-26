@@ -294,7 +294,7 @@ export class NotificationAddComponent implements OnInit {
   }
 
 
-  approve(id: string) {
+  approve(): void {
     this.notificationsService.notificationApprove(this.notificationId).subscribe((res) => {
       this.creating = false;
       alert('Notification Approved');
@@ -304,7 +304,7 @@ export class NotificationAddComponent implements OnInit {
     });
   }
 
-  reject(id: string) {
+  reject(): void {
     this.notificationsService.notificationReject(this.notificationId).subscribe((res) => {
       this.creating = false;
       alert('Notification Rejected');

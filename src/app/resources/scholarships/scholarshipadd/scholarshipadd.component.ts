@@ -377,7 +377,7 @@ export class ScholarshipAddComponent implements OnInit {
     this.router.navigate(['resources']);
   }
 
-  approve(id: string) {
+  approve(): void {
     this.resourcesService.scholarshipApprove(this.scholarshipId).subscribe((res) => {
       alert('Scholarship Approved');
       this.router.navigate(['approvals']);
@@ -386,7 +386,7 @@ export class ScholarshipAddComponent implements OnInit {
     });
   }
 
-  reject(id: string) {
+  reject(): void {
     this.resourcesService.scholarshipReject(this.scholarshipId).subscribe((res) => {
       alert('Scholarship Rejected');
       this.router.navigate(['approvals']);

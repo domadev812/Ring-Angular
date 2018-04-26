@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import { OrganizationService } from '../app.services-list';
 import { SchoolsTableComponent } from './schools-table/schools-table.component';
 import { SponsorsTableComponent } from './sponsors-table/sponsors-table.component';
+import { CommunitiesTableComponent } from './communities-table/communities-table.component';
 import { NavbarService } from '../app.services-list';
 
 @Component({

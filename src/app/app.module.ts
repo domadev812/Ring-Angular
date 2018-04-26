@@ -24,6 +24,7 @@ import { LoadingModule } from 'ngx-loading';
 import { SharedModule } from './shared.module';
 
 
+
 @NgModule({
   declarations: [
     Components.AppComponent,
@@ -45,7 +46,8 @@ import { SharedModule } from './shared.module';
     OrganizationsModule,
     ApprovalsModule,
     LoadingModule,
-    SharedModule
+    SharedModule,
+
 
   ],
   providers: [

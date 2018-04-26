@@ -1,7 +1,7 @@
 #keycardindex
   .search-bar
-      i.fa.fa-search.search-icon
-      input.search-text(type="text" placeholder="Search Key Cards..." [(ngModel)]='searchText' (keyup.enter)='searchItems($event)')
+    i.fa.fa-search.search-icon
+    input.search-text(type="text", placeholder="Search Key Cards...", [(ngModel)]='searchText', (keyup.enter)="searchItems()")
   ngx-loading([show]='loading')
   .d-flex.space-between.py-1
     .table-header.mx-4.col

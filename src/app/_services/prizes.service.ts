@@ -174,15 +174,31 @@ export class PrizesService {
         this.saveData(response, 'Export.csv');
       });
   }
+
+  getKeycardIndex(offset: number, limit: number = 50, search: string = ''):
+    Observable<Model.KeycardRecipient[]> {
+    let paramTitle = search !== '' ? `search=${search}` : '';
+    let url = `${environment.apiUrl}/api/keycard?offset=${offset}&limit=${limit}&${paramTitle}`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return Model.initializeArray(json.data, 'KeycardRecipient');
+        } else {
+          Observable.throw({ message: 'Internal Server Error', response });
+        }
+      });
+  }
+
   exportKeycardCSV(loginForm: any): any {
     let format = {
       day: 'numeric',
       month: 'numeric',
       year: 'numeric',
     };
-    let data = loginForm.startDate ?
-      '?start=' + loginForm.startDate.toLocaleDateString('en-US', format) +
-      '&end=' + loginForm.endDate.toLocaleDateString('en-US', format) : '';
+    let data = loginForm.firstDate ?
+      '?start=' + loginForm.firstDate.toLocaleDateString('en-US', format) +
+      '&end=' + loginForm.lastDate.toLocaleDateString('en-US', format) : '';
 
     let url = `${environment.apiUrl}/api/keycard/export${data}`;
 

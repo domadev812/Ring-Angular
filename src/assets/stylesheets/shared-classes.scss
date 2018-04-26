@@ -468,3 +468,10 @@
     box-shadow: none;
   }  
 }
+.list {
+  .d-flex {
+    &:hover {
+      background: #f7f7f7 !important;
+    }
+  }
+}

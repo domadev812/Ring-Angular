@@ -1,0 +1,26 @@
+#schools
+  .search-bar
+    i.fa.fa-search.search-icon
+    input.search-text(type="text", placeholder="Search communities...", [(ngModel)]='searchText', (keyup.enter)='searchItems()')
+  ngx-loading([show]='loading')  
+  .d-flex.space-between.px-4.mb-1
+    .table-header.col-organization
+      | Community
+    .table-header.col-url
+      | Url
+    .table-header.col-created
+      | Created date
+    .table-header.col-edit
+  .table-content-without-search(#scrollVariable, appInfiniteScroller, [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+    .list(*ngFor="let organization of organizations")
+      .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='editOrganization(organization.id)')
+        .table-data-primary.col-organization
+          | {{organization.name}}
+        .table-data-primary.col-url
+          | {{organization.url}}
+        .table-data.col-created
+          | {{organization.created_at}}
+        .table-data.col-edit
+          i.fa.fa-eye.edit-row((click)='editOrganization(organization.id)')
+    .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+      | Loading ...

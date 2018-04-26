@@ -12,6 +12,7 @@ import { AwardedPrize as ApiAwardedPrize } from './_models/awarded-prize.model';
 import { Application as ApiApplication } from './_models/application.model';
 import { MessageBoard as ApiMessageBoard } from './_models/messageboard.model';
 import { Approval as ApiApproval } from './_models/approval.model';
+import { KeycardRecipient as ApiKeycardRecipient } from './_models/keycard-recipient.model';
 
 export module Model {
     export type User = ApiUser;
@@ -43,6 +44,8 @@ export module Model {
     export const MessageBoard = ApiMessageBoard;
     export type Approval = ApiApproval;
     export const Approval = ApiApproval;
+    export type KeycardRecipient = ApiKeycardRecipient;
+    export const KeycardRecipient = ApiKeycardRecipient;
 
     export function initializeArray<T>(array: T[], type: string): any[] {
         let newArray: T[] = [];

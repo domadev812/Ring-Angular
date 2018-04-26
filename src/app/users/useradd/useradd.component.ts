@@ -28,7 +28,7 @@ export class UserAddComponent implements OnInit {
   typeList = [{ itemName: 'Student', id: 'student' },
               { itemName: 'Key Contact', id: 'key_contact' },
               { itemName: 'Counselor', id: 'counselor' },
-              { itemName: 'Business Owner', id: 'business_owner' }];
+              { itemName: 'Community', id: 'communities' }];
   filteredTypeList = [];
   selectedType = [];
   ktsTypeSettings = {};
@@ -116,7 +116,7 @@ export class UserAddComponent implements OnInit {
         this.selectedType.push(this.filteredTypeList[0]);
         this.ktsTypeSettings['disabled'] = true;
         this.ktsOrganizationSettings['disabled'] = true;
-      } else if (roles.indexOf('business_owner') !== -1) {
+      } else if (roles.indexOf('communities') !== -1) {
         this.filteredTypeList = this.typeList.map(type => type);
       }
     });
@@ -273,7 +273,7 @@ export class UserAddComponent implements OnInit {
   }
 
   changeOrganizationList(): void {
-    if (this.selectedType.length > 0 && this.selectedType[0].id === 'business_owner') {
+    if (this.selectedType.length > 0 && this.selectedType[0].id === 'communities') {
       this.organizationTitle = 'Organization';
       this.organizationList = this.sponsorList.map(sponsor => sponsor);
     } else {

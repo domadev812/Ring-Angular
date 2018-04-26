@@ -37,6 +37,7 @@ export class AccessService {
         applicants: true,
         messageboard: true,
         approvals: true,
+        keycards: true,
       },
       functionalityAccess: {
         internshipsTab: true,
@@ -63,6 +64,7 @@ export class AccessService {
         scheduleTab: true,
         approvalsTab: true,
         approveRejectButtons: true,
+        keycardIndexTab: true,
         keycardCsv: true,
       }
     },

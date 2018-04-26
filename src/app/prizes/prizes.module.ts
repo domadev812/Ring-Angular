@@ -18,6 +18,7 @@ import { CampaignComponent } from './prizeadd/campaign/campaign.component';
 import { PrizesIndexComponent } from './prizesindex/prizesindex.component';
 import { SharedModule } from '../shared.module';
 import { AwardedPrizesIndexComponent } from './awardedprizesindex/awardedprizesindex.component';
+import { KeycardindexComponent } from './keycardindex/keycardindex.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AwardedPrizesIndexComponent } from './awardedprizesindex/awardedprizesi
     PrizeAddComponent,
     CampaignComponent,
     PrizesIndexComponent,
-    AwardedPrizesIndexComponent
+    AwardedPrizesIndexComponent,
+    KeycardindexComponent
   ],
   imports: [
     BrowserModule,

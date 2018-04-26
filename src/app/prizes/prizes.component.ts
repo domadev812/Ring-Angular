@@ -23,6 +23,8 @@ export class PrizesComponent implements OnInit {
   private isActivated: boolean;
   private startDate: Date = new Date();
   private endDate: Date = new Date();
+  private firstDate: Date = new Date();
+  private lastDate: Date = new Date();
   private validPick: boolean;
   private checked = true;
   private modalTitle: string;
@@ -30,6 +32,10 @@ export class PrizesComponent implements OnInit {
   canUseAwardedCsv: boolean;
   canActivateKeycard: boolean;
   canViewAwardedPrizes: boolean;
+<<<<<<< HEAD
+=======
+  canViewKeycardIndex: boolean;
+>>>>>>> e701a541457adf197d788f54dc23d79f26c892e9
   canUseKeycardCsv: boolean;
   private config = {
     animated: true,
@@ -39,6 +45,7 @@ export class PrizesComponent implements OnInit {
   };
 
   exportForm: FormGroup;
+  keycardExportForm: FormGroup;
 
   constructor(private router: Router,
     private modalService: BsModalService,
@@ -71,6 +78,11 @@ export class PrizesComponent implements OnInit {
     this.endDate = new Date();
     this.validPick = true;
     this.getUser();
+
+    this.keycardExportForm = new FormGroup({
+      firstDate: new FormControl(),
+      lastDate: new FormControl()
+    });
   }
 
 
@@ -129,8 +141,14 @@ export class PrizesComponent implements OnInit {
     }
   }
   keycardExport(): void {
+<<<<<<< HEAD
     if (this.startDate < this.endDate || this.checked) {
       this.prizesService.exportKeycardCSV(this.exportForm.value)
+=======
+
+    if (this.firstDate < this.lastDate || this.checked) {
+      this.prizesService.exportKeycardCSV(this.keycardExportForm.value)
+>>>>>>> e701a541457adf197d788f54dc23d79f26c892e9
         .subscribe((err) => {
           let message = err;
         });

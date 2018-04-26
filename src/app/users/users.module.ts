@@ -15,7 +15,7 @@ import { UsersComponent } from './users.component';
 import { StudentsComponent } from './students/students.component';
 import { KeyContactsComponent } from './keycontacts/keycontacts.component';
 import { CounselorsComponent } from './counselors/counselors.component';
-import { BusinessOwnersComponent } from './businessowners/businessowners.component';
+import { CommunitiesComponent } from './communities/communities.component';
 import { UserAddComponent } from './useradd/useradd.component';
 import { SharedModule } from '../shared.module';
 
@@ -25,7 +25,7 @@ import { SharedModule } from '../shared.module';
     StudentsComponent,
     KeyContactsComponent,
     CounselorsComponent,
-    BusinessOwnersComponent,
+    CommunitiesComponent,
     UserAddComponent
   ],
   imports: [

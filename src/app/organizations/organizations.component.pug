@@ -9,9 +9,11 @@
             | New Sponsor
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('schools')" [ngClass]="{'sub-nav-item-selected': tab === 'schools'}")
-        | Schools
-      .sub-nav-item.center.newSubNav((click)="switchTab('sponsors')" [ngClass]="{'sub-nav-item-selected': tab === 'sponsors'}")
-        | Sponsors
-    app-schools-table(*ngIf="tab === 'schools'; else sponsorsTable")
-    ng-template(#sponsorsTable)
-      app-sponsors-table
+        | KTS Schools
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('sponsors')" [ngClass]="{'sub-nav-item-selected': tab === 'sponsors'}")
+        | KTS Sponsors
+      .sub-nav-item.center.newSubNav((click)="switchTab('communities')" [ngClass]="{'sub-nav-item-selected': tab === 'communities'}")
+        | Community
+    app-schools-table(*ngIf="tab === 'schools'")
+    app-sponsors-table(*ngIf="tab === 'sponsors'")
+    app-communities-table(*ngIf="tab === 'communities'")

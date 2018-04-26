@@ -16,7 +16,7 @@ export class UsersComponent implements OnInit {
   public canViewKeyContacts: boolean;
   public canViewStudents: boolean;
   public canViewCounselors: boolean;
-  public canViewBusinessOwners: boolean;
+  public canViewCommunities: boolean;
   public canCreateNewUser: boolean;
 
   constructor(
@@ -44,7 +44,7 @@ export class UsersComponent implements OnInit {
     this.currentUserService.getCurrentUser(this.authProvider).then((user: Model.User) => {
       if (user) {
         this.canViewKeyContacts = this.access.getAccess(user.getRole()).functionalityAccess.keyContactsTab;
-        this.canViewBusinessOwners = this.access.getAccess(user.getRole()).functionalityAccess.businessOwnersTab;
+        this.canViewCommunities = this.access.getAccess(user.getRole()).functionalityAccess.communitiesTab;
         this.canViewCounselors = this.access.getAccess(user.getRole()).functionalityAccess.counselorsTab;
         this.canViewStudents = this.access.getAccess(user.getRole()).functionalityAccess.studentsTab;
         this.canCreateNewUser = this.access.getAccess(user.getRole()).functionalityAccess.newUserButton;

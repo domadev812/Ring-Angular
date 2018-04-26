@@ -6,7 +6,6 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { CurrentUserService } from '../_services/current-user.service';
 import { Model } from '../../app/app.models-list';
-import { Api } from '../_providers/api.provider';
 import { environment } from '../../environments/environment';
 
 @Injectable()

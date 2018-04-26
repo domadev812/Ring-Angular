@@ -14,9 +14,9 @@
         | Key Contacts
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('counselor')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'counselor'}", *ngIf="canViewCounselors")
         | Counselors
-      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('business_owner')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'business_owner'}", *ngIf="canViewBusinessOwners")
-        | Business Owners
+      .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('community')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'community'}", *ngIf="canViewCommunities")
+        | Community
     app-students(*ngIf="selectedTab === 'student'")
     app-keycontacts(*ngIf="selectedTab === 'key_contact'")
     app-counselors(*ngIf="selectedTab === 'counselor'")
-    app-businessowners(*ngIf="selectedTab === 'business_owner'")
+    app-communities(*ngIf="selectedTab === 'community'")

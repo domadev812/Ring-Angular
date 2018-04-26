@@ -316,7 +316,7 @@ export class InternshipAddComponent implements OnInit {
     }
   }
 
-  approve(id: string) {
+  approve(): void {
     this.resourcesService.opportunityApprove(this.internshipId).subscribe((res) => {
       alert('Internship Approved');
       this.router.navigate(['approvals']);
@@ -325,7 +325,7 @@ export class InternshipAddComponent implements OnInit {
     });
   }
 
-  reject(id: string) {
+  reject(): void {
     this.resourcesService.opportunityReject(this.internshipId).subscribe((res) => {
       alert('Internship Rejected');
       this.router.navigate(['approvals']);

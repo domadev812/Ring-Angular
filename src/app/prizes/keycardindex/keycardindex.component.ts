@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PrizesService } from '../../_services/prizes.service';
 import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-keycardindex',
@@ -10,6 +11,8 @@ import { Model } from '../../app.models-list';
   styleUrls: ['./keycardindex.component.scss']
 })
 export class KeycardindexComponent implements OnInit {
+
+  @ViewChild('scrollVariable') private scrollableContainer: ElementRef;
 
   moreContentAvailable = true;
   infiniteScrollLoading: boolean;
@@ -25,6 +28,7 @@ export class KeycardindexComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loading = true;
     this.KeycardRecipients = new Array<Model.KeycardRecipient>();
     this.limit = 50;
     this.offset = 0;
@@ -32,12 +36,17 @@ export class KeycardindexComponent implements OnInit {
     this.getKeycardIndex();
   }
 
+  searchItems(): void {
+    this.offset = 0;
+    this.moreContentAvailable = true;
+    this.getKeycardIndex();
+  }
+
   getKeycardIndex(): void {
-    this.loading = true;
     this.prizesService.getKeycardIndex(this.offset, this.limit, this.searchText).subscribe((res) => {
       this.loading = false;
       this.KeycardRecipients = res.map(KeycardRecipient => KeycardRecipient);
-      console.log('here are the key', this.KeycardRecipients);
+      this.offset += res.length;
     }, (errors) => {
       this.loading = false;
       alert('Server error');
@@ -46,9 +55,9 @@ export class KeycardindexComponent implements OnInit {
 
   myScrollCallBack() {
     if (this.moreContentAvailable) {
-      //use this to handle *ngIf if you want to tell the user the infinite scroll is loading.
       this.infiniteScrollLoading = true;
-      return this.prizesService.getKeycardIndex(this.offset, this.limit, this.searchText).do(this.infiniteScrollCallBack.bind(this));
+
+      return this.prizesService.getKeycardIndex(this.limit).do(this.infiniteScrollCallBack.bind(this));
     }
   }
 
@@ -61,6 +70,7 @@ export class KeycardindexComponent implements OnInit {
     this.moreContentAvailable = !(res.length < this.limit);
     this.infiniteScrollLoading = false;
   }
+
 
 
 }

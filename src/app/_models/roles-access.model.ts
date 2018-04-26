@@ -37,6 +37,7 @@ export class FunctionalityAccess {
   scheduleTab?: boolean;
   approvalsTab?: boolean;
   approveRejectButtons?: boolean;
+  keycardIndexTab?: boolean;
   keycardCsv?: boolean;
 
 }
@@ -65,4 +66,5 @@ export class RouteAccess {
   applicants?: boolean;
   messageboard?: boolean;
   approvals?: boolean;
+  keycards?: boolean;
 }

@@ -319,7 +319,7 @@ export class OpportunityAddComponent implements OnInit {
     }
   }
 
-  approve(id: string) {
+  approve(): void {
     this.resourcesService.opportunityApprove(this.opportunityId).subscribe((res) => {
       alert('Opportunity Approved');
       this.router.navigate(['approvals']);
@@ -328,7 +328,7 @@ export class OpportunityAddComponent implements OnInit {
     });
   }
 
-  reject(id: string) {
+  reject(): void {
     this.resourcesService.opportunityReject(this.opportunityId).subscribe((res) => {
       alert('Opportunity Rejected');
       this.router.navigate(['approvals']);
