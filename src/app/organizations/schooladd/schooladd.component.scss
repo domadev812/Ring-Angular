@@ -1,0 +1,68 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+.header-nav {  
+  @include space-between;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  font-family: $font-primary;
+}
+.wrapper-content {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+.logo-image {
+  flex: 0.25;    
+}
+.input-disabled{
+  background: #E6E9F2;
+}
+.upload-disabled{
+  background-color: #E6E9F2 !important;
+}
+.file-chooser {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.input.input{
+  width: 945px;
+  height: 40px;
+}
+
+
+.content {
+  flex: 100;
+  // margin-left: 20px;
+}
+.organization-btn {
+  margin: 10px 3px;
+  outline: none;
+  cursor: pointer;
+}
+.btn-disabled{
+  background: #E8BDC4;
+  box-shadow: none;
+  cursor: default;
+}
+.organization-input {
+  @extend .input;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  margin-left: 0;
+}
+
+.organization-textarea {
+  @extend .organization-input;
+  height: auto;
+}
+
+.item-info {
+  margin-bottom: 30px;
+}

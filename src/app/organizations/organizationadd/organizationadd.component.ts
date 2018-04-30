@@ -2,7 +2,7 @@ import 'rxjs/add/observable/throw';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { error } from 'util';
-import { OrganizationService, NavbarService } from '../../app.services-list';
+import { OrganizationService, NavbarService, CurrentUserService, AuthService } from '../../app.services-list';
 import { Model } from '../../app.models-list';
 import { GlobalState } from '../../global.state';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -24,32 +24,71 @@ export class OrganizationAddComponent implements OnInit {
   public filePreviewPath: SafeUrl;
   public testImg: string;
   public creating = false;
+  public showButton: boolean;
+  public disableField: boolean;
+  public newSchool: boolean;
+  public newSponsor: boolean;
+  public currentSchool: boolean;
+  public hasId: any;
+  public currentUser: any;
+  public isAdmin: any;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private organizationService: OrganizationService,
     private sanitizer: DomSanitizer,
-    private navBarService: NavbarService) { }
+    private currentUserService: CurrentUserService,
+    public authProvider: AuthService,
+    private navBarService: NavbarService
+  ) {
 
-  ngOnInit() {
-    this.navBarService.show();
-    this.navBarService.activeTabChanged('organizations');
-    this.organization = new Model.Organization({});
-    this.uploader = this.organizationService.uploader;
-    this.type = this.route.snapshot.paramMap.get('type');
-    const id = this.route.snapshot.paramMap.get('id');
-    if (this.type === 'school') {
-      this.title = 'School Details';
-    } if (this.type === 'sponsor') {
-      this.title = 'New Sponsor';
-    } else {
-      this.title = 'Sponsor Details';
-    }
-    this.hasBaseDropZoneOver = false;
-    if (id !== null) {
-      this.getOrganization(id);
+  }
+
+  async ngOnInit(): Promise<void> {
+    try {
+      this.navBarService.show();
+      this.navBarService.activeTabChanged('organizations');
+      this.organization = new Model.Organization({});
+      this.uploader = this.organizationService.uploader;
+      this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
+      this.isAdmin = this.currentUser.roles.includes('admin');
+      this.type = this.route.snapshot.paramMap.get('type');
+      this.hasId = this.route.snapshot.paramMap.get('id');
+      if (this.type === 'school' && !this.hasId) {
+        this.title = 'New School';
+        this.isSchool = true;
+        this.newSchool = true;
+      } else if (this.type === 'school' && this.hasId) {
+        this.title = 'School Details';
+        this.newSchool = false;
+      } else if (this.type === 'sponsor' && !this.hasId) {
+        this.title = 'New Sponsor';
+        this.newSponsor = true;
+      } else {
+        this.title = 'Sponsor Details';
+      }
+      this.hasBaseDropZoneOver = false;
+      if (this.hasId !== null) {
+        this.getOrganization(this.hasId);
+      }
+      this.disableSetup();
+    } catch (err) { }
+  }
+
+
+  disableSetup() {
+    if (this.newSchool || this.newSponsor) {
+      this.showButton = false;
+      this.disableField = false;
+    } if (!this.isAdmin && !this.newSchool || !this.newSponsor) {
+      this.showButton = true;
+      this.disableField = true;
+    } if (this.isAdmin && !this.newSchool || !this.newSponsor) {
+      this.showButton = true;
+      this.disableField = false;
     }
   }
+
 
   createOrUpdateOrganization(): void {
     this.creating = true;
@@ -57,14 +96,14 @@ export class OrganizationAddComponent implements OnInit {
       this.organizationService
         .updateOrganization(this.organization)
         .subscribe(this.handleOrganizationSuccess.bind(this));
-      this.creating = false;  
+      this.creating = false;
       alert('Organization Updated Successfully');
       this.router.navigate(['organizations']);
     } else {
       this.organizationService
         .createOrganization(this.organization)
         .subscribe(this.handleOrganizationSuccess.bind(this));
-      this.creating = false;  
+      this.creating = false;
       alert('Organization Created Successfully');
       this.router.navigate(['organizations']);
     }
@@ -115,6 +154,16 @@ export class OrganizationAddComponent implements OnInit {
       this.organization.type = this.type || this.organization.type;
       this.createOrUpdateOrganization();
     }
+  }
+
+  deleteOrganization() {
+    confirm('Are you sure you want to delete this school?');
+    this.organizationService.deleteOrganization(this.organization.id).subscribe((res) => {
+      alert('School Deleted');
+      this.router.navigate(['organizations']);
+    }, err => {
+      alert(err);
+    });
   }
 
   goBack(event): void {

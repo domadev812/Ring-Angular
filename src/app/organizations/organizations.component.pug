@@ -7,6 +7,9 @@
         .primary-button.center.newBtn.feedback-btn((click)="addOrganization('sponsor')")
           span
             | New Sponsor
+        .primary-button.center.newBtn.feedback-btn((click)="addSchool('school')")
+          span
+            | Add School
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('schools')" [ngClass]="{'sub-nav-item-selected': tab === 'schools'}")
         | KTS Schools

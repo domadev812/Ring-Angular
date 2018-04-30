@@ -17,6 +17,7 @@ import { SponsorsTableComponent } from './sponsors-table/sponsors-table.componen
 import { CommunitiesTableComponent } from './communities-table/communities-table.component';
 import { SharedModule } from '../shared.module';
 import { FileUploadModule } from 'ng2-file-upload';
+import { SchooladdComponent } from './schooladd/schooladd.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     SchoolsTableComponent,
     SponsorsTableComponent,
     OrganizationAddComponent,
-    CommunitiesTableComponent
+    CommunitiesTableComponent,
+    SchooladdComponent
   ],
   imports: [
     CommonModule,

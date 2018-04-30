@@ -1,0 +1,34 @@
+.page-wrapper.organizations
+  #organization.content-wrapper
+    ngx-loading([show]='creating')  
+    form.form-group(#schoolForm="ngForm" (ngSubmit)="saveSchool(schoolForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+            button.organization-btn.primary-button.feedback-btn(type="submit") 
+              span
+                | Save
+            button.organization-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)") 
+              span
+                | Cancel
+            button.organization-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)") 
+              span
+                | Delete
+      .wrapper-content
+        .content
+          .item-info
+            .input-label
+              | NAME
+              .invalid-validation([hidden]="name.valid || (name.pristine && !schoolForm.submitted)")
+                | Name is required
+            input.organization-input(name="name", [(ngModel)]="organization.name", #name="ngModel", required) 
+          .item-info
+            .input-label
+              | WEBSITE
+              .invalid-validation([hidden]="link.valid || (link.pristine && !schoolForm.submitted)")
+                | Website link is required
+              .invalid-validation([hidden]="!organization.url || organization.url === '' || validURL(organization.url) || (link.pristine && !schoolForm.submitted)")
+                | Website link is not correct
+            input.organization-input([(ngModel)]="organization.url", name="link", #link="ngModel", required) 
+          

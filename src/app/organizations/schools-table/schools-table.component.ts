@@ -55,8 +55,8 @@ export class SchoolsTableComponent implements OnInit {
     });
   }
 
-  editOrganization(organization_id: string): void {
-    this.router.navigate([`organizationedit/${organization_id}`]);
+  editOrganization(organization_id: string, type: string): void {
+    this.router.navigate([`organizationedit/${organization_id}`, { type: 'school' }]);
   }
 
   myScrollCallBack(): Observable<Organization[]> {

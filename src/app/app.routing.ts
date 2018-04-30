@@ -20,6 +20,7 @@ import { MessageBoardComponent } from './notifications/messageboard/messageboard
 import { RoleGuard } from './_guards/role.guard';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { OrganizationAddComponent } from './organizations/organizationadd/organizationadd.component';
+import { SchooladdComponent } from './organizations/schooladd/schooladd.component';
 import { ApprovalsComponent } from './approvals/approvals.component';
 
 const appRoutes: Routes = [
@@ -72,6 +73,8 @@ const appRoutes: Routes = [
   { path: 'messageboard', component: MessageBoardComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'approvals', component: ApprovalsComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'schooladd', component: SchooladdComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: '**', redirectTo: '/login' }
 ];

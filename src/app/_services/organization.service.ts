@@ -71,6 +71,19 @@ export class OrganizationService {
       });
   }
 
+  deleteOrganization(id: string): Observable<Model.Organization> {
+    let url = `${environment.apiUrl}/api/organizations/${id}/delete`;
+    return this.http.delete(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Organization(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
   createOrganizationUrl(): string {
     let url = '/organization?';
 
