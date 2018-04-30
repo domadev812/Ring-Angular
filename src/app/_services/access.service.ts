@@ -65,7 +65,6 @@ export class AccessService {
         approvalsTab: true,
         approveRejectButtons: true,
         keycardIndexTab: true,
-        keycardCsv: true,
       }
     },
     key_contact: {

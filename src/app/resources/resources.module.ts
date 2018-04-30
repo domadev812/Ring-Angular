@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { LoadingModule } from 'ngx-loading';
+import { TooltipModule } from 'ngx-bootstrap';
 
 import { apiFactory } from '../_factories/api.factory';
 import { AuthGuard } from '../_guards/auth.guard';
@@ -43,7 +44,8 @@ import { MouseWheelDirective } from '../_directives/mousewheel.directive';
     FormsModule,
     AngularMultiSelectModule,
     SharedModule,
-    LoadingModule
+    LoadingModule,
+    TooltipModule.forRoot()
   ],
   providers: [
     Services.ResourcesService,

@@ -67,7 +67,7 @@
             (onSelect)='onCareerSelect($event)'
             (onDeSelect)='onCareerDeSelect($event)'
           )     
-        .item-info
+        .item-info.checkboxes([tooltip]="tooltip('Active')")
           input(type='checkbox' id='active' [(ngModel)]='internship.is_active' [disabled]="!approved" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
           label(for='active')
             | Active  

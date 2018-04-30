@@ -189,22 +189,4 @@ export class PrizesService {
         }
       });
   }
-
-  exportKeycardCSV(loginForm: any): any {
-    let format = {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-    };
-    let data = loginForm.firstDate ?
-      '?start=' + loginForm.firstDate.toLocaleDateString('en-US', format) +
-      '&end=' + loginForm.lastDate.toLocaleDateString('en-US', format) : '';
-
-    let url = `${environment.apiUrl}/api/keycard/export${data}`;
-
-    return this.http.get(url)
-      .map((response: Response) => {
-        this.saveData(response, 'ExportKeyCards.csv');
-      });
-  }
 }

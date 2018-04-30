@@ -8,7 +8,7 @@
 
 @mixin center-y(){
   display: flex;
-  justify-content: center;
+  align-items: center;
 }
 
 @mixin center-x(){

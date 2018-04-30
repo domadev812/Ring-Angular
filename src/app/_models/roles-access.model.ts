@@ -38,8 +38,6 @@ export class FunctionalityAccess {
   approvalsTab?: boolean;
   approveRejectButtons?: boolean;
   keycardIndexTab?: boolean;
-  keycardCsv?: boolean;
-
 }
 
 export class RouteAccess {
