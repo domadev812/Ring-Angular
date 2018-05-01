@@ -1,0 +1,41 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+.header-nav {  
+  @include space-between;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  font-family: $font-primary;
+}
+.wrapper-content {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input.input{
+  width: 945px;
+  height: 40px;
+}
+
+
+.content {
+  width: 100%;
+}
+.organization-btn {
+  margin: 10px 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.organization-input {
+  @extend .input;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  margin-left: 0;
+}
+
+.item-info {
+  margin-bottom: 30px;
+}

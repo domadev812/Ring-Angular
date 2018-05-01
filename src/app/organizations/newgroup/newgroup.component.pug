@@ -1,0 +1,33 @@
+.page-wrapper.organizations
+  #organization.content-wrapper
+    ngx-loading([show]='creating')  
+    form.form-group(#newGroupForm="ngForm" (ngSubmit)="saveSchoolGroup(newGroupForm.valid)" novalidate)
+      .header-nav
+        h1.headers
+          | {{title}}
+        .button-group
+            button.organization-btn.primary-button.feedback-btn(type="submit") 
+              span
+                | Save
+            button.organization-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)") 
+              span
+                | Cancel
+      .wrapper-content
+        .content
+          .item-info
+            .input-label
+              | Group Name
+              .invalid-validation([hidden]="name.valid || (name.pristine && !newGroupForm.submitted)")
+                |  Group name is required
+            input.organization-input(name="name", [(ngModel)]="schoolGroup.name", #name="ngModel", required) 
+          .item-info
+            .input-label-bold
+                | HIGH SCHOOLS
+            angular2-multiselect(
+              name = 'schools'
+              [data]='schoolList'
+              [(ngModel)]='selectedSchools'
+              [settings]='selectAllMultiSettings'
+              (onSelect)='onSchoolSelect($event)'
+              (onDeSelect)='onSchoolDeSelect($event)'
+            )     
