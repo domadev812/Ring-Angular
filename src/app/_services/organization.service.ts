@@ -91,17 +91,4 @@ export class OrganizationService {
     this.uploader.uploadAll();
   }
 
-  saveSchoolGroup(schoolGroup: Model.SchoolGroup): Observable<Model.SchoolGroup> {
-    let url = `${environment.apiUrl}/api/schoolgroup`;
-    return this.http.post(url, schoolGroup)
-      .map((response: Response) => {
-        const json = response.json();
-        if (json) {
-          return new Model.SchoolGroup(json);
-        } else {
-          Observable.throw({ messages: 'Internal Server Error', response });
-        }
-      });
-  }
-
 }

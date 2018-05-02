@@ -23,13 +23,17 @@ export class PrizesComponent implements OnInit {
   private isActivated: boolean;
   private startDate: Date = new Date();
   private endDate: Date = new Date();
+  private firstDate: Date = new Date();
+  private lastDate: Date = new Date();
   private validPick: boolean;
   private checked = true;
+  private modalTitle: string;
   canCreateNewPrize: boolean;
   canUseAwardedCsv: boolean;
   canActivateKeycard: boolean;
   canViewAwardedPrizes: boolean;
   canViewKeycardIndex: boolean;
+  canUseKeycardCsv: boolean;
   private config = {
     animated: true,
     keyboard: true,
@@ -38,6 +42,7 @@ export class PrizesComponent implements OnInit {
   };
 
   exportForm: FormGroup;
+  keycardExportForm: FormGroup;
 
   constructor(private router: Router,
     private modalService: BsModalService,
@@ -70,6 +75,11 @@ export class PrizesComponent implements OnInit {
     this.endDate = new Date();
     this.validPick = true;
     this.getUser();
+
+    this.keycardExportForm = new FormGroup({
+      firstDate: new FormControl(),
+      lastDate: new FormControl()
+    });
   }
 
 
@@ -81,6 +91,7 @@ export class PrizesComponent implements OnInit {
         this.canActivateKeycard = this.access.getAccess(user.getRole()).functionalityAccess.activateKeycardButton;
         this.canViewAwardedPrizes = this.access.getAccess(user.getRole()).functionalityAccess.awardedPrizesIndex;
         this.canViewKeycardIndex = this.access.getAccess(user.getRole()).functionalityAccess.keycardIndexTab;
+        this.canUseKeycardCsv = this.access.getAccess(user.getRole()).functionalityAccess.keycardCsv;
       }
     });
   }
@@ -100,6 +111,9 @@ export class PrizesComponent implements OnInit {
   openCsv(csv: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(csv, this.config);
   }
+  openKeycardCsv(keycard: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(keycard, this.config);
+  }
 
   activate(event): void {
     if (this.cardNumber && this.cardNumber.length > 0) {
@@ -108,14 +122,26 @@ export class PrizesComponent implements OnInit {
         alert('Key Card Activated.');
       }, (errors) => {
         this.isActivated = false;
-        alert('There was a problem. They card was not activated.');
+        alert('There was a problem. The card was not activated.');
       });
     }
   }
 
+
   export(): void {
     if (this.startDate < this.endDate || this.checked) {
       this.prizesService.exportCSV(this.exportForm.value)
+        .subscribe((err) => {
+          let message = err;
+        });
+    } else {
+      this.validPick = false;
+    }
+  }
+  keycardExport(): void {
+
+    if (this.firstDate < this.lastDate || this.checked) {
+      this.prizesService.exportKeycardCSV(this.keycardExportForm.value)
         .subscribe((err) => {
           let message = err;
         });
