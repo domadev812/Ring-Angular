@@ -11,7 +11,6 @@ import { Model } from '../app.models-list';
 })
 
 export class ResourcesComponent implements OnInit {
-
   selectedTab: String = '';
   userRole: boolean;
   canViewScholarships: boolean;
@@ -20,6 +19,7 @@ export class ResourcesComponent implements OnInit {
   canCreateScholarships: boolean;
   canCreateInternships: boolean;
   canCreateOpportunities: boolean;
+  scrollClass: String = 'table-content-with-search';
 
   constructor(
     private router: Router,
@@ -66,15 +66,6 @@ export class ResourcesComponent implements OnInit {
 
   switchTab(selectedTab: String): void {
     this.selectedTab = selectedTab;
-  }
-
-  mouseWheelUp(): void {
-    let scrollArea = document.getElementsByClassName('table-content-with-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop - 40;
-  }
-  mouseWheelDown(): void {
-    let scrollArea = document.getElementsByClassName('table-content-with-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop + 40;
   }
 
 }
