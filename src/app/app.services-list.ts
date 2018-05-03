@@ -10,4 +10,5 @@ export * from './_services/navbar-service.service';
 export * from './_services/organization.service';
 export * from './_services/messageboard.service';
 export * from './_services/approvals.service';
+export * from './_services/group.service';
 

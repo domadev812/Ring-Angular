@@ -13,6 +13,8 @@ import { Application as ApiApplication } from './_models/application.model';
 import { MessageBoard as ApiMessageBoard } from './_models/messageboard.model';
 import { Approval as ApiApproval } from './_models/approval.model';
 import { KeycardRecipient as ApiKeycardRecipient } from './_models/keycard-recipient.model';
+import { Group as ApiGroup } from './_models/group.model';
+import { SchoolGroup as ApiSchoolGroup } from './_models/school-group.model';
 
 export module Model {
     export type User = ApiUser;
@@ -46,6 +48,10 @@ export module Model {
     export const Approval = ApiApproval;
     export type KeycardRecipient = ApiKeycardRecipient;
     export const KeycardRecipient = ApiKeycardRecipient;
+    export type Group = ApiGroup;
+    export const Group = ApiGroup;
+    export type SchoolGroup = ApiSchoolGroup;
+    export const SchoolGroup = ApiSchoolGroup;
 
     export function initializeArray<T>(array: T[], type: string): any[] {
         let newArray: T[] = [];

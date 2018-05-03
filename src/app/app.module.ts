@@ -46,9 +46,7 @@ import { SharedModule } from './shared.module';
     OrganizationsModule,
     ApprovalsModule,
     LoadingModule,
-    SharedModule,
-
-
+    SharedModule
   ],
   providers: [
     {
@@ -64,7 +62,8 @@ import { SharedModule } from './shared.module';
     Services.OrganizationService,
     Services.MultiSelectService,
     Services.NavbarService,
-    GlobalState,
+    Services.GroupService,
+    GlobalState
   ],
   bootstrap: [Components.AppComponent]
 })

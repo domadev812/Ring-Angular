@@ -5,8 +5,8 @@ import { Directive, ElementRef, Output, EventEmitter, Input, HostListener  } fro
 })
 
 export class DetectClickDirective { 
-    clickIsInsideElement: boolean = false
-    active: boolean = false
+    clickIsInsideElement = false;
+    active = false;
     @Output() detectClick = new EventEmitter<boolean>();
 
     @Input() listen(active: boolean) {
