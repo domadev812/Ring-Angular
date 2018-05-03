@@ -13,19 +13,24 @@ import { routing } from '../app.routing';
 import { OrganizationsComponent } from './organizations.component';
 import { OrganizationAddComponent } from './organizationadd/organizationadd.component';
 import { SchoolsTableComponent } from './schools-table/schools-table.component';
+import { SchoolGroupsTableComponent } from './schoolgroups-table/schoolgroups-table.component';
 import { SponsorsTableComponent } from './sponsors-table/sponsors-table.component';
 import { CommunitiesTableComponent } from './communities-table/communities-table.component';
 import { SharedModule } from '../shared.module';
 import { FileUploadModule } from 'ng2-file-upload';
+import { NewgroupComponent } from './newgroup/newgroup.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multiselect.component';
 import { SchooladdComponent } from './schooladd/schooladd.component';
 
 @NgModule({
   declarations: [
     OrganizationsComponent,
     SchoolsTableComponent,
+    SchoolGroupsTableComponent,
     SponsorsTableComponent,
     OrganizationAddComponent,
     CommunitiesTableComponent,
+    NewgroupComponent,
     SchooladdComponent
   ],
   imports: [
@@ -34,6 +39,7 @@ import { SchooladdComponent } from './schooladd/schooladd.component';
     SharedModule,
     FileUploadModule,
     LoadingModule,
+    AngularMultiSelectModule,
   ],
   providers: [
     {

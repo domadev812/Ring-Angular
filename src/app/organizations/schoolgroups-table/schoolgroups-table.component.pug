@@ -1,0 +1,26 @@
+#schoolgroups
+  .search-bar
+    i.fa.fa-search.search-icon
+    input.search-text(type="text", placeholder="Search school groups...", [(ngModel)]='searchText', (keyup.enter)='searchItems()')
+  ngx-loading([show]='loading')  
+  .d-flex.space-between.px-4.mb-1
+    .table-header.col-organization
+      | Group Name
+    .table-header.col-url
+      | Url
+    .table-header.col-created
+      | Created date
+    .table-header.col-edit
+  .table-content-without-search(#scrollVariable, appInfiniteScroller, [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+    .list(*ngFor="let group of school_groups")
+      .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='editSchoolGroup(group.id)')
+        .table-data-primary.col-organization
+          | {{group.name}}
+        .table-data-primary.col-url
+          | {{group.url}}
+        .table-data.col-created
+          | {{group.created_at}}
+        .table-data.col-edit
+          i.fa.fa-eye.edit-row((click)='editSchoolGroup(group.id)')
+    .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")
+      | Loading ...

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { OrganizationService } from '../app.services-list';
 import { SchoolsTableComponent } from './schools-table/schools-table.component';
+import { SchoolGroupsTableComponent } from './schoolgroups-table/schoolgroups-table.component';
 import { SponsorsTableComponent } from './sponsors-table/sponsors-table.component';
 import { CommunitiesTableComponent } from './communities-table/communities-table.component';
 import { NavbarService } from '../app.services-list';
@@ -15,14 +16,13 @@ import { NavbarService } from '../app.services-list';
   styleUrls: ['./organizations.component.scss']
 })
 export class OrganizationsComponent implements OnInit {
-
+  scrollClass: String = 'table-content-without-search';
   tab: String;
 
   constructor(
     private navBarService: NavbarService,
     private router: Router
   ) { }
-
 
   ngOnInit() {
     this.navBarService.show();
@@ -37,17 +37,12 @@ export class OrganizationsComponent implements OnInit {
   addOrganization(type: string): void {
     this.router.navigate(['organizationadd/' + type]);
   }
+  newGroup(): void {
+    this.router.navigate(['newgroup']);
+  }
 
   addSchool(type: string): void {
     this.router.navigate(['organizationadd/' + type]);
   }
 
-  mouseWheelUp(): void {
-    let scrollArea = document.getElementsByClassName('table-content-without-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop - 40;
-  }
-  mouseWheelDown(): void {
-    let scrollArea = document.getElementsByClassName('table-content-without-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop + 40;
-  }
 }

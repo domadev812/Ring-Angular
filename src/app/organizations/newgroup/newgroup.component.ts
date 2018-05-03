@@ -40,7 +40,7 @@ export class NewgroupComponent implements OnInit {
     this.schools = new Array<Model.Organization>();
     this.schoolGroup = new Model.SchoolGroup({});
     this.title = 'New School Group';
-    this.selectAllMultiSettings = MultiSelectUtil.multiSettings;
+    this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings;
     this.getSchools();
   }
 

@@ -1,0 +1,23 @@
+.col-organization {
+    width: 42%;
+    word-wrap: normal;
+    padding-right: 2em;
+}
+.col-url {
+    width: 45%;
+    max-width: 45%;
+    word-wrap: break-word;
+    overflow: hidden;
+    padding-right: 2em;
+}
+.col-created {
+    width: 10%;
+}
+.col-edit {
+    display: flex;
+    justify-content: flex-end;
+    width: 3%;
+}
+.scrollCompensate{
+    margin-right: 2em;
+}

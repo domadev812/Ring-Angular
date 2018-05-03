@@ -157,13 +157,17 @@ export class OrganizationAddComponent implements OnInit {
   }
 
   deleteOrganization() {
-    confirm('Are you sure you want to delete this school?');
-    this.organizationService.deleteOrganization(this.organization.id).subscribe((res) => {
-      alert('School Deleted');
-      this.router.navigate(['organizations']);
-    }, err => {
-      alert(err);
-    });
+    const del = confirm('Are you sure you want to delete this school?');
+    if (del === true) {
+      this.organizationService.deleteOrganization(this.organization.id).subscribe((res) => {
+        alert('School Deleted');
+        this.router.navigate(['organizations']);
+      }, err => {
+        alert(err);
+      });
+    } else {
+      alert('School not deleted');
+    }
   }
 
   goBack(event): void {
