@@ -18,6 +18,7 @@ export class ApprovalsComponent implements OnInit {
   public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
+  scrollClass: String = 'table-content-with-search';
 
   constructor(
     private router: Router,

@@ -13,6 +13,7 @@ import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { apiFactory } from '../_factories/api.factory';
 import { AuthGuard } from '../_guards/auth.guard';
 import { routing } from '../app.routing';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { routing } from '../app.routing';
     LoadingModule,
     ModalModule.forRoot(),
     ButtonsModule.forRoot(),
+    SharedModule
   ],
   declarations: [ApprovalsComponent],
   providers: [
