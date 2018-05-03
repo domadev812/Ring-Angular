@@ -1,4 +1,4 @@
-.page-wrapper.notifications(appMouseWheel (mouseWheelUp)="mouseWheelUp()" (mouseWheelDown)="mouseWheelDown()")
+.page-wrapper.notifications(appMouseWheel [scrollClass]="scrollClass")
   #users.content-wrapper
     .header-nav
       h1.headers

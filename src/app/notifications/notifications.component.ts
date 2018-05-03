@@ -13,6 +13,7 @@ export class NotificationsComponent implements OnInit {
 
   selectedTab: String;
   canCreateMessage: boolean;
+  scrollClass: String = 'table-content-without-search';
 
   constructor(
     private router: Router,
@@ -37,17 +38,7 @@ export class NotificationsComponent implements OnInit {
     this.router.navigate(['notificationadd']);
   }
 
-  mouseWheelUp(): void {
-    let scrollArea = document.getElementsByClassName('table-content-without-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop - 40;
-  }
-  mouseWheelDown(): void {
-    let scrollArea = document.getElementsByClassName('table-content-without-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop + 40;
-  }
-
   newMessage(): void {
     this.router.navigate(['messageboard']);
   }
 }
-
