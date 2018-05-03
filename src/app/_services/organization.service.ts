@@ -71,11 +71,40 @@ export class OrganizationService {
       });
   }
 
+  deleteOrganization(id: string): Observable<Model.Organization> {
+    let url = `${environment.apiUrl}/api/organization/${id}/remove`;
+    return this.http.delete(url, {})
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Organization(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
   createOrganizationUrl(): string {
     let url = '/organization?';
 
     let i;
     return url;
+  }
+
+  // need a model Groups for type Observable<Model.Groups[]>
+  getSchoolGroups(type: string, offset: number, limit: number = 50, search: string = ''): Observable<Model.Organization[]> {
+    let paramType = type !== '' ? `type=${type}` : '';
+    let paramSearch = search !== '' ? `search=${search}` : '';
+    let url = `${environment.apiUrl}/api/groups?offset=${offset}&limit=${limit}&${paramType}&${paramSearch}`;
+    return this.http.get(url)
+      .map((res: Response) => {
+        const json = res.json();
+        if (json && json.data) {
+          return Model.initializeArray(json.data, 'Organization');
+        } else {
+          Observable.throw({ message: 'Internal Server Error', res });
+        }
+      });
   }
 
   uploadImage(organizationId: string): void {
@@ -89,6 +118,19 @@ export class OrganizationService {
       };
     };
     this.uploader.uploadAll();
+  }
+
+  saveSchoolGroup(schoolGroup: Model.SchoolGroup): Observable<Model.SchoolGroup> {
+    let url = `${environment.apiUrl}/api/groups`;
+    return this.http.post(url, schoolGroup)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json) {
+          return new Model.SchoolGroup(json);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
   }
 
 }
