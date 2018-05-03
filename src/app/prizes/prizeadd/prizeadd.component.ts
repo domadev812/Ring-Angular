@@ -28,7 +28,8 @@ export class PrizeAddComponent implements OnInit {
   public ktsSelectSettings: any = {};
   public ktsDeliverySelectSettings = {};
   public creating = false;
-  
+  public points: number;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private prizesService: PrizesService,
@@ -97,7 +98,7 @@ export class PrizeAddComponent implements OnInit {
   onDeliveryDeSelect(item: any) {
     this.onChange(item);
   }
-  
+
   goBack(): void {
     this.router.navigate(['prizes']);
   }
@@ -105,7 +106,7 @@ export class PrizeAddComponent implements OnInit {
   getPrize(id, flag = true): void {
     this.creating = true;
     this.prizesService.getPrize(id).subscribe((res) => {
-      this.prize = res;   
+      this.prize = res;
       this.originalPrize = Object.assign({}, this.prize);
       if (this.sponsorList.length > 0) {
         let org = this.sponsorList.find(sponsor => sponsor.id === parseInt(this.prize.organization_id, 0));

@@ -21,6 +21,12 @@
           input.prize-input(type="text" name="name" [(ngModel)]='prize.title' (ngModelChange)="onChange($event)" #name="ngModel" required)                         
         .item-info
           .input-label
+            | Points
+            .invalid-validation([hidden]="points.valid || !prizeForm.submitted")
+              | Pionts are required
+          input.prize-input(type="text" name="points" [(ngModel)]='prize.points' (ngModelChange)="onChange($event)" #points="ngModel" required)                         
+        .item-info
+          .input-label
             | SPONSOR
             .invalid-validation([hidden]="selectedSponsor.length > 0 || !prizeForm.submitted")
               | Sponsor is required

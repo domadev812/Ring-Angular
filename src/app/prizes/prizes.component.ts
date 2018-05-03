@@ -42,7 +42,11 @@ export class PrizesComponent implements OnInit {
   };
 
   exportForm: FormGroup;
+<<<<<<< HEAD
+  scrollClass: String = 'table-content-with-search';
+=======
   keycardExportForm: FormGroup;
+>>>>>>> e64653840d510337998cbd29a208fd0aa7ba2c36
 
   constructor(private router: Router,
     private modalService: BsModalService,
@@ -161,12 +165,4 @@ export class PrizesComponent implements OnInit {
     }
   }
 
-  mouseWheelUp(): void {
-    let scrollArea = document.getElementsByClassName('table-content-with-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop - 40;
-  }
-  mouseWheelDown(): void {
-    let scrollArea = document.getElementsByClassName('table-content-with-search');
-    scrollArea[0].scrollTop = scrollArea[0].scrollTop + 40;
-  }
 }
