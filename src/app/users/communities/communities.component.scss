@@ -1,11 +1,18 @@
 .col-name {
   width: 25%;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 .col-school {
   width: 30%;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 .col-email {
-  width: 25%;
+  width: 45%;
+  word-wrap: break-word;
+  overflow: hidden;
+  
 }
 .col-created {
   width: 15%;

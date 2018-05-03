@@ -1,4 +1,4 @@
-.page-wrapper.users(appMouseWheel (mouseWheelUp)="mouseWheelUp()" (mouseWheelDown)="mouseWheelDown()")
+.page-wrapper.users(appMouseWheel [scrollClass]="scrollClass")
   #users.content-wrapper
     .header-nav
       h1.headers
