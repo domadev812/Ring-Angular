@@ -22,6 +22,7 @@ import { OrganizationsComponent } from './organizations/organizations.component'
 import { OrganizationAddComponent } from './organizations/organizationadd/organizationadd.component';
 import { ApprovalsComponent } from './approvals/approvals.component';
 import { NewgroupComponent } from './organizations/newgroup/newgroup.component';
+import { BusinessSignupComponent } from './organizations/business-signup/business-signup.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: Components.LoginComponent },
@@ -77,6 +78,8 @@ const appRoutes: Routes = [
   { path: 'newgroup', component: NewgroupComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: 'newgroupedit/:id', component: NewgroupComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'business-signup', component: BusinessSignupComponent },
 
   { path: '**', redirectTo: '/login' }
 ];
