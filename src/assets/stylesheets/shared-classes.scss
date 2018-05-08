@@ -7,6 +7,7 @@
   min-height: calc(100vh - 57px);
   height: 100%;
   @include center-y;
+  justify-content: center;
 }
 
 .content-wrapper{
@@ -16,6 +17,7 @@
   min-width: 990px;
   overflow: hidden;
   padding: 25px 80px 0 85px;  
+  height: 100vh;
   @include xl{
   width: 1110px;
   max-width: 1110px;
@@ -422,11 +424,17 @@
   .pure-checkbox[_ngcontent-c3] input[type="checkbox"][_ngcontent-c3]:checked + label[_ngcontent-c3]:before {
     background: #525E83 !important;
   }
-
-  .selected-list[_ngcontent-c3] .c-list[_ngcontent-c3] .c-token[_ngcontent-c3]{
+ 
+  .selected-list[_ngcontent-c4] .c-list[_ngcontent-c4] .c-token[_ngcontent-c4] {
     color: #525E83 !important;
     background: #525E83  !important;
+    padding-bottom: 6px !important;
   }
+
+  .pure-checkbox[_ngcontent-c4] input[type="checkbox"][_ngcontent-c4]:checked + label[_ngcontent-c4]:before {
+    background: #525E83  !important;
+  }
+  
   
 }
 
