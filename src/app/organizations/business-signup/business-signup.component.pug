@@ -1,0 +1,97 @@
+.sigunup-page-wrapper
+  #signup
+    .signup-wrapper
+      ngx-loading([show]='creating') 
+      .header-logo
+        .logo-wrapper
+          img(src="../assets/logos/Logo_Full_Red.png")
+      h1.login-header
+        | Organization Signup   
+      form.form-group(#businessSignupForm="ngForm" (ngSubmit)="saveOrg(businessSignupForm.valid)" novalidate)     
+        .wrapper-content
+          .logo-image
+            .well.my-drop-zone(ng2FileDrop, [ngClass]="{'nv-file-over': hasBaseDropZoneOver}", (fileOver)="fileOverBase($event)", [uploader]="uploader", (onFileDrop)="selectedFile($event)")            
+              img.preview([src]="filePreviewPath", *ngIf="filePreviewPath", for='file', (click)='file.click()')
+              .empty-logo(*ngIf="!filePreviewPath")
+                label.add-logo(for="file")
+                  | Add Logo  
+              .change-logo(*ngIf="filePreviewPath")
+                label.add-logo(for="file")
+                  | Change Logo  
+            input.file-chooser(#file type="file", id="file", ng2FileSelect, [uploader]="uploader", accept="image/x-png,image/gif,image/jpeg", (onFileSelected)="selectedFile($event)")
+        .form-content 
+          .item-info
+            .input-label
+              | ORGANIZATION NAME
+              .invalid-validation([hidden]="org.valid || (org.pristine && !businessSignupForm.submitted)")
+                | Organization name is required
+            input.resources-input(id='org'  [(ngModel)]='orgName' #org='ngModel' name="org" required) 
+          .item-info
+            .input-label-dropdown
+              | ORGANIZATION TYPE
+              .invalid-validation([hidden]="selectedCareers.length > 0 || !businessSignupForm.submitted")
+                  | Organization type required
+            angular2-multiselect(
+                name = 'organization'
+                [data]='organizationTypeList'
+                [(ngModel)]='selectedOrganizationType'
+                [settings]='ktsSelectSettings'
+              )
+          .item-info
+            .input-label
+              | CONTACT NAME
+              .invalid-validation([hidden]="name.valid || (name.pristine && !businessSignupForm.submitted)")
+                  | Contact name is required
+          input.resources-input(type="text" [(ngModel)]='contactName' name="name" #name='ngModel' required) 
+          .item-info
+            .input-label
+              | CONTACT EMAIL
+              .invalid-validation([hidden]="email.valid || (email.pristine && !businessSignupForm.submitted)")
+                  | Valid email is required
+          input.resources-input(type="email" [(ngModel)]='contactEmail' name="email" #email='ngModel' email required) 
+          .item-info
+            .input-label
+              | Password
+              .invalid-validation([hidden]="password.valid || (password.pristine && !businessSignupForm.submitted)")
+                  | Password required 
+            input.resources-input( type='password' name="password" [(ngModel)]='user.password' #password='ngModel' required)
+          .item-info
+            .input-label-dropdown
+                | ORGANIZATION CAREER FIELD
+                .invalid-validation([hidden]="selectedCareers.length > 0 || !businessSignupForm.submitted")
+                  | Organization career field required
+            angular2-multiselect(
+              name = 'careers'
+              [data]='careerGroupsList'
+              [(ngModel)]='selectedCareers'
+              [settings]='ktsMultiSettings'
+            )     
+          .item-info-checkbox
+            .input-label
+              | Intended keys to success participation (check all that apply)
+            .checkbox-container
+              .checkbox
+                input(type='checkbox' [(ngModel)]='scholarships' name='scholarships')
+                label(for='active')
+                  | Scholarships  
+              .checkbox  
+                input(type='checkbox' [(ngModel)]='internships' name='internships')
+                label(for='active')
+                  | Internships  
+              .checkbox
+                input(type='checkbox' [(ngModel)]='openHouse' name='openHouse')
+                label(for='active')
+                  | Open Houses  
+              .checkbox  
+                input(type='checkbox' [(ngModel)]='jobShadowing' name='jobShadowing')
+                label(for='active')
+                  | Job Shadowing 
+              .checkbox 
+                input(type='checkbox' [(ngModel)]='other' name='other')
+                label(for='active')
+                  | Other
+          button.primary-button.signup-button(type='submit')
+            span
+              | Create Account       
+        
+

@@ -1,0 +1,168 @@
+@import "~assets/stylesheets/style-guide";
+@import "~assets/stylesheets/mixins";
+@import "~assets/stylesheets/shared-classes";
+
+.sigunup-page-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.signup-button{
+  margin: 20px 0 0 0;
+  width: 50%;
+}
+
+.signup-wrapper {
+  width: 450px;
+  @include md{
+    width: 550px;
+    }
+  }
+.header-logo{
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  margin: 30px 0 0 0;
+  .logo-wrapper{
+    width: 100%;
+    img{
+      width: 100%;
+    }
+  }
+}
+
+.login-header {
+  margin: 45px 0 40px 0;
+  font-size: 36px;
+  font-weight: 300;
+  font-family: $font-primary;
+  color: #E41C3D;
+}
+
+.input-label {
+  margin: 0;
+  padding-top: 20px;
+}
+
+.resources-input {
+  width: 100%;
+  height: 43px;
+  padding: 10px;
+}
+
+.fixed-header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.item-info-checkbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper-content {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-start;
+
+}
+
+.logo-image {
+  width: 25%;
+}
+
+.input-disabled{
+  background: #E6E9F2;
+}
+.upload-disabled{
+  background-color: #E6E9F2 !important;
+}
+.file-chooser {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.my-drop-zone {  
+  position: relative;
+  border: solid 1px $color-input-outline; 
+  background-color: #FFF;
+  padding-top: 100%;
+  border-radius: 3px;
+  margin-top: -6px;
+  .preview {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    z-index: 3;
+    &:after {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 5;
+      height: 100%;
+      width: 100%;
+      content: 'Change Photo';
+      top: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: white;
+    }
+  }
+  
+}
+.nv-file-over { border: solid 1px red; } /* Default class applied to drop zones on over */
+.file-chooser{
+  margin-top: 10px;
+  width: 100%;
+  font-size: 12px;
+}
+
+
+.change-logo {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 100;
+  font-size: 20px;
+  color: white;
+  
+}
+.empty-logo{
+  position: absolute;
+  top: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-weight: 100;
+  font-size: 20px;
+  color: $color-text-input-placeholder;
+  .add-logo{
+    width: 100%;
+    height: 100%;
+    padding-top: 50px;
+  }
+}
