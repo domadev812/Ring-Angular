@@ -39,7 +39,8 @@ export class AccessService {
         approvals: true,
         keycards: true,
         newgroup: true,
-        schooladd: true,
+        newgroupedit: true,
+
       },
       functionalityAccess: {
         internshipsTab: true,
@@ -70,6 +71,8 @@ export class AccessService {
         keycardCsv: true,
         newGroupButton: true,
         addSchoolButton: true,
+        canEditSchoolGroup: true,
+
       }
     },
     key_contact: {

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Model } from '../../app.models-list';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
 import { FormsModule } from '@angular/forms';
-import { MultiSelectService, NavbarService, AuthService, AccessService, OrganizationService } from '../../app.services-list';
+import { MultiSelectService, NavbarService, AuthService, AccessService, GroupService } from '../../app.services-list';
 import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
-import { SchoolGroup } from '../../_models/school-group.model';
+import { Group } from '../../_models/group.model';
+import { GlobalState } from '../../global.state';
 
 @Component({
   selector: 'app-newgroup',
@@ -16,12 +17,13 @@ export class NewgroupComponent implements OnInit {
   public selectAllMultiSettings: any = {};
   public schools: Array<Model.Organization>;
   public schoolList = [];
-  public selectedSchools = [];
+  public selectedGroup = [];
   public title: string;
   public disableFlag: boolean;
   public editFlag: boolean;
-  public schoolGroup: Model.SchoolGroup;
+  public schoolGroup: Model.Group;
   public creating = false;
+  public schoolGroupId: string;
 
   constructor(
     private router: Router,
@@ -30,20 +32,37 @@ export class NewgroupComponent implements OnInit {
     private navBarService: NavbarService,
     private authProvider: AuthService,
     private access: AccessService,
-    private organizationService: OrganizationService,
+    private groupService: GroupService,
+    public global: GlobalState,
 
   ) { }
 
   ngOnInit() {
+    this.schoolGroupId = this.route.snapshot.paramMap.get('id');
     this.navBarService.show();
     this.navBarService.activeTabChanged('organizations');
     this.schools = new Array<Model.Organization>();
-    this.schoolGroup = new Model.SchoolGroup({});
-    this.title = 'New School Group';
-    this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings;
+    this.schoolGroup = new Model.Group({}); this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings;
     this.getSchools();
+    this.setTitle();
   }
 
+  setTitle(title: string = null) {
+    if (this.schoolGroupId) {
+      this.title = 'Edit School Group';
+      this.getSchoolGroup(this.schoolGroupId);
+    } else {
+      this.title = 'New School Group';
+    }
+  }
+
+  getSchoolGroup(id: string) {
+    this.groupService.getGroup(id).subscribe((res) => {
+      this.schoolGroup = res;
+      this.selectedGroup = res.organizations.map(organization => new MultiSelectUtil.SelectItem(organization.name, organization.id));
+      console.log('this is the response', res);
+    });
+  }
 
   getSchools(): void {
     this.multiSelectService.getDropdownSchools().subscribe((res: MultiSelectUtil.SelectItem[]) => {
@@ -55,7 +74,7 @@ export class NewgroupComponent implements OnInit {
 
   isSchoolChanged(): boolean {
     // TODO: Update once lodash is added
-    return this.selectedSchools.length > 0 ? false : true;
+    return this.selectedGroup.length > 0 ? false : true;
   }
 
   onSchoolSelect(item: any) {
@@ -78,17 +97,41 @@ export class NewgroupComponent implements OnInit {
     }
   }
 
-  saveSchoolGroup(): void {
-    this.creating = true;
-    this.organizationService.saveSchoolGroup(this.schoolGroup).subscribe((res) => {
-      this.creating = false;
-      alert('Created School Group Succesfully');
-      this.router.navigate(['organizations']);
-      this.schoolGroup = res;
-    }, (errors) => {
-      this.creating = false;
-      alert('Server error');
+  saveSchoolGroup(valid: boolean): void {
+
+    if (!valid) {
+      return;
+    }
+
+    if (this.selectedGroup.length === 0) {
+      return;
+    }
+
+    this.schoolGroup.organization_ids = this.selectedGroup.map(organizations => {
+      return organizations.id;
     });
+    this.creating = true;
+    if (!this.schoolGroupId)
+      this.groupService.createGroup(this.schoolGroup).subscribe((res) => {
+        console.log('here is the schoolGroup', this.schoolGroup);
+        this.creating = false;
+        alert('Created School Group Succesfully');
+        this.router.navigate(['organizations']);
+        this.schoolGroup = res;
+      }, (errors) => {
+        this.creating = false;
+        alert('Server error');
+      });
+    else
+      this.groupService.updateGroup(this.schoolGroup).subscribe((res) => {
+        this.creating = false;
+        alert('Update School Group successfully');
+        this.global.selectedTab = 'organizations';
+        this.router.navigate(['organizations']);
+      }, (errors) => {
+        this.creating = false;
+        alert('Server error');
+      });
   }
 
   goBack(): void {

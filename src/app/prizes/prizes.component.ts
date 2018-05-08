@@ -42,11 +42,8 @@ export class PrizesComponent implements OnInit {
   };
 
   exportForm: FormGroup;
-<<<<<<< HEAD
   scrollClass: String = 'table-content-with-search';
-=======
   keycardExportForm: FormGroup;
->>>>>>> e64653840d510337998cbd29a208fd0aa7ba2c36
 
   constructor(private router: Router,
     private modalService: BsModalService,

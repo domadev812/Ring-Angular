@@ -93,4 +93,17 @@ export class GroupService {
     this.uploader.uploadAll();
   }
 
+  getGroup(id: string): Observable<Model.Group> {
+    let url = `${environment.apiUrl}/api/groups/${id}`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        console.log('this is response in the service', response.json);
+        const json = response.json();
+        if (json && json.data) {
+          return new Model.Group(json.data);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
 }

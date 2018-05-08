@@ -6,9 +6,12 @@
         h1.headers
           | {{title}}
         .button-group
-            button.organization-btn.primary-button.feedback-btn(type="submit") 
+            button.organization-btn.primary-button.feedback-btn(*ngIf="!schoolGroupId", type="submit") 
               span
                 | Save
+            button.organization-btn.primary-button.feedback-btn(*ngIf="schoolGroupId", type="submit") 
+              span
+                | Update
             button.organization-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)") 
               span
                 | Cancel
@@ -26,7 +29,7 @@
             angular2-multiselect(
               name = 'schools'
               [data]='schoolList'
-              [(ngModel)]='selectedSchools'
+              [(ngModel)]='selectedGroup'
               [settings]='selectAllMultiSettings'
               (onSelect)='onSchoolSelect($event)'
               (onDeSelect)='onSchoolDeSelect($event)'

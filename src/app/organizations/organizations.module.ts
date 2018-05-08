@@ -20,7 +20,6 @@ import { SharedModule } from '../shared.module';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NewgroupComponent } from './newgroup/newgroup.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multiselect.component';
-import { SchooladdComponent } from './schooladd/schooladd.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +30,7 @@ import { SchooladdComponent } from './schooladd/schooladd.component';
     OrganizationAddComponent,
     CommunitiesTableComponent,
     NewgroupComponent,
-    SchooladdComponent
+
   ],
   imports: [
     CommonModule,

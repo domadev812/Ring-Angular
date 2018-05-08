@@ -41,6 +41,7 @@ export class FunctionalityAccess {
   keycardCsv?: boolean;
   newGroupButton?: boolean;
   addSchoolButton?: boolean;
+  canEditSchoolGroup?: boolean;
 }
 
 export class RouteAccess {
@@ -69,5 +70,5 @@ export class RouteAccess {
   approvals?: boolean;
   keycards?: boolean;
   newgroup?: boolean;
-  schooladd?: boolean;
+  newgroupedit?: boolean;
 }

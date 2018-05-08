@@ -20,8 +20,8 @@ import { MessageBoardComponent } from './notifications/messageboard/messageboard
 import { RoleGuard } from './_guards/role.guard';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { OrganizationAddComponent } from './organizations/organizationadd/organizationadd.component';
-import { SchooladdComponent } from './organizations/schooladd/schooladd.component';
 import { ApprovalsComponent } from './approvals/approvals.component';
+import { NewgroupComponent } from './organizations/newgroup/newgroup.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: Components.LoginComponent },
@@ -74,7 +74,9 @@ const appRoutes: Routes = [
 
   { path: 'approvals', component: ApprovalsComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'schooladd', component: SchooladdComponent, canActivate: [AuthGuard, RoleGuard] },
+  { path: 'newgroup', component: NewgroupComponent, canActivate: [AuthGuard, RoleGuard] },
+
+  { path: 'newgroupedit/:id', component: NewgroupComponent, canActivate: [AuthGuard, RoleGuard] },
 
   { path: '**', redirectTo: '/login' }
 ];

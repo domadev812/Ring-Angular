@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { GroupService } from '../../app.services-list';
+import { GroupService, AccessService, AuthService, CurrentUserService } from '../../app.services-list';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 import { Observable } from 'rxjs/Observable';
@@ -20,13 +20,17 @@ export class SchoolGroupsTableComponent implements OnInit {
   public offset: number;
   public searchText: string;
   public loading = false;
+  public canUseEditSchoolGroup: boolean;
 
   school_groups: Model.Group[];
 
   constructor(
     private http: Http,
     private groupService: GroupService,
-    public router: Router
+    public router: Router,
+    public access: AccessService,
+    private authProvider: AuthService,
+    private currentUserService: CurrentUserService,
   ) { }
 
   ngOnInit() {
@@ -35,6 +39,14 @@ export class SchoolGroupsTableComponent implements OnInit {
     this.searchText = '';
     this.offset = 0;
     this.limit = 50;
+  }
+
+  getUser() {
+    this.currentUserService.getCurrentUser(this.authProvider).then((user: Model.User) => {
+      if (user) {
+        this.canUseEditSchoolGroup = this.access.getAccess(user.getRole()).functionalityAccess.canEditSchoolGroup;
+      }
+    });
   }
 
   searchItems(): void {
@@ -56,7 +68,7 @@ export class SchoolGroupsTableComponent implements OnInit {
   }
 
   editSchoolGroup(group_id: string): void {
-    this.router.navigate([`groupedit/${group_id}`]);
+    this.router.navigate([`newgroupedit/${group_id}`]);
   }
 
   myScrollCallBack(): Observable<Model.Group[]> {
