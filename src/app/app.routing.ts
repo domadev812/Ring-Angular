@@ -79,7 +79,7 @@ const appRoutes: Routes = [
 
   { path: 'newgroupedit/:id', component: NewgroupComponent, canActivate: [AuthGuard, RoleGuard] },
 
-  { path: 'business-signup', component: BusinessSignupComponent },
+  { path: 'signup', component: BusinessSignupComponent },
 
   { path: '**', redirectTo: '/login' }
 ];
