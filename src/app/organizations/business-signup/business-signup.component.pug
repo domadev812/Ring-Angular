@@ -27,7 +27,7 @@
                 | Organization name is required
             input.resources-input(id='org'  [(ngModel)]='orgName' #org='ngModel' name="org" required) 
           .item-info
-            .input-label-dropdown
+            .input-label
               | ORGANIZATION TYPE
               .invalid-validation([hidden]="selectedCareers.length > 0 || !businessSignupForm.submitted")
                   | Organization type required
@@ -56,7 +56,7 @@
                   | Password required 
             input.resources-input( type='password' name="password" [(ngModel)]='user.password' #password='ngModel' required)
           .item-info
-            .input-label-dropdown
+            .input-label
                 | ORGANIZATION CAREER FIELD
                 .invalid-validation([hidden]="selectedCareers.length > 0 || !businessSignupForm.submitted")
                   | Organization career field required
