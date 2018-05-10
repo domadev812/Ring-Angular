@@ -24,15 +24,15 @@
         .table-data-primary.mx-4.col-prize
           | {{prize.title}}
         .table-data.mx-4.col-sponsor
-          | {{prize.organization.name}}
+          | {{prize.organization_name}}
         .table-data.mx-4.col-delivery
           | {{prize.delivery_type}}
         .table-data.mx-4.col-quantity
-          | {{getKeyValue(prize.current_campaign, 'number_available')}}
+          | {{prize.quantity}}
         .table-data.mx-4.col-redeemed
-          | {{getKeyValue(prize.current_campaign, 'redeemed')}}
+          | {{prize.redeemed}}
         .table-data.mx-4.col-period
-          | {{formatDate(getKeyValue(prize.current_campaign, 'activation_start'))}}
+          | {{formatDate(prize.period)}}
         .table-data.mx-4.col-edit
           i.fa.fa-pencil.edit-row((click)='editPrize(prize.id)')
     .infinite-scroll-loading(class="infinite-scroll-loading" *ngIf="infiniteScrollLoading")

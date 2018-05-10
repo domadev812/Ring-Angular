@@ -73,11 +73,5 @@ export class PrizesIndexComponent implements OnInit {
     return date ? moment(date, moment.ISO_8601)
       .format('DD  MMM  YYYY') : '';
   }
-
-  getKeyValue(campaign: Model.Campaign, key: string): any {
-    if (campaign && campaign[key] != undefined) {
-      return campaign[key];
-    }
-    return '';
-  }
+  
 }
