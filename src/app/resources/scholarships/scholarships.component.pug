@@ -1,7 +1,7 @@
 #scholarships
   .search-bar
     i.fa.fa-search.search-icon
-    input.search-text(type="text" placeholder="Search scholarships..." [(ngModel)]='searchText' (keyup.enter)='searchItems($event)')
+    input.search-text(type="text" placeholder="Search scholarships..." [(ngModel)]='searchText' (keyup.enter)='searchItems()')
   ngx-loading([show]='loading')  
   .d-flex.space-between.px-4.py-1
     .table-header.col-resource
