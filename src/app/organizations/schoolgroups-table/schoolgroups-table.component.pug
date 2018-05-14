@@ -6,8 +6,6 @@
   .d-flex.space-between.px-4.mb-1
     .table-header.col-organization
       | Group Name
-    .table-header.col-url
-      | Url
     .table-header.col-created
       | Created date
     .table-header.col-edit
@@ -16,8 +14,6 @@
       .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='editSchoolGroup(group.id)')
         .table-data-primary.col-organization
           | {{group.name}}
-        .table-data-primary.col-url
-          | {{group.url}}
         .table-data.col-created
           | {{group.created_at}}
         .table-data.col-edit
