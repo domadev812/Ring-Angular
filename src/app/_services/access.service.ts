@@ -161,6 +161,7 @@ export class AccessService {
         resourcesTab: true,
         newScholarshipButton: true,
         newOpportunityButton: true,
+        newInternshipButton: true,
         scholarshipsTab: true,
         internshipsTab: true,
         otherOpportunitiesTab: true

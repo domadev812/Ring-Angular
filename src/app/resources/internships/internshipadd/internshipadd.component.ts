@@ -153,14 +153,14 @@ export class InternshipAddComponent implements OnInit {
   admininternshipAdd(): void {
     if (!this.internshipId)
       this.multiSelectPreFlight();
-    this.setTitle('New internship');
+    this.setTitle('New Internship');
     this.showButtonGroup();
   }
 
   userinternshipAdd(): void {
     if (!this.internshipId)
       this.multiSelectPreFlight();
-    this.setTitle('New internship');
+    this.setTitle('New Internship');
     this.showButtonGroup();
   }
 
@@ -296,7 +296,7 @@ export class InternshipAddComponent implements OnInit {
     if (!this.internship.id) {
       this.resourcesService.createResource(this.internship).subscribe((res) => {
         this.creating = false;
-        alert('Create new internship successfully');
+        alert('Created new internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
@@ -306,7 +306,7 @@ export class InternshipAddComponent implements OnInit {
     } else {
       this.resourcesService.updateResource(this.internship).subscribe((res) => {
         this.creating = false;
-        alert('Update internship successfully');
+        alert('Updated internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
@@ -360,5 +360,5 @@ export class InternshipAddComponent implements OnInit {
       return 'Select this for your scholarship, internship, or opportunity to be active for students to see.';
     }
   }
-  
+
 }

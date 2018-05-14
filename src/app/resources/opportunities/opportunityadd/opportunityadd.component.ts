@@ -83,7 +83,7 @@ export class OpportunityAddComponent implements OnInit {
     } else if (!this.approved) {
       this.title = this.opportunity.organization.name;
     } else if (this.opportunityId !== null) {
-      this.title = 'Edit opportunity';
+      this.title = 'Edit Opportunity';
     }
   }
 
@@ -157,14 +157,14 @@ export class OpportunityAddComponent implements OnInit {
   adminopportunityAdd(): void {
     if (!this.opportunityId)
       this.multiSelectPreFlight();
-    this.setTitle('New opportunity');
+    this.setTitle('New Opportunity');
     this.showButtonGroup();
   }
 
   useropportunityAdd(): void {
     if (!this.opportunityId)
       this.multiSelectPreFlight();
-    this.setTitle('New opportunity');
+    this.setTitle('New Opportunity');
     this.showButtonGroup();
   }
 
@@ -299,7 +299,7 @@ export class OpportunityAddComponent implements OnInit {
     if (!this.opportunity.id) {
       this.resourcesService.createResource(this.opportunity).subscribe((res) => {
         this.creating = false;
-        alert('Create new opportunity successfully');
+        alert('Created new opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
@@ -309,7 +309,7 @@ export class OpportunityAddComponent implements OnInit {
     } else {
       this.resourcesService.updateResource(this.opportunity).subscribe((res) => {
         this.creating = false;
-        alert('Update opportunity successfully');
+        alert('Updated opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {

@@ -5,9 +5,13 @@
     <form class="form-group" #opportunityForm="ngForm" (ngSubmit)="saveOpportunity(opportunityForm.valid)" novalidate>
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
-        <div class="button-group">
-          <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag"> <span>Save</span></button>
-          <button class="cancel-button feedback-btn" type="button" (click)="goBack()"> <span>Cancel</span></button>
+        <div class="button-group" [hidden]="saveBtn">
+          <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag"><span>Save</span></button>
+          <button class="cancel-button feedback-btn" (click)="goBack()" type="button"> <span>Cancel </span></button>
+        </div>
+        <div class="button-group" [hidden]="approveBtn">
+          <button class="save-button feedback-btn" (click)="approve()" type="button"><span>Approve</span></button>
+          <button class="cancel-button feedback-btn" (click)="reject()" type="button"> <span>Reject </span></button>
         </div>
       </div>
       <div class="applicants-view fixed-header" *ngIf="editFlag === true &amp;&amp; opportunity.users" (click)="gotoApplicants(opportunity.id)">Applicants: {{opportunity.users.length}}         <img class="link-arrow" src="../assets/imgs/link-arrow.svg"></div>
@@ -16,7 +20,7 @@
           <div class="input-label">NAME
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !opportunityForm.submitted)">Name is required</div>
           </div>
-          <input class="resources-input" type="text" name="name" [(ngModel)]="opportunity.title" (ngModelChange)="onChange($event)" #name="ngModel" required>
+          <input class="resources-input" type="text" name="name" [disabled]="!approved" [ngClass]="{'disabled': !approved}" [(ngModel)]="opportunity.title" (ngModelChange)="onChange($event)" #name="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">ORGANIZATION
@@ -28,21 +32,21 @@
           <div class="input-label">DESCRIPTION
             <div class="invalid-validation" [hidden]="details.valid || (details.pristine &amp;&amp; !opportunityForm.submitted)">Description is required</div>
           </div>
-          <textarea class="resources-textarea" rows="6" name="details" [(ngModel)]="opportunity.details" (ngModelChange)="onChange($event)" #details="ngModel" required></textarea>
+          <textarea class="resources-textarea" rows="6" name="details" [disabled]="!approved" [ngClass]="{'disabled': !approved}" [(ngModel)]="opportunity.details" (ngModelChange)="onChange($event)" #details="ngModel" required></textarea>
         </div>
         <div class="item-info">
           <div class="input-label">APPLICATION LINK
             <div class="invalid-validation" [hidden]="link.valid || (link.pristine &amp;&amp; !opportunityForm.submitted)">Application link is required</div>
             <div class="invalid-validation" [hidden]="!opportunity.link || opportunity.link === '' || validURL(opportunity.link) || (link.pristine &amp;&amp; !opportunityForm.submitted)">Application link is not correct</div>
           </div>
-          <input class="resources-input" [(ngModel)]="opportunity.link" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required>
+          <input class="resources-input" [(ngModel)]="opportunity.link" [disabled]="!approved" [ngClass]="{'disabled': !approved}" name="link" #link="ngModel" (ngModelChange)="onChange($event)" required>
         </div>
         <div class="item-info">
           <div class="input-label-dropdown">CAREERS</div>
           <angular2-multiselect name="careers" [data]="careerList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings" (onSelect)="onCareerSelect($event)" (onDeSelect)="onCareerDeSelect($event)">    </angular2-multiselect>
         </div>
-        <div class="item-info">
-          <input type="checkbox" id="active" [(ngModel)]="opportunity.is_active" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)">
+        <div class="item-info checkboxes" [tooltip]="tooltip('Active')">
+          <input type="checkbox" id="active" [(ngModel)]="opportunity.is_active" [disabled]="!approved" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)">
           <label for="active">Active  </label>
         </div>
       </div>
