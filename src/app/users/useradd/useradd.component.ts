@@ -22,13 +22,13 @@ export class UserAddComponent implements OnInit {
   editFlag: boolean;
   disableFlag: boolean;
   schoolList = [];
-  sponsorList = [];
+  commnunityList = [];
   organizationList = [];
   selectedOrganization = [];
   typeList = [{ itemName: 'Student', id: 'student' },
-              { itemName: 'Key Contact', id: 'key_contact' },
-              { itemName: 'Counselor', id: 'counselor' },
-              { itemName: 'Community', id: 'communities' }];
+  { itemName: 'Key Contact', id: 'key_contact' },
+  { itemName: 'Counselor', id: 'counselor' },
+  { itemName: 'Community', id: 'communities' }];
   filteredTypeList = [];
   selectedType = [];
   ktsTypeSettings = {};
@@ -69,7 +69,7 @@ export class UserAddComponent implements OnInit {
       this.getUser(id);
     }
     this.getSchools();
-    this.getSponsors();
+    this.getCommunities();
   }
 
   onSchoolSelect(item: any) {
@@ -106,6 +106,7 @@ export class UserAddComponent implements OnInit {
       if (roles.indexOf('admin') !== -1) {
         this.filteredTypeList = this.typeList.map(type => type);
         this.adminFlag = true;
+        this.user.points = 0;
       } else if (roles.indexOf('key_contact') !== -1) {
         this.filteredTypeList = this.typeList.filter(type => type.id === 'counselor' || type.id === 'student');
         this.selectedOrganization.push({ id: this.currentUser.organization_id, itemName: this.currentUser.organization.name });
@@ -217,13 +218,10 @@ export class UserAddComponent implements OnInit {
   }
 
   createUser() {
-    this.creating = true;
     this.usersService.createUser(this.user).subscribe((res) => {
-      this.creating = false;
       alert('User is created');
       this.router.navigate(['users']);
     }, (errors) => {
-      this.creating = false;
       alert(errors.message);
     });
   }
@@ -231,13 +229,10 @@ export class UserAddComponent implements OnInit {
   updateUser() {
     let updatedUser = Object.assign({}, this.user);
     delete updatedUser.password;
-    this.creating = false;
     this.usersService.updateUser(updatedUser).subscribe((res) => {
-      this.creating = false;
       alert('User is updated');
       this.router.navigate(['users']);
     }, (errors) => {
-      this.creating = false;
       alert(errors.message);
     });
   }
@@ -257,11 +252,11 @@ export class UserAddComponent implements OnInit {
     });
   }
 
-  getSponsors(): void {
-    this.multiSelectService.getDropdownSponsors().subscribe((res: MultiSelectUtil.SelectItem[]) => {
-      this.sponsorList = res;
-      if (this.editFlag && this.user.organization_id && this.sponsorList.length > 0) {
-        let org = this.sponsorList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
+  getCommunities(): void {
+    this.multiSelectService.getDropdownCommunities().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+      this.commnunityList = res;
+      if (this.editFlag && this.user.organization_id && this.commnunityList.length > 0) {
+        let org = this.commnunityList.find(organization => organization.id === parseInt(this.user.organization_id, 0));
         if (org) {
           this.selectedOrganization.push(org);
         }
@@ -275,7 +270,7 @@ export class UserAddComponent implements OnInit {
   changeOrganizationList(): void {
     if (this.selectedType.length > 0 && this.selectedType[0].id === 'communities') {
       this.organizationTitle = 'Organization';
-      this.organizationList = this.sponsorList.map(sponsor => sponsor);
+      this.organizationList = this.commnunityList.map(community => community);
     } else {
       this.organizationTitle = 'School';
       this.organizationList = this.schoolList.map(school => school);
