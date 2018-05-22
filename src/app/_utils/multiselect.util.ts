@@ -7,7 +7,7 @@ export module MultiSelectUtil {
     enableCheckAll: false,
     enableSearchFilter: true,
     classes: 'kts-multiselect',
-    unSelectAllText: 'UnSelect All',
+    unSelectAllText: 'DeSelect All',
     singleSelection: false,
   };
   export const selectAllMultiSettings = {
@@ -15,7 +15,7 @@ export module MultiSelectUtil {
     enableCheckAll: true,
     enableSearchFilter: true,
     classes: 'kts-multiselect',
-    unSelectAllText: 'UnSelect All',
+    unSelectAllText: 'DeSelect All',
     singleSelection: false,
   };
 
@@ -24,7 +24,7 @@ export module MultiSelectUtil {
     enableCheckAll: false,
     enableSearchFilter: true,
     classes: 'kts-multiselect',
-    unSelectAllText: 'UnSelect All',
+    unSelectAllText: 'DeSelect All',
     singleSelection: true,
   };
 
@@ -33,7 +33,7 @@ export module MultiSelectUtil {
     enableCheckAll: false,
     enableSearchFilter: true,
     classes: 'kts-multiselect',
-    unSelectAllText: 'UnSelect All',
+    unSelectAllText: 'DeSelect All',
     singleSelection: true,
 
   };
@@ -42,10 +42,17 @@ export module MultiSelectUtil {
     enableCheckAll: false,
     enableSearchFilter: true,
     classes: 'kts-multiselect',
-    unSelectAllText: 'UnSelect All',
+    unSelectAllText: 'DeSelect All',
     singleSelection: true,
 
   };
+
+  export const orgType = [
+    { 'id': 1, 'itemName': 'For Profit Business' },
+    { 'id': 2, 'itemName': 'Post-Secondary Education Institution' },
+    { 'id': 3, 'itemName': 'Nonprofit Organization ' },
+    { 'id': 4, 'itemName': 'Other' }
+  ];
 
   export class SelectItem {
 
@@ -55,6 +62,7 @@ export module MultiSelectUtil {
       School: 'name',
       Career: 'title',
       Organization: 'name',
+      Group: 'name',
     };
 
     static buildFromData(data: any, model_name: string): SelectItem[] {
