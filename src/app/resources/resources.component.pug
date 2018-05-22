@@ -1,6 +1,6 @@
-.page-wrapper.resources(appMouseWheel [scrollClass]="scrollClass")
-  #users.content-wrapper
-    .header-nav
+.page-wrapper-index.resources(appMouseWheel [scrollClass]="scrollClass")
+  #users.content-wrapper-index
+    .header-nav.mb-3
       h1.headers
         | Resources
       .button-group
@@ -12,7 +12,7 @@
               | New Internship
           button.resource-button.feedback-btn((click)='addNewResource("opportunityadd")', *ngIf="canCreateOpportunities")
             span
-              | New Opportunities         
+              | New Opportunity       
     .justify-start.newTabs.mb-4
       .sub-nav-item.center.mr-4.newSubNav((click)="switchTab('scholarships')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'scholarships'}", *ngIf="canViewScholarships")
         | Scholarships
