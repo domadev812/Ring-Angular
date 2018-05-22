@@ -8,15 +8,15 @@
     <div class="table-header col-organization">Sponsor</div>
     <div class="table-header col-url">Url</div>
     <div class="table-header col-created">Created date</div>
-    <div class="table-header mr-4 col-edit">&nbsp;</div>
+    <div class="table-header col-edit"></div>
   </div>
   <div class="table-content-without-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
     <div class="list" *ngFor="let organization of organizations">
-      <div class="d-flex space-between bg-white py-1 pointer" (click)="editOrganization(organization.id)">
-        <div class="table-data-primary mx-4 col-organization">{{organization.name}}</div>
+      <div class="d-flex space-between bg-white px-4 py-1 pointer" (click)="editOrganization(organization.id)">
+        <div class="table-data-primary col-organization">{{organization.name}}</div>
         <div class="table-data-primary col-url">{{organization.url}}</div>
         <div class="table-data col-created">{{organization.created_at}}</div>
-        <div class="table-data mr-4 col-edit"><i class="fa fa-pencil edit-row" (click)="editOrganization(organization.id)"></i></div>
+        <div class="table-data col-edit"><i class="fa fa-pencil edit-row" (click)="editOrganization(organization.id)"></i></div>
       </div>
     </div>
     <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>

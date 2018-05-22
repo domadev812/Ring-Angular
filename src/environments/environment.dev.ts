@@ -1,5 +1,3 @@
-
-
 let base_url = 'http://localhost:8181'; //staging
 
 export const environment = {

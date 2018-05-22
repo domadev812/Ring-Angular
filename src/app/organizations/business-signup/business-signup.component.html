@@ -1,0 +1,91 @@
+
+<div class="sigunup-page-wrapper">
+  <div id="signup">
+    <div class="signup-wrapper">
+      <ngx-loading [show]="creating"> </ngx-loading>
+      <div class="header-logo">
+        <div class="logo-wrapper"><img src="../assets/logos/Logo_Full_Red.png"></div>
+      </div>
+      <h1 class="login-header">Organization Signup   </h1>
+      <form class="form-group" #businessSignupForm="ngForm" (ngSubmit)="saveOrg(businessSignupForm.valid)" novalidate>    
+        <div class="wrapper-content">
+          <div class="logo-image">
+            <div class="well my-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader" (onFileDrop)="selectedFile($event)">           <img class="preview" [src]="filePreviewPath" *ngIf="filePreviewPath" for="file" (click)="file.click()">
+              <div class="empty-logo" *ngIf="!filePreviewPath">
+                <label class="add-logo" for="file">Add Logo  </label>
+              </div>
+              <div class="change-logo" *ngIf="filePreviewPath">
+                <label class="add-logo" for="file">Change Logo  </label>
+              </div>
+            </div>
+            <input class="file-chooser" #file type="file" id="file" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" (onFileSelected)="selectedFile($event)">
+          </div>
+        </div>
+        <div class="form-content"> 
+          <div class="item-info">
+            <div class="input-label">ORGANIZATION NAME
+              <div class="invalid-validation" [hidden]="org.valid || (org.pristine &amp;&amp; !businessSignupForm.submitted)">Organization name is required</div>
+            </div>
+            <input class="resources-input" id="org" [(ngModel)]="orgName" #org="ngModel" name="org" required>
+          </div>
+          <div class="item-info">
+            <div class="input-label">ORGANIZATION TYPE
+              <div class="invalid-validation" [hidden]="selectedOrganizationType.length &gt; 0 || !businessSignupForm.submitted">Organization type required</div>
+            </div>
+            <angular2-multiselect name="organization" [data]="organizationTypeList" [(ngModel)]="selectedOrganizationType" [settings]="ktsSelectSettings"></angular2-multiselect>
+          </div>
+          <div class="item-info">
+            <div class="input-label">CONTACT NAME
+              <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !businessSignupForm.submitted)">Contact name is required</div>
+            </div>
+          </div>
+          <input class="resources-input" type="text" [(ngModel)]="contactName" name="name" #name="ngModel" required>
+          <div class="item-info">
+            <div class="input-label">CONTACT EMAIL
+              <div class="invalid-validation" [hidden]="email.valid || (email.pristine &amp;&amp; !businessSignupForm.submitted)">Valid email is required</div>
+            </div>
+          </div>
+          <input class="resources-input" type="email" [(ngModel)]="contactEmail" name="email" #email="ngModel" email required>
+          <div class="item-info">
+            <div class="input-label">Password
+              <div class="invalid-validation" [hidden]="password.valid || (password.pristine &amp;&amp; !businessSignupForm.submitted)">Password required </div>
+            </div>
+            <input class="resources-input" type="password" name="password" [(ngModel)]="user.password" #password="ngModel" required>
+          </div>
+          <div class="item-info">
+            <div class="input-label">ORGANIZATION CAREER FIELD
+              <div class="invalid-validation" [hidden]="selectedCareers.length &gt; 0 || !businessSignupForm.submitted">Organization career field required</div>
+            </div>
+            <angular2-multiselect name="careers" [data]="careerGroupsList" [(ngModel)]="selectedCareers" [settings]="ktsMultiSettings">    </angular2-multiselect>
+          </div>
+          <div class="item-info-checkbox">
+            <div class="input-label">Intended keys to success participation (check all that apply)</div>
+            <div class="checkbox-container">
+              <div class="checkbox">
+                <input type="checkbox" [(ngModel)]="scholarships" name="scholarships">
+                <label for="active">Scholarships  </label>
+              </div>
+              <div class="checkbox"> 
+                <input type="checkbox" [(ngModel)]="internships" name="internships">
+                <label for="active">Internships  </label>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" [(ngModel)]="openHouse" name="openHouse">
+                <label for="active">Open Houses  </label>
+              </div>
+              <div class="checkbox"> 
+                <input type="checkbox" [(ngModel)]="jobShadowing" name="jobShadowing">
+                <label for="active">Job Shadowing </label>
+              </div>
+              <div class="checkbox"> 
+                <input type="checkbox" [(ngModel)]="other" name="other">
+                <label for="active">Other</label>
+              </div>
+            </div>
+          </div>
+          <button class="primary-button signup-button" type="submit"><span>Create Account       </span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

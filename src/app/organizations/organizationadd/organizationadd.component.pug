@@ -2,20 +2,17 @@
   #organization.content-wrapper
     ngx-loading([show]='creating')  
     form.form-group(#organizationForm="ngForm" (ngSubmit)="saveOrganization(organizationForm.valid)" novalidate)
-      .header-nav
+      .header-nav.fixed-header
         h1.headers
           | {{title}}
         .button-group
-            button.organization-btn.primary-button.feedback-btn(type="submit", *ngIf="!isSchool || newSchool") 
+            button.organization-btn.primary-button.feedback-btn(type="submit")
               span
-                | Save
-            button.organization-btn.primary-button.feedback-btn(type="submit", *ngIf="isSchool && hasId") 
-              span
-                | Update
-            button.organization-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)") 
+                | {{action}}
+            button.organization-btn.secondary-button.feedback-btn(type="button" (click)="goBack($event)")
               span
                 | Cancel
-            button.organization-btn.secondary-button.feedback-btn(type="button", *ngIf="isSchool && hasId", (click)="deleteOrganization()") 
+            button.organization-btn.secondary-button.feedback-btn(type="button", *ngIf="hasId && type != 'community' && type != 'sponsor'", (click)="deleteOrganization()") 
               span
                 | Delete
       .wrapper-content

@@ -26,12 +26,11 @@ export class OrganizationAddComponent implements OnInit {
   public creating = false;
   public showButton: boolean;
   public disableField: boolean;
-  public newSchool: boolean;
-  public newSponsor: boolean;
   public currentSchool: boolean;
   public hasId: any;
   public currentUser: any;
   public isAdmin: any;
+  public action: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -54,22 +53,30 @@ export class OrganizationAddComponent implements OnInit {
       this.isAdmin = this.currentUser.roles.includes('admin');
       this.type = this.route.snapshot.paramMap.get('type');
       this.hasId = this.route.snapshot.paramMap.get('id');
-      if (this.type === 'school' && !this.hasId) {
-        this.title = 'New School';
+
+      if (this.type === 'school') {
         this.isSchool = true;
-        this.newSchool = true;
-      } else if (this.type === 'school' && this.hasId) {
-        this.title = 'School Details';
-        this.newSchool = false;
-      } else if (this.type === 'sponsor' && !this.hasId) {
-        this.title = 'New Sponsor';
-        this.newSponsor = true;
+        if(!this.hasId) {
+          this.title = 'New School';
+        } else {
+          this.title = 'School Details';
+        }
+      } else if (this.type === 'sponsor') {
+        if(!this.hasId) {
+          this.title = 'New Sponsor';
+        } else {
+          this.title = 'Sponsor Details';
+        }
       } else {
-        this.title = 'Sponsor Details';
+        this.type = 'community'
+        this.title = 'Community Details';
       }
       this.hasBaseDropZoneOver = false;
-      if (this.hasId !== null) {
+      if (this.hasId) {
         this.getOrganization(this.hasId);
+        this.action = 'Update';
+      } else {
+        this.action = 'Save';
       }
       this.disableSetup();
     } catch (err) { }
@@ -77,15 +84,12 @@ export class OrganizationAddComponent implements OnInit {
 
 
   disableSetup() {
-    if (this.newSchool || this.newSponsor) {
+    if (this.hasId) {
       this.showButton = false;
       this.disableField = false;
-    } if (!this.isAdmin && !this.newSchool || !this.newSponsor) {
+    } else if (!this.isAdmin && !this.hasId) {
       this.showButton = true;
       this.disableField = true;
-    } if (this.isAdmin && !this.newSchool || !this.newSponsor) {
-      this.showButton = true;
-      this.disableField = false;
     }
   }
 

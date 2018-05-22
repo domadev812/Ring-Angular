@@ -2,7 +2,7 @@
   #organization.content-wrapper
     ngx-loading([show]='creating')  
     form.form-group(#newGroupForm="ngForm" (ngSubmit)="saveSchoolGroup(newGroupForm.valid)" novalidate)
-      .header-nav
+      .header-nav.fixed-header
         h1.headers
           | {{title}}
         .button-group

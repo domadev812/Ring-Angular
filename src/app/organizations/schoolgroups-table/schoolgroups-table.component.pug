@@ -9,7 +9,7 @@
     .table-header.col-created
       | Created date
     .table-header.col-edit
-  .table-content-without-search(#scrollVariable, appInfiniteScroller, [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
+  .table-content-with-search(#scrollVariable, appInfiniteScroller, [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)")
     .list(*ngFor="let group of school_groups")
       .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='editSchoolGroup(group.id)')
         .table-data-primary.col-organization

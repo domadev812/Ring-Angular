@@ -56,7 +56,7 @@ export class SponsorsTableComponent implements OnInit {
   }
 
   editOrganization(organization_id: string): void {
-    this.router.navigate([`organizationedit/${organization_id}`]);
+    this.router.navigate([`organizationedit/${organization_id}`, { type: 'sponsor' }]);
   }
 
   myScrollCallBack(): Observable<Organization[]> {

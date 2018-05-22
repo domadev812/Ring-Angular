@@ -29,7 +29,7 @@
           .item-info
             .input-label
               | ORGANIZATION TYPE
-              .invalid-validation([hidden]="selectedCareers.length > 0 || !businessSignupForm.submitted")
+              .invalid-validation([hidden]="selectedOrganizationType.length > 0 || !businessSignupForm.submitted")
                   | Organization type required
             angular2-multiselect(
                 name = 'organization'

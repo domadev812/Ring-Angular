@@ -5,7 +5,6 @@ import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { LoadingModule } from 'ngx-loading';
-
 import { apiFactory } from '../_factories/api.factory';
 import { AuthGuard } from '../_guards/auth.guard';
 import * as Services from '../app.services-list';
@@ -20,6 +19,7 @@ import { SharedModule } from '../shared.module';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NewgroupComponent } from './newgroup/newgroup.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multiselect.component';
+import { BusinessSignupComponent } from './business-signup/business-signup.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multisel
     OrganizationAddComponent,
     CommunitiesTableComponent,
     NewgroupComponent,
-
+    BusinessSignupComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +38,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multisel
     SharedModule,
     FileUploadModule,
     LoadingModule,
-    AngularMultiSelectModule,
+    AngularMultiSelectModule
+
   ],
   providers: [
     {

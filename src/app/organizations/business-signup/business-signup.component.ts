@@ -102,6 +102,13 @@ export class BusinessSignupComponent implements OnInit {
       this.other = false;
     }
 
+    if (this.selectedOrganizationType.length === 0) {
+      return;
+    }
+    if (this.selectedCareers.length === 0) {
+      return;
+    }
+
     this.createOrganization();
 
     let data = {
@@ -122,7 +129,6 @@ export class BusinessSignupComponent implements OnInit {
       alert(err);
       console.log(err);
     });
-    this.router.navigate(['**']);
   }
 
 
@@ -132,6 +138,7 @@ export class BusinessSignupComponent implements OnInit {
       .subscribe((user: Model.User) => {
         this.handleOrganizationSuccess.bind(this)(user.organization_id);
         alert('Signup Successfull');
+        this.router.navigate(['resources']);
       }, err => {
         alert(err);
       });

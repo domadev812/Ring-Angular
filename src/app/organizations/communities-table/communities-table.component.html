@@ -1,11 +1,11 @@
 
 <div id="schools">
   <div class="search-bar"><i class="fa fa-search search-icon"></i>
-    <input class="search-text" type="text" placeholder="Search schools..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+    <input class="search-text" type="text" placeholder="Search communities..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
   </div>
   <ngx-loading [show]="loading"> </ngx-loading>
   <div class="d-flex space-between px-4 mb-1">
-    <div class="table-header col-organization">School</div>
+    <div class="table-header col-organization">Community</div>
     <div class="table-header col-url">Url</div>
     <div class="table-header col-created">Created date</div>
     <div class="table-header col-edit"></div>

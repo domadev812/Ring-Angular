@@ -16,8 +16,8 @@ import { NavbarService } from '../app.services-list';
   styleUrls: ['./organizations.component.scss']
 })
 export class OrganizationsComponent implements OnInit {
-  scrollClass: String = 'table-content-without-search';
-  tab: String;
+  tab: String = 'schools';
+  scrollClass: String = 'table-content-with-search';
 
   constructor(
     private navBarService: NavbarService,
@@ -27,7 +27,6 @@ export class OrganizationsComponent implements OnInit {
   ngOnInit() {
     this.navBarService.show();
     this.navBarService.activeTabChanged('organizations');
-    this.tab = 'schools';
   }
 
   switchTab(tab: String): void {
@@ -37,6 +36,7 @@ export class OrganizationsComponent implements OnInit {
   addOrganization(type: string): void {
     this.router.navigate(['organizationadd/' + type]);
   }
+
   newGroup(): void {
     this.router.navigate(['newgroup']);
   }

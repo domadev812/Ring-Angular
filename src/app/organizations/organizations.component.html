@@ -1,19 +1,23 @@
 
-<div class="page-wrapper">
+<div class="page-wrapper" appMouseWheel [scrollClass]="scrollClass">
   <div class="content-wrapper" id="organizations">
     <div class="space-between mb-3">
       <h1 class="headers">Organizations</h1>
       <div class="justify-end">
         <div class="primary-button center newBtn feedback-btn" (click)="addOrganization('sponsor')"><span>New Sponsor</span></div>
+        <div class="primary-button center newBtn feedback-btn" (click)="newGroup()"><span>New Group</span></div>
+        <div class="primary-button center newBtn feedback-btn" (click)="addSchool('school')"><span>Add School</span></div>
       </div>
     </div>
     <div class="justify-start newTabs mb-4">
-      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('schools')" [ngClass]="{'sub-nav-item-selected': tab === 'schools'}">Schools</div>
-      <div class="sub-nav-item center newSubNav" (click)="switchTab('sponsors')" [ngClass]="{'sub-nav-item-selected': tab === 'sponsors'}">Sponsors</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('schools')" [ngClass]="{'sub-nav-item-selected': tab === 'schools'}">KTS Schools</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('sponsors')" [ngClass]="{'sub-nav-item-selected': tab === 'sponsors'}">KTS Sponsors</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('communities')" [ngClass]="{'sub-nav-item-selected': tab === 'communities'}">Community</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('schoolgroups')" [ngClass]="{'sub-nav-item-selected': tab === 'schoolgroups'}">School Groups</div>
     </div>
-    <app-schools-table *ngIf="tab === 'schools'; else sponsorsTable"></app-schools-table>
-    <ng-template #sponsorsTable>
-      <app-sponsors-table></app-sponsors-table>
-    </ng-template>
+    <app-schools-table *ngIf="tab === 'schools'"></app-schools-table>
+    <app-sponsors-table *ngIf="tab === 'sponsors'"></app-sponsors-table>
+    <app-communities-table *ngIf="tab === 'communities'"></app-communities-table>
+    <app-schoolgroups-table *ngIf="tab === 'schoolgroups'"></app-schoolgroups-table>
   </div>
 </div>

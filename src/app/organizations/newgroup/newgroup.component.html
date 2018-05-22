@@ -1,0 +1,30 @@
+
+<div class="page-wrapper organizations">
+  <div class="content-wrapper" id="organization">
+    <ngx-loading [show]="creating"> </ngx-loading>
+    <form class="form-group" #newGroupForm="ngForm" (ngSubmit)="saveSchoolGroup(newGroupForm.valid)" novalidate>
+      <div class="header-nav">
+        <h1 class="headers">{{title}}</h1>
+        <div class="button-group">
+          <button class="organization-btn primary-button feedback-btn" *ngIf="!schoolGroupId" type="submit"> <span>Save</span></button>
+          <button class="organization-btn primary-button feedback-btn" *ngIf="schoolGroupId" type="submit"> <span>Update</span></button>
+          <button class="organization-btn secondary-button feedback-btn" type="button" (click)="goBack($event)"> <span>Cancel</span></button>
+        </div>
+      </div>
+      <div class="wrapper-content">
+        <div class="content">
+          <div class="item-info">
+            <div class="input-label">Group Name
+              <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !newGroupForm.submitted)"> Group name is required</div>
+            </div>
+            <input class="organization-input" name="name" [(ngModel)]="schoolGroup.name" #name="ngModel" required>
+          </div>
+          <div class="item-info">
+            <div class="input-label-bold">HIGH SCHOOLS</div>
+            <angular2-multiselect name="schools" [data]="schoolList" [(ngModel)]="selectedGroup" [settings]="selectAllMultiSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)">    </angular2-multiselect>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
