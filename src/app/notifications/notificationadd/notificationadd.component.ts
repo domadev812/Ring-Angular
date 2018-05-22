@@ -285,7 +285,7 @@ export class NotificationAddComponent implements OnInit {
     this.creating = true;
     this.notificationsService.createNotification(this.notification).subscribe((res) => {
       this.creating = false;
-      alert('Create new notification successfully');
+      alert('Created new notification successfully');
       this.router.navigate(['notifications']);
     }, (errors) => {
       this.creating = false;
