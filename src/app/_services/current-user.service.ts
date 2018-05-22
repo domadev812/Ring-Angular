@@ -48,7 +48,7 @@ export class CurrentUserService {
 
   // stores the promise it receives as a new variable
   getCurrentUser(authProvider: AuthService, force: boolean = false): Promise<Model.User> {
-    let token = localStorage.getItem('Token');   
+    let token = localStorage.getItem('Token');
     if (!this.currentUserPromise || force) {
       this.currentUserPromise = new Promise((resolve, reject) => {
         if (this.currentUser && !force) {
@@ -90,7 +90,7 @@ export class CurrentUserService {
 
   set(token: string, user: API.IUser): boolean {
     window.localStorage.setItem('Token', token);
-    let parsedUser = new Model.User(user);    
+    let parsedUser = new Model.User(user);
     this.load(parsedUser);
     this.currentUserChange();
     return this.authenticated();

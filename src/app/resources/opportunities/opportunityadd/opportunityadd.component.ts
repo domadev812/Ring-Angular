@@ -88,10 +88,11 @@ export class OpportunityAddComponent implements OnInit {
   }
 
   showButtonGroup() {
+    const isAdmin = this.currentUser.roles.includes('admin');
     if (this.opportunityId === null) {
       this.approveBtn = true;
     }
-    if (!this.approved) {
+    if (isAdmin && !this.approved) {
       this.approveBtn = false;
       this.saveBtn = true;
     } else {
@@ -127,11 +128,9 @@ export class OpportunityAddComponent implements OnInit {
 
 
   setUpForView(roles: Array<string>): void {
-    console.log('setupforview');
     this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
     const userType = roles.includes('admin') ? 'admin' : 'other';
     const selector = `${userType + '_' + this.currentRoute}`;
-    console.log(userType, this.currentRoute);
     const setupIndex = {
       'admin_opportunityedit': this.adminopportunityEdit.bind(this),
       'admin_opportunityadd': this.adminopportunityAdd.bind(this),
@@ -143,7 +142,6 @@ export class OpportunityAddComponent implements OnInit {
   }
 
   adminopportunityEdit(): void {
-    console.log('here i am!');
     if (this.opportunityId) this.getResource(this.opportunityId);
     if (this.approved) this.showButtonGroup();
     this.approveBtn = false;
@@ -295,25 +293,20 @@ export class OpportunityAddComponent implements OnInit {
       return career.id;
     });
 
-    this.creating = true;
     if (!this.opportunity.id) {
       this.resourcesService.createResource(this.opportunity).subscribe((res) => {
-        this.creating = false;
         alert('Created new opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateResource(this.opportunity).subscribe((res) => {
-        this.creating = false;
         alert('Updated opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     }

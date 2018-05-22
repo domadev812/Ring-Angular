@@ -26,7 +26,7 @@ export class AuthService {
   login(loginForm: JSON): Observable<boolean> {
     return this.http.post('/auth', loginForm).map((response: Response) => {
       const json = response.json() as API.Response.Auth;
-      if (json.token && json.user) {        
+      if (json.token && json.user) {
         return this.currentUserService.set(json.token, json.user);
       } else {
         Observable.throw({ message: 'Internal Server Error' });
