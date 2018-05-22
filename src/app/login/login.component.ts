@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value)
       .subscribe((response) => {
         {
-          this.router.navigate(['resources']);
+          this.router.navigate(['prizes']);
         }
       }, (err) => {
         let message = err.message ? `: ${err.message}` : '';

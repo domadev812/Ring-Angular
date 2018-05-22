@@ -7,6 +7,8 @@
     <li class="nav-item" (click)="switchTab('resources')" [ngClass]="{'nav-item-selected': tab === 'resources'}" *ngIf="canViewResources"><a [routerLink]="['/resources']">Resources</a></li>
     <li class="nav-item" (click)="switchTab('prizes')" [ngClass]="{'nav-item-selected': tab === 'prizes'}" *ngIf="canViewAwardedPrizes"><a [routerLink]="['/prizes']">Prizes</a></li>
     <li class="nav-item" (click)="switchTab('notifications')" [ngClass]="{'nav-item-selected': tab === 'notifications'}" *ngIf="canViewNotifications"><a [routerLink]="['/notifications']">Notifications</a></li>
+    <li class="nav-item" (click)="switchTab('Schedule')" [ngClass]="{'nav-item-selected': tab === 'Schedule'}" *ngIf="canViewSchedule"><a target="_blank" href="https://goo.gl/forms/RHcE0f3B2OmXiMuq2">Schedule</a></li>
+    <li class="nav-item" (click)="switchTab('approvals')" [ngClass]="{'nav-item-selected': tab === 'approvals'}" *ngIf="canViewApprovals"><a [routerLink]="['/approvals']">Approvals</a></li>
     <li class="nav-item fa fa-cog" (detectClick)="detectClick($event)">
       <div class="triangle" *ngIf="active"></div>
       <div class="dropdown" *ngIf="active"><a (click)="logout()">Logout</a></div>

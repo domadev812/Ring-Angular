@@ -19,6 +19,9 @@
 }
 .logo {
   width: 90px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .nav-list{
   padding: 26px 38px 0 0;

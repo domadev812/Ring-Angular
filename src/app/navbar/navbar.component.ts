@@ -3,6 +3,7 @@ import { NavbarService, CurrentUserService, AuthService, AccessService } from '.
 import { Model } from '../app.models-list';
 import * as Services from '../app.services-list';
 import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class NavbarComponent implements OnInit {
     private authService: Services.AuthService,
     private currentUserService: CurrentUserService,
     private authProvider: AuthService,
-    public access: AccessService
+    public access: AccessService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -73,6 +75,10 @@ export class NavbarComponent implements OnInit {
     if (this.active === true && data === true)
       data = false;
     this.active = data;
+  }
+
+  goToHomePage(): void {
+    this.router.navigate(['prizes']);
   }
 }
 
