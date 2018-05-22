@@ -79,7 +79,6 @@ export class AccessService {
       role: 'key_contact',
       routeAccess: {
         users: true,
-        useradd: true,
         resources: true,
         prizes: true,
         internshipadd: true,
@@ -91,6 +90,7 @@ export class AccessService {
         notifications: true,
         notificationadd: true,
         notificationview: true,
+
       },
       functionalityAccess: {
         usersTab: true,
@@ -101,10 +101,10 @@ export class AccessService {
         studentsTab: true,
         newOpportunityButton: true,
         newScholarshipButton: true,
+        newInternshipButton: true,
         scholarshipsTab: true,
         internshipsTab: true,
         otherOpportunitiesTab: true,
-        newUserButton: true,
         prizesTab: true,
         awardedPrizesIndex: true,
         activateKeycardButton: true,
@@ -116,7 +116,6 @@ export class AccessService {
       routeAccess: {
         users: true,
         prizes: true,
-        useradd: true,
         resources: true,
         internshipadd: true,
         internshipedit: true,
@@ -137,10 +136,10 @@ export class AccessService {
         resourcesTab: true,
         newOpportunityButton: true,
         newScholarshipButton: true,
+        newInternshipButton: true,
         scholarshipsTab: true,
         internshipsTab: true,
         otherOpportunitiesTab: true,
-        newUserButton: true,
         prizesTab: true,
         awardedPrizesIndex: true,
         activateKeycardButton: true,
