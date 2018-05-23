@@ -1,0 +1,26 @@
+
+<div id="communities">
+  <div class="search-bar"><i class="fa fa-search search-icon"></i>
+    <input class="search-text" type="text" placeholder="Search communities..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+  </div>
+  <ngx-loading [show]="loading"> </ngx-loading>
+  <div class="d-flex space-between py-1">
+    <div class="table-header mx-4 col-name">NAME</div>
+    <div class="table-header mx-4 col-school">Organization</div>
+    <div class="table-header mx-4 col-email">Email</div>
+    <div class="table-header mx-4 col-created">Created</div>
+    <div class="table-header mx-4 col-edit">&nbsp;</div>
+  </div>
+  <div class="table-content-with-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
+    <div class="list" *ngFor="let community of communities">
+      <div class="d-flex space-between bg-white py-1 pointer" (click)="editCommunity(community.id)">
+        <div class="table-data-primary mx-4 col-name">{{community.getName()}}</div>
+        <div class="table-data mx-4 col-school">{{community.organization.name}}</div>
+        <div class="table-data mx-4 col-email">{{community.email}}</div>
+        <div class="table-data mx-4 col-created">{{community.created_at}}</div>
+        <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="editCommunity(community.id)"></i></div>
+      </div>
+    </div>
+    <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>
+  </div>
+</div>

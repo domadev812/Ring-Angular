@@ -2,7 +2,7 @@
   #users.content-wrapper
     ngx-loading([show]='creating')  
     form.form-group(#userForm="ngForm" (ngSubmit)="saveUser(userForm.valid)" novalidate)
-      .header-nav
+      .header-nav.fixed-header
         h1.headers
           | {{ title }}
         .button-group

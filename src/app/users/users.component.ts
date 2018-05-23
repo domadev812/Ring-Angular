@@ -17,7 +17,7 @@ export class UsersComponent implements OnInit {
   public canViewCounselors: boolean;
   public canViewCommunities: boolean;
   public canCreateNewUser: boolean;
-  public scrollClass: String = 'table-content-with-search';
+  scrollClass: String = 'table-content-with-search';
 
   constructor(
     private router: Router,
