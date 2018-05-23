@@ -1,0 +1,26 @@
+
+<div id="keycardindex">
+  <div class="search-bar"><i class="fa fa-search search-icon"></i>
+    <input class="search-text" type="text" placeholder="Search Key Cards..." [(ngModel)]="searchText" (keyup.enter)="searchItems()">
+  </div>
+  <ngx-loading [show]="loading"></ngx-loading>
+  <div class="d-flex space-between py-1">
+    <div class="table-header mx-4 col">Code</div>
+    <div class="table-header mx-4 col">Activated At</div>
+    <div class="table-header mx-4 col">Redeemed At</div>
+    <div class="table-header mx-4 col">Activated By</div>
+    <div class="table-header mx-4 col">Redeemed By</div>
+  </div>
+  <div class="table-content-with-search" #scrollVariable appInfiniteScroller [scrollPercent]="90" [scrollCallback]="myScrollCallBack.bind(this)">
+    <div class="list" *ngFor="let KeycardRecipient of KeycardRecipients">
+      <div class="d-flex space-between bg-white py-1">
+        <div class="table-data-primary mx-4 col">{{KeycardRecipient.code}}</div>
+        <div class="table-data mx-4 col">{{KeycardRecipient.activated_at}}</div>
+        <div class="table-data mx-4 col">{{KeycardRecipient.redeemed_at}}</div>
+        <div class="table-data mx-4 col">{{KeycardRecipient.activated_by_user.email}}</div>
+        <div class="table-data mx-4 col">{{KeycardRecipient.redeemed_by_user.email}}</div>
+      </div>
+    </div>
+    <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...  </div>
+  </div>
+</div>

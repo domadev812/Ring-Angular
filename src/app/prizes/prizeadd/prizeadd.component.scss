@@ -1,41 +1,58 @@
 @import "~assets/stylesheets/style-guide";
 @import "~assets/stylesheets/mixins";
 @import "~assets/stylesheets/shared-classes";
-.header-nav {  
-  @include space-between;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  font-family: $font-primary;
-  margin-bottom: 30px;
-}
-.prizes-btn {
-  margin: 10px 3px;
-  outline: none;
-  cursor: pointer;
-}
-.btn-disabled{
-  background: #E8BDC4;
-  box-shadow: none;
-  cursor: default;
-}
-.prize-input {
-  @extend .input;
-  padding: 10px;
-  outline: none;
-  width: 100%;
-  margin-left: 0;
-}
-.prize-textarea {
-  @extend .prize-input;
-  height: auto;
-}
-.item-info {
-  margin-bottom: 30px;
-}
-.input-label {
-  @extend .input-label;
-  margin-left: 0;
-}
-.campaign-content {
-  margin-top: 50px;
+
+#prizes.content-wrapper{
+  height: 900px !important;
+
+  .header-nav {  
+    @include space-between;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    font-family: $font-primary;
+    margin-bottom: 30px;
+  }
+  .page-wrapper {
+    height: 130vh !important;
+  }
+
+  .content-wrapper{
+    height: 130vh !important;
+  }
+
+  .wrapper-content {
+  padding-top: 105px;
+  }
+
+  .prizes-btn {
+    margin: 10px 3px;
+    outline: none;
+    cursor: pointer;
+  }
+  .btn-disabled{
+    background: #E8BDC4;
+    box-shadow: none;
+    cursor: default;
+  }
+  .prize-input {
+    @extend .input;
+    padding: 10px;
+    outline: none;
+    width: 100%;
+    margin-left: 0;
+  }
+  .prize-textarea {
+    @extend .prize-input;
+    height: auto;
+  }
+  .item-info {
+    margin-bottom: 30px;
+  }
+  .input-label {
+    @extend .input-label;
+    margin-left: 0;
+  }
+  .campaign-content {
+    margin-top: 50px;
+  }
 }

@@ -2,13 +2,16 @@
   #prizes.content-wrapper
     ngx-loading([show]='creating') 
     form.form-group(#prizeForm="ngForm" (ngSubmit)="savePrize(prizeForm.valid)" novalidate)
-      .header-nav
+      .header-nav.fixed-header
         h1.headers
-          | {{title}}
+          | {{pageTitle}}
         .button-group
-          button.prizes-btn.primary-button(type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag")
+          button.prizes-btn.primary-button( *ngIf='!this.prize.id' type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disabledFlag")
             span            
               | Save
+          button.prizes-btn.primary-button( *ngIf='this.prize.id' type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disabledFlag")
+            span            
+              | Update
           button.prizes-btn.secondary-button.feedback-btn(type="button" (click)="goBack()") 
             span
               | Cancel   
@@ -51,6 +54,19 @@
             (onSelect)='onDeliverySelect($event)'
             (onDeSelect)='onDeliveryDeSelect($event)'
           )  
+        .item-info
+          .input-label-bold
+              | KTS School Group(s)
+              .invalid-validation([hidden]="selectedGroups.length > 0 || !prizeForm.submitted")
+               | School Group is required
+          angular2-multiselect(
+            name = 'groups'
+            [data]='groupList'
+            [(ngModel)]='selectedGroups'
+            [settings]='selectAllMultiSettings'
+            (onSelect)='onGroupSelect($event)'
+            (onDeSelect)='onGroupDeSelect($event)'
+          )         
     .campaign-content
-      app-campaign([prizeId]="prize.id" (refreshPage)="getPrize(prize.id, false)" [campaigns]="prize.prize_campaigns")       
+      app-campaign([prizeId]="prize.id" (refreshPage)="getPrize(prize.id, false)" [campaigns]="prize.prize_campaigns")   
                       

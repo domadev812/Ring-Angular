@@ -8,6 +8,7 @@
   <div class="table-header mx-4 col-end-date">End Date</div>
   <div class="table-header mx-4 col-quantity">Quantity    </div>
   <div class="table-header mx-4 col-redeemed">Redeemed</div>
+  <div class="table-header mx-4 col-redeemed">Released</div>
   <div class="table-header mx-4 col-status">Status</div>
   <div class="table-header mx-4 col-edit">&nbsp;</div>
 </div>
@@ -18,8 +19,9 @@
       <div class="table-data mx-4 col-end-date">{{formatDate(campaign.activation_end)}}</div>
       <div class="table-data mx-4 col-quantity">{{campaign.number_available}}</div>
       <div class="table-data mx-4 col-redeemed">{{campaign.redeemed}}</div>
+      <div class="table-data mx-4 col-redeemed">{{campaign.released}}</div>
       <div class="table-data mx-4 col-status">{{getStatus(campaign.activation_start, campaign.activation_end)}}</div>
-      <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="openModal(template, ind)" [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'"></i></div>
+      <div class="table-data mx-4 col-delete"><i class="fa fa-pencil edit-row" (click)="openModal(template, ind)" [hidden]="getStatus(campaign.activation_start, campaign.activation_end) === 'Past'"></i></div>
     </div>
   </div>
   <ng-template #template>
@@ -39,6 +41,8 @@
         <input class="form-control" name="end-date" [disabled]="campaignId &gt; 0" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
         <div class="input-label" [hidden]="campaignId === 0">REDEEMED</div>
         <input class="input redeemed-input" name="redeemed" disabled [ngModel]="redeemed" [hidden]="campaignId === 0">
+        <div class="input-label" [hidden]="campaignId === 0">RELEASED</div>
+        <input class="input redeemed-input" name="released" disabled [ngModel]="released" [hidden]="campaignId === 0">
         <div class="input-label">QUANTITY
           <div class="invalid-validation" [hidden]="qty.valid || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity is required</div>
           <div class="invalid-validation" [hidden]="!editFlag || !qty.valid || checkValue() || (qty.pristine &amp;&amp; !campaignForm.submitted)">Quantity cannot be less than redeemed.</div>
@@ -46,6 +50,7 @@
         <input class="input" type="number" name="qty" [(ngModel)]="quantity" #qty="ngModel" required>
         <div class="button-group"> 
           <button class="prizes-btn primary-button feedback-btn" type="submit"><span>Save</span></button>
+          <button class="prizes-btn delete-btn primary-button feedback-btn" [tooltip]="tooltip(redeemed)" [ngClass]="{'btn-disabled': redeemed &gt; 0}" type="button" (click)="deleteCampaign( id, prizes_id)"><span>Delete</span></button>
           <button class="prizes-btn secondary-button feedback-btn" type="button" (click)="modalRef.hide()"><span>Cancel</span></button>
         </div>
       </form>

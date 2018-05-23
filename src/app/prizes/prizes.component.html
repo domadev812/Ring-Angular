@@ -1,5 +1,5 @@
 
-<div class="page-wrapper prizes">
+<div class="page-wrapper prizes" appMouseWheel [scrollClass]="scrollClass">
   <div class="content-wrapper" id="prizes">
     <div class="header-nav">
       <h1 class="headers">Prizes</h1>
@@ -7,14 +7,17 @@
         <button class="prizes-btn primary-button feedback-btn" (click)="addPrize()" *ngIf="canCreateNewPrize"> <span>New Prizes</span></button>
         <button class="prizes-btn primary-button feedback-btn" (click)="openModal(template)" *ngIf="canActivateKeycard"> <span>Activate Key Cards</span></button>
         <button class="prizes-btn primary-button feedback-btn" (click)="openCsv(csv)" *ngIf="canUseAwardedCsv"><span>Awarded CSV</span></button>
+        <button class="prizes-btn primary-button feedback-btn" (click)="openCsv(keycard)" *ngIf="canUseKeycardCsv"><span>Key Card CSV</span></button>
       </div>
     </div>
     <div class="justify-start newTabs mb-4">
       <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('prizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'prizes'}">Prizes</div>
       <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('awardedprizes')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'awardedprizes'}" *ngIf="canViewAwardedPrizes">Awarded Prizes</div>
+      <div class="sub-nav-item center mr-4 newSubNav" (click)="switchTab('keycardindex')" [ngClass]="{'sub-nav-item-selected': selectedTab === 'keycardindex'}" *ngIf="canViewKeycardIndex">Key Card Index</div>
     </div>
     <app-prizesindex *ngIf="selectedTab === 'prizes'">     </app-prizesindex>
     <app-awardedprizesindex *ngIf="selectedTab === 'awardedprizes'">     </app-awardedprizesindex>
+    <app-keycardindex *ngIf="selectedTab === 'keycardindex'">     </app-keycardindex>
     <ng-template #template>
       <div class="modal-header active-modal-header">
         <h6 class="modal-title">ACTIVATE KEY CARDS</h6>
@@ -36,7 +39,7 @@
           <div class="checkbox-prizes"> 
             <input class="large-checkbox" type="checkbox" [checked]="checked" (change)="check(!checked)" formControlName="allCheck">
           </div>
-          <div class="checkbox-label">Print All New Prizes</div>
+          <div class="checkbox-label">Print All New Awards</div>
         </div>
         <p class="custom">Or Select Custom Date Range Below</p>
         <div class="input-label mt-1">START DATE</div>
@@ -46,6 +49,23 @@
         <input class="input" type="text" formControlName="endDate" [minDate]="startDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="endDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
         <div class="button-export">
           <button class="prizes-btn primary-button csv feedback-btn" (click)="export()"><span>Export csv</span></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #keycard>
+      <div class="modal-header active-modal-header">
+        <h6 class="modal-title">Key Card CSV</h6>
+        <button class="close" (click)="modalRef.hide()" aria-label="close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body active-modal-body" [formGroup]="keycardExportForm">
+        <p class="custom">Select a date range to find keycards by activation date</p>
+        <div class="input-label mt-1">START DATE</div>
+        <div class="text-danger pl-2" [hidden]="validPick">Start date must be before end date.</div>
+        <input class="input" type="text" formControlName="firstDate" [minDate]="minDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="firstDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
+        <div class="input-label mt-2">END DATE</div>
+        <input class="input" type="text" formControlName="lastDate" [minDate]="firstDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="lastDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', containerClass: 'theme-red' }">
+        <div class="button-export">
+          <button class="prizes-btn primary-button csv feedback-btn" (click)="keycardExport()"><span>Export Key Card CSV</span></button>
         </div>
       </div>
     </ng-template>

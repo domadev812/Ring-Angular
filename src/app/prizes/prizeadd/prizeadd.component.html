@@ -4,10 +4,12 @@
     <ngx-loading [show]="creating"> </ngx-loading>
     <form class="form-group" #prizeForm="ngForm" (ngSubmit)="savePrize(prizeForm.valid)" novalidate>
       <div class="header-nav">
-        <h1 class="headers">{{title}}</h1>
+        <h1 class="headers">{{pageTitle}}</h1>
         <div class="button-group">
-          <button class="prizes-btn primary-button" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag"><span>
+          <button class="prizes-btn primary-button" *ngIf="!this.prize.id" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disabledFlag"><span>
                          Save</span></button>
+          <button class="prizes-btn primary-button" *ngIf="this.prize.id" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disabledFlag"><span>
+                         Update</span></button>
           <button class="prizes-btn secondary-button feedback-btn" type="button" (click)="goBack()"> <span>Cancel   </span></button>
         </div>
       </div>
@@ -17,6 +19,12 @@
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !prizeForm.submitted)">Name is required</div>
           </div>
           <input class="prize-input" type="text" name="name" [(ngModel)]="prize.title" (ngModelChange)="onChange($event)" #name="ngModel" required>
+        </div>
+        <div class="item-info">
+          <div class="input-label">Points
+            <div class="invalid-validation" [hidden]="points.valid || !prizeForm.submitted">Pionts are required</div>
+          </div>
+          <input class="prize-input" type="text" name="points" [(ngModel)]="prize.points" (ngModelChange)="onChange($event)" #points="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">SPONSOR
@@ -30,10 +38,16 @@
           </div>
           <angular2-multiselect name="delivery" [data]="deliveryList" [(ngModel)]="selectedDelivery" [settings]="ktsDeliverySelectSettings" (onSelect)="onDeliverySelect($event)" (onDeSelect)="onDeliveryDeSelect($event)"> </angular2-multiselect>
         </div>
+        <div class="item-info">
+          <div class="input-label-bold">KTS School Group(s)
+            <div class="invalid-validation" [hidden]="selectedGroups.length &gt; 0 || !prizeForm.submitted">School Group is required</div>
+          </div>
+          <angular2-multiselect name="groups" [data]="groupList" [(ngModel)]="selectedGroups" [settings]="selectAllMultiSettings" (onSelect)="onGroupSelect($event)" (onDeSelect)="onGroupDeSelect($event)">        </angular2-multiselect>
+        </div>
       </div>
     </form>
     <div class="campaign-content">
-      <app-campaign [prizeId]="prize.id" (refreshPage)="getPrize(prize.id, false)" [campaigns]="prize.prize_campaigns">      </app-campaign>
+      <app-campaign [prizeId]="prize.id" (refreshPage)="getPrize(prize.id, false)" [campaigns]="prize.prize_campaigns">  </app-campaign>
     </div>
   </div>
 </div>

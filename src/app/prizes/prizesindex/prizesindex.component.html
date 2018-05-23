@@ -17,11 +17,11 @@
     <div class="list" *ngFor="let prize of prizes">
       <div class="d-flex space-between bg-white py-1 pointer" (click)="editPrize(prize.id)">
         <div class="table-data-primary mx-4 col-prize">{{prize.title}}</div>
-        <div class="table-data mx-4 col-sponsor">{{prize.organization.name}}</div>
+        <div class="table-data mx-4 col-sponsor">{{prize.organization_name}}</div>
         <div class="table-data mx-4 col-delivery">{{prize.delivery_type}}</div>
-        <div class="table-data mx-4 col-quantity">{{getKeyValue(prize.current_campaign, 'number_available')}}</div>
-        <div class="table-data mx-4 col-redeemed">{{getKeyValue(prize.current_campaign, 'redeemed')}}</div>
-        <div class="table-data mx-4 col-period">{{formatDate(getKeyValue(prize.current_campaign, 'activation_start'))}}</div>
+        <div class="table-data mx-4 col-quantity">{{prize.quantity}}</div>
+        <div class="table-data mx-4 col-redeemed">{{prize.redeemed}}</div>
+        <div class="table-data mx-4 col-period">{{formatDate(prize.period)}}</div>
         <div class="table-data mx-4 col-edit"><i class="fa fa-pencil edit-row" (click)="editPrize(prize.id)"></i></div>
       </div>
     </div>

@@ -17,6 +17,7 @@ import { GlobalState } from '../global.state';
   styleUrls: ['./prizes.component.scss']
 })
 export class PrizesComponent implements OnInit {
+  scrollClass: String = 'table-content-with-search';
   public selectedTab: String = '';
   private cardNumber: string;
   private modalRef: BsModalRef;
@@ -42,7 +43,6 @@ export class PrizesComponent implements OnInit {
   };
 
   exportForm: FormGroup;
-  scrollClass: String = 'table-content-with-search';
   keycardExportForm: FormGroup;
 
   constructor(private router: Router,
