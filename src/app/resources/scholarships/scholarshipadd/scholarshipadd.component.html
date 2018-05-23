@@ -5,9 +5,13 @@
     <form class="form-group" #scholarshipForm="ngForm" (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate>
       <div class="header-nav fixed-header">
         <h1 class="headers">{{title}}</h1>
-        <div class="button-group">
+        <div class="button-group" [hidden]="saveBtn">
           <button class="save-button" type="submit" [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag"><span>Save</span></button>
           <button class="cancel-button feedback-btn" (click)="goBack()" type="button"> <span>Cancel </span></button>
+        </div>
+        <div class="button-group" [hidden]="approveBtn">
+          <button class="save-button feedback-btn" type="button" (click)="approve()"><span>Approve</span></button>
+          <button class="cancel-button feedback-btn" (click)="reject()" type="button"> <span>Reject </span></button>
         </div>
       </div>
       <div class="applicants-view fixed-header" *ngIf="editFlag === true &amp;&amp; scholarship.users" (click)="gotoApplicants(scholarship.id)">Applicants: {{scholarship.users.length}} <img class="link-arrow" src="../assets/imgs/link-arrow.svg"></div>
@@ -16,13 +20,13 @@
           <div class="input-label-top">NAME
             <div class="invalid-validation" [hidden]="name.valid || (name.pristine &amp;&amp; !scholarshipForm.submitted)">Name is required</div>
           </div>
-          <input class="resources-input" name="name" [(ngModel)]="scholarship.title" (ngModelChange)="onChange($event)" #name="ngModel" required>
+          <input class="resources-input" name="name" [(ngModel)]="scholarship.title" (ngModelChange)="onChange($event)" [disabled]="!approved" [ngClass]="{'disabled': !approved}" #name="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">DESCRIPTION
             <div class="invalid-validation" [hidden]="details.valid || (details.pristine &amp;&amp; !scholarshipForm.submitted)">Description is required</div>
           </div>
-          <textarea class="resources-textarea" rows="6" name="details" [(ngModel)]="scholarship.description" (ngModelChange)="onChange($event)" #details="ngModel" required> </textarea>
+          <textarea class="resources-textarea" rows="6" name="details" [disabled]="!approved" [ngClass]="{'disabled': !approved}" [(ngModel)]="scholarship.description" (ngModelChange)="onChange($event)" #details="ngModel" required> </textarea>
         </div>
         <div class="item-info">
           <div class="input-label-dropdown">ORGANIZATION
@@ -35,19 +39,19 @@
             <div class="invalid-validation" [hidden]="link.valid || (link.pristine &amp;&amp; !scholarshipForm.submitted)">Application link is required</div>
             <div class="invalid-validation" [hidden]="!scholarship.url || scholarship.url === '' || validURL(scholarship.url) || (link.pristine &amp;&amp; !scholarshipForm.submitted)">Application link is not correct</div>
           </div>
-          <input class="resources-input" [(ngModel)]="scholarship.url" (ngModelChange)="onChange($event)" name="link" #link="ngModel" required>
+          <input class="resources-input" [(ngModel)]="scholarship.url" [disabled]="!approved" [ngClass]="{'disabled': !approved}" (ngModelChange)="onChange($event)" name="link" #link="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">AMOUNT
             <div class="invalid-validation" [hidden]="amount.valid || (amount.pristine &amp;&amp; !scholarshipForm.submitted)">Amount is required</div>
           </div>
-          <input class="resources-input" type="number" [(ngModel)]="scholarship.amount" (ngModelChange)="onChange($event)" name="amount" #amount="ngModel" required>
+          <input class="resources-input" type="number" [disabled]="!approved" [ngClass]="{'disabled': !approved}" [(ngModel)]="scholarship.amount" (ngModelChange)="onChange($event)" name="amount" #amount="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label">NUMBER AVAILABLE
             <div class="invalid-validation" [hidden]="number_available.valid || (number_available.pristine &amp;&amp; !scholarshipForm.submitted)">Number available is required</div>
           </div>
-          <input class="resources-input" type="number" [(ngModel)]="scholarship.number_available" (ngModelChange)="onChange($event)" name="number_available" #number_available="ngModel" required>
+          <input class="resources-input" type="number" [disabled]="!approved" [ngClass]="{'disabled': !approved}" [(ngModel)]="scholarship.number_available" (ngModelChange)="onChange($event)" name="number_available" #number_available="ngModel" required>
         </div>
         <div class="item-info">
           <div class="input-label-dropdown">CAREERS</div>
@@ -55,15 +59,15 @@
         </div>
         <div class="item-info">
           <div class="input-label-bold">HIGH SCHOOLS</div>
-          <angular2-multiselect name="schools" [data]="schoolList" [(ngModel)]="selectedSchools" [settings]="ktsMultiSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)">    </angular2-multiselect>
+          <angular2-multiselect name="schools" [data]="schoolList" [(ngModel)]="selectedSchools" [settings]="selectAllMultiSettings" (onSelect)="onSchoolSelect($event)" (onDeSelect)="onSchoolDeSelect($event)">    </angular2-multiselect>
         </div>
-        <div class="item-info"> 
-          <input type="checkbox" [(ngModel)]="scholarship.in_app" [disabled]="editFlag" (ngModelChange)="onChange($event)" id="in_app" name="checkbox">
+        <div class="item-info checkboxes" [tooltip]="tooltip('In App')">
+          <input type="checkbox" [(ngModel)]="scholarship.in_app" [disabled]="editFlag" (ngModelChange)="onChange($event)" id="in_app" name="in_app">
           <label for="in_app">In App</label>
         </div>
-        <div class="item-info">
-          <input type="checkbox" [(ngModel)]="scholarship.active" (ngModelChange)="onChange($event)" id="active" name="checkbox">
-          <label for="active">Active  </label>
+        <div class="item-info checkboxes" [tooltip]="tooltip('Active')">
+          <input type="checkbox" [(ngModel)]="scholarship.active" [disabled]="!approved" (ngModelChange)="onChange($event)" id="active" name="active">
+          <label for="active">Active</label>
         </div>
       </div>
     </form>

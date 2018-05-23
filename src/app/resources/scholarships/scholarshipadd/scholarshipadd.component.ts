@@ -47,6 +47,8 @@ export class ScholarshipAddComponent implements OnInit {
   public saveBtn: boolean;
   public currentRoute: string;
   public currentUser: any;
+  private adminOrCommunity: boolean;
+  private schoolName: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -96,10 +98,11 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   showButtonGroup() {
+    const isAdmin = this.currentUser.roles.includes('admin');
     if (this.scholarshipId === null) {
       this.approveBtn = true;
     }
-    if (!this.approved) {
+    if (isAdmin && !this.approved) {
       this.approveBtn = false;
       this.saveBtn = true;
     } else {
@@ -127,8 +130,15 @@ export class ScholarshipAddComponent implements OnInit {
 
 
   setUpForView(roles: Array<string>): void {
-    if (!this.scholarshipId && !this.currentUser.roles.includes('admin')) {
-      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.scholarship.organization_id));
+    this.schoolName = this.currentUser.organization.name;
+    for (let role of roles) {
+      if (!this.scholarshipId && role !== 'admin' && role !== 'community') {
+        this.adminOrCommunity = false;
+        this.selectedOrganization.push(
+          new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.scholarship.organization_id)
+        );
+        this.scholarship.organization_id = this.currentUser.organization_id;
+      }
     }
     this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
     const userType = roles.includes('admin') ? 'admin' : 'other';
@@ -348,26 +358,21 @@ export class ScholarshipAddComponent implements OnInit {
       return school.id;
     });
 
-    this.creating = true;
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
-        this.creating = false;
         alert('Create new scholarship successfully');
         this.global.selectedTab = 'scholarships';
         this.router.navigate(['resources']);
         this.scholarship = res;
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateScholarship(this.scholarship).subscribe((res) => {
-        this.creating = false;
         alert('Update scholarship successfully');
         this.global.selectedTab = 'scholarships';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     }

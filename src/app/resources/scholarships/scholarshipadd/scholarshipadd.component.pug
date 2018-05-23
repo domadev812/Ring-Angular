@@ -23,79 +23,85 @@
         | Applicants: {{scholarship.users.length}} 
         img.link-arrow(src="../assets/imgs/link-arrow.svg")  
       .form-content 
-          .item-info
-            .input-label-top
-              | NAME
-              .invalid-validation([hidden]="name.valid || (name.pristine && !scholarshipForm.submitted)")
-                | Name is required
-            input.resources-input(name="name" [(ngModel)]='scholarship.title' (ngModelChange)="onChange($event)" [disabled]="!approved" [ngClass]="{'disabled': !approved}" #name='ngModel' required )
-          .item-info
-            .input-label
-              | DESCRIPTION
-              .invalid-validation([hidden]="details.valid || (details.pristine && !scholarshipForm.submitted)")
-                | Description is required
-            textarea.resources-textarea(rows='6' name="details" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.description' (ngModelChange)="onChange($event)" #details="ngModel" required) 
-          .item-info
-            .input-label-dropdown
-              | ORGANIZATION
-              .invalid-validation([hidden]="selectedOrganization.length > 0 || !scholarshipForm.submitted")
-                | Organization is required
-            angular2-multiselect(
-              name = 'organization'
-              [data]='organizationList'
-              [(ngModel)]='selectedOrganization'
-              [settings]='ktsSelectSettings'
-              (onSelect)='onOrganizationSelect($event)'
-              (onDeSelect)='onOrganizationDeSelect($event)'
-            )
-          .item-info
-            .input-label
-              | APPLICATION LINK
-              .invalid-validation([hidden]="link.valid || (link.pristine && !scholarshipForm.submitted)")
-                | Application link is required
-              .invalid-validation([hidden]="!scholarship.url || scholarship.url === '' || validURL(scholarship.url) || (link.pristine && !scholarshipForm.submitted)")
-                | Application link is not correct
-            input.resources-input([(ngModel)]='scholarship.url' [disabled]="!approved"  [ngClass]="{'disabled': !approved}" (ngModelChange)="onChange($event)" name="link" #link='ngModel' required)
-          .item-info
-            .input-label
-              | AMOUNT
-              .invalid-validation([hidden]="amount.valid || (amount.pristine && !scholarshipForm.submitted)")
-                | Amount is required
-            input.resources-input(type="number" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.amount' (ngModelChange)="onChange($event)" name='amount' #amount='ngModel' required)
-          .item-info
-            .input-label
-              | NUMBER AVAILABLE
-              .invalid-validation([hidden]="number_available.valid || (number_available.pristine && !scholarshipForm.submitted)")
-                | Number available is required
-            input.resources-input(type="number" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.number_available' (ngModelChange)="onChange($event)" name="number_available" #number_available="ngModel" required)
-          .item-info
-            .input-label-dropdown
-              | CAREERS
-            angular2-multiselect(
-              name = 'careers'
-              [data]='careerList'
-              [(ngModel)]='selectedCareers'
-              [settings]='ktsMultiSettings'
-              (onSelect)='onCareerSelect($event)'
-              (onDeSelect)='onCareerDeSelect($event)'
-            )    
-          .item-info
-            .input-label-bold
-                | HIGH SCHOOLS
-            angular2-multiselect(
+        .item-info
+          .input-label-top
+            | NAME
+            .invalid-validation([hidden]="name.valid || (name.pristine && !scholarshipForm.submitted)")
+              | Name is required
+          input.resources-input(name="name" [(ngModel)]='scholarship.title' (ngModelChange)="onChange($event)" [disabled]="!approved" [ngClass]="{'disabled': !approved}" #name='ngModel' required )
+        .item-info
+          .input-label
+            | DESCRIPTION
+            .invalid-validation([hidden]="details.valid || (details.pristine && !scholarshipForm.submitted)")
+              | Description is required
+          textarea.resources-textarea(rows='6' name="details" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.description' (ngModelChange)="onChange($event)" #details="ngModel" required) 
+        .item-info
+          .input-label-dropdown
+            | ORGANIZATION
+            .invalid-validation([hidden]="selectedOrganization.length > 0 || !scholarshipForm.submitted")
+              | Organization is required
+          angular2-multiselect(
+            name = 'organization'
+            [data]='organizationList'
+            [(ngModel)]='selectedOrganization'
+            [settings]='ktsSelectSettings'
+            (onSelect)='onOrganizationSelect($event)'
+            (onDeSelect)='onOrganizationDeSelect($event)'
+          )
+        .item-info
+          .input-label
+            | APPLICATION LINK
+            .invalid-validation([hidden]="link.valid || (link.pristine && !scholarshipForm.submitted)")
+              | Application link is required
+            .invalid-validation([hidden]="!scholarship.url || scholarship.url === '' || validURL(scholarship.url) || (link.pristine && !scholarshipForm.submitted)")
+              | Application link is not correct
+          input.resources-input([(ngModel)]='scholarship.url' [disabled]="!approved"  [ngClass]="{'disabled': !approved}" (ngModelChange)="onChange($event)" name="link" #link='ngModel' required)
+        .item-info
+          .input-label
+            | AMOUNT
+            .invalid-validation([hidden]="amount.valid || (amount.pristine && !scholarshipForm.submitted)")
+              | Amount is required
+          input.resources-input(type="number" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.amount' (ngModelChange)="onChange($event)" name='amount' #amount='ngModel' required)
+        .item-info
+          .input-label
+            | NUMBER AVAILABLE
+            .invalid-validation([hidden]="number_available.valid || (number_available.pristine && !scholarshipForm.submitted)")
+              | Number available is required
+          input.resources-input(type="number" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.number_available' (ngModelChange)="onChange($event)" name="number_available" #number_available="ngModel" required)
+        .item-info
+          .input-label-dropdown
+            | CAREERS
+          angular2-multiselect(
+            name = 'careers'
+            [data]='careerList'
+            [(ngModel)]='selectedCareers'
+            [settings]='ktsMultiSettings'
+            (onSelect)='onCareerSelect($event)'
+            (onDeSelect)='onCareerDeSelect($event)'
+          )    
+        .item-info
+          .input-label-bold
+              | HIGH SCHOOLS
+          angular2-multiselect(
+            *ngIf="adminOrCommunity ; else notAdminOrCommunity"
+            name = 'schools'
+            [data]='schoolList'
+            [(ngModel)]='selectedSchools'
+            [settings]='selectAllMultiSettings'
+            (onSelect)='onSchoolSelect($event)'
+            (onDeSelect)='onSchoolDeSelect($event)'
+          )
+          ng-template(#notAdminOrCommunity)
+            input.resources-input.disabled(
               name = 'schools'
-              [data]='schoolList'
-              [(ngModel)]='selectedSchools'
-              [settings]='selectAllMultiSettings'
-              (onSelect)='onSchoolSelect($event)'
-              (onDeSelect)='onSchoolDeSelect($event)'
-              
-            )     
-          .item-info.checkboxes([tooltip]="tooltip('In App')")
-            input(type='checkbox' [(ngModel)]='scholarship.in_app' [disabled]="editFlag" (ngModelChange)="onChange($event)" id='in_app' name='in_app')
-            label(for='in_app')
-              | In App
-          .item-info.checkboxes([tooltip]="tooltip('Active')")
-            input(type='checkbox' [(ngModel)]='scholarship.active' [disabled]="!approved" (ngModelChange)="onChange($event)" id='active' name='active')
-            label(for='active')
-              | Active
+              [(ngModel)]='schoolName'
+              [disabled]='!adminOrCommunity'
+            )
+        .item-info.checkboxes([tooltip]="tooltip('In App')")
+          input(type='checkbox' [(ngModel)]='scholarship.in_app' [disabled]="editFlag" (ngModelChange)="onChange($event)" id='in_app' name='in_app')
+          label(for='in_app')
+            | In App
+        .item-info.checkboxes([tooltip]="tooltip('Active')")
+          input(type='checkbox' [(ngModel)]='scholarship.active' [disabled]="!approved" (ngModelChange)="onChange($event)" id='active' name='active')
+          label(for='active')
+            | Active
