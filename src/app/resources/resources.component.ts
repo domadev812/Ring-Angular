@@ -21,6 +21,7 @@ export class ResourcesComponent implements OnInit {
   canCreateOpportunities: boolean;
   scrollClass: String = 'table-content-with-search';
 
+
   constructor(
     private router: Router,
     public global: GlobalState,
@@ -32,7 +33,7 @@ export class ResourcesComponent implements OnInit {
 
   ngOnInit() {
     this.navBarService.show();
-    this.navBarService.activeTabChanged('resources');    
+    this.navBarService.activeTabChanged('resources');
     if (this.global.selectedTab === '') {
       this.selectedTab = 'scholarships';
     } else {

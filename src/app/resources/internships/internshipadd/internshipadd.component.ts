@@ -88,10 +88,11 @@ export class InternshipAddComponent implements OnInit {
   }
 
   showButtonGroup() {
+    const isAdmin = this.currentUser.roles.includes('admin');
     if (this.internshipId === null) {
       this.approveBtn = true;
     }
-    if (!this.approved) {
+    if (isAdmin && !this.approved) {
       this.approveBtn = false;
       this.saveBtn = true;
     } else {
@@ -292,25 +293,20 @@ export class InternshipAddComponent implements OnInit {
       return career.id;
     });
 
-    this.creating = true;
     if (!this.internship.id) {
       this.resourcesService.createResource(this.internship).subscribe((res) => {
-        this.creating = false;
         alert('Created new internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     } else {
       this.resourcesService.updateResource(this.internship).subscribe((res) => {
-        this.creating = false;
         alert('Updated internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     }
