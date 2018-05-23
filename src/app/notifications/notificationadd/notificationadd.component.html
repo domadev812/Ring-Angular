@@ -5,9 +5,13 @@
     <form class="form-group" #notificationForm="ngForm" (ngSubmit)="saveNotification(notificationForm.valid)" novalidate>
       <div class="header-nav">
         <h1 class="headers">{{title}}</h1>
-        <div class="button-group">
+        <div class="button-group" [hidden]="saveBtn">
           <button class="notifications-btn primary-button feedback-btn" type="submit" *ngIf="!notification.id"> <span>Save</span></button>
-          <button class="notifications-btn secondary-button feedback-btn" type="button" (click)="cancelNotification()"> <span>Cancel  </span></button>
+          <button class="notifications-btn secondary-button feedback-btn" type="button" (click)="cancelNotification()"> <span>Cancel </span></button>
+        </div>
+        <div class="button-group" [hidden]="approveBtn">
+          <button class="notifications-btn primary-button feedback-btn" type="button" (click)="approve()"><span>Approve</span></button>
+          <button class="notifications-btn secondary-button feedback-btn" (click)="reject()" type="button"> <span>Reject  </span></button>
         </div>
       </div>
       <div class="wrapper-content"> 
@@ -15,19 +19,19 @@
           <div class="input-label-top">SUBJECT
             <div class="invalid-validation" [hidden]="subject.valid || (subject.pristine &amp;&amp; !notificationForm.submitted)">Subject is required</div>
           </div>
-          <input class="notification-input" type="text" name="subject" [(ngModel)]="notification.subject" #subject="ngModel" [disabled]="notification.id" required>
+          <input class="notification-input" type="text" name="subject" [ngClass]="{'disabled': !approved || notification.id}" [(ngModel)]="notification.subject" #subject="ngModel" [disabled]="notification.id  || !approved" required>
         </div>
         <div class="item-info">
           <div class="input-label">MESSAGE
             <div class="invalid-validation" [hidden]="message.valid || (message.pristine &amp;&amp; !notificationForm.submitted)">Message is required</div>
           </div>
-          <textarea class="notification-textarea" rows="6" name="message" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id" required></textarea>
+          <textarea class="notification-textarea" rows="6" name="message" [ngClass]="{'disabled': !approved || notification.id}" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id || !approved" required></textarea>
         </div>
         <div class="item-info">
           <div class="input-label">Recipient Category
             <div class="invalid-validation" [hidden]="selectedType.length &gt; 0 || !notificationForm.submitted">Category is required</div>
           </div>
-          <angular2-multiselect name="types" [data]="typeList" [(ngModel)]="selectedType" [settings]="ktsSelectSettings" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)" [disabled]="notification.id"></angular2-multiselect>
+          <angular2-multiselect name="types" [data]="typeList" [(ngModel)]="selectedType" [settings]="notificationRecipientCategory" (onSelect)="onTypeSelect($event)" (onDeSelect)="onTypeDeSelect($event)"></angular2-multiselect>
         </div>
         <div class="item-info" *ngIf="valueListVisibleFlag">
           <div class="input-label-dropdown">{{valueListTitle}}

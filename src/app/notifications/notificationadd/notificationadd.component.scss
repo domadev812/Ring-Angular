@@ -6,8 +6,7 @@
   align-items: center;
   font-family: $font-primary;
   justify-content: space-between;
-  padding-top: 8px;
-  padding-bottom: 45px;
+  padding-top: 37px;
   
 }
 .button-group {
@@ -17,6 +16,10 @@
   @include space-between;
   align-items: center;
   font-family: $font-primary;
+}
+
+.wrapper-content {
+  padding-top: 105px;
 }
 
 .notifications-btn {

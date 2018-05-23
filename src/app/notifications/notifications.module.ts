@@ -18,6 +18,7 @@ import { MessageBoardComponent } from './messageboard/messageboard.component';
 import { NotificationlistComponent } from './notificationlist/notificationlist.component';
 import { SharedModule } from '../../app/shared.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/multiselect.component';
+import { MouseWheelDirective } from '../_directives/mousewheel.directive';
 
 
 @NgModule({

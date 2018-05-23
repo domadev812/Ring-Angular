@@ -2,7 +2,7 @@
   #message.content-wrapper
     ngx-loading([show]='creating')
     form.form-group(#messageForm="ngForm" (ngSubmit)="sendMessage()" novalidate)
-      .header-nav
+      .header-nav.fixed-header
         h1.headers
           | {{title}}
         .button-group

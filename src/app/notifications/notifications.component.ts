@@ -10,10 +10,9 @@ import { Model } from '../app.models-list';
   styleUrls: ['./notifications.component.scss']
 })
 export class NotificationsComponent implements OnInit {
-
+  scrollClass: String = 'table-content-without-search';
   selectedTab: String;
   canCreateMessage: boolean;
-  scrollClass: String = 'table-content-without-search';
 
   constructor(
     private router: Router,
@@ -41,4 +40,5 @@ export class NotificationsComponent implements OnInit {
   newMessage(): void {
     this.router.navigate(['messageboard']);
   }
+
 }

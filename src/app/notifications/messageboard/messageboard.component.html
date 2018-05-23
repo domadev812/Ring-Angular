@@ -1,0 +1,27 @@
+
+<div class="page-wrapper">
+  <div class="content-wrapper" id="message">
+    <ngx-loading [show]="creating"></ngx-loading>
+    <form class="form-group" #messageForm="ngForm" (ngSubmit)="sendMessage()" novalidate>
+      <div class="header-nav">
+        <h1 class="headers">{{title}}</h1>
+        <div class="button-group">
+          <button class="notifications-btn primary-button feedback-btn" type="submit"> <span>Send</span></button>
+          <button class="notifications-btn secondary-button feedback-btn" type="button" (click)="cancelMessage()"> <span>Cancel  </span></button>
+        </div>
+      </div>
+      <div class="wrapper-content"> 
+        <div class="current-message-header">CURRENT MESSAGE</div>
+        <div class="current-message">{{currentMessage}}</div>
+        <div class="item-info">
+          <div class="input-label">New Message</div>
+          <input class="message-input" type="text" name="message" [(ngModel)]="messageBoard.message" #message="ngModel" required>
+        </div>
+        <div class="item-info">
+          <div class="input-label">Message Link</div>
+        </div>
+        <input class="message-input" [(ngModel)]="messageBoard.link" name="link" #url="ngModel">
+      </div>
+    </form>
+  </div>
+</div>

@@ -2,7 +2,7 @@
   #notification.content-wrapper
     ngx-loading([show]='creating')
     form.form-group(#notificationForm="ngForm" (ngSubmit)="saveNotification(notificationForm.valid)" novalidate)
-      .header-nav
+      .header-nav.fixed-header
         h1.headers
           | {{title}}
         .button-group([hidden]="saveBtn")

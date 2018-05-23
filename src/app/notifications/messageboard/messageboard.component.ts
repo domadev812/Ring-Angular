@@ -50,7 +50,10 @@ export class MessageBoardComponent implements OnInit {
     this.creating = true;
     this.messageBoardService.getMessage().subscribe((res: Model.MessageBoard) => {
       this.creating = false;
-      this.currentMessage = res.message;
+      if (!res.message)
+        this.currentMessage = 'Welcome To Keys To Success';
+      else
+        this.currentMessage = res.message;
     }, (errors) => {
       alert('Server error');
     });
