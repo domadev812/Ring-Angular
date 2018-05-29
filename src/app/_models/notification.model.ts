@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { CareerGroup } from './career-group.model';
 export class Notification {
   id: string;
   subject: string;
@@ -14,6 +15,9 @@ export class Notification {
   resource: Array<any>;
   approved: boolean;
   organization_name: string;
+  career_group_ids: Array<number>;
+  career_group_title: Array<string>;
+  career_groups: Array<CareerGroup>;
 
   constructor(data = null) {
     if (data) {
@@ -29,6 +33,7 @@ export class Notification {
     this.organization_name = data.organization_name || this.organization_name;
     this.creator_id = data.creator_id || this.creator_id;
     this.type = data.type || this.type;
+    this.career_groups = data.career_groups || this.career_groups;
     this.custom_group_id = data.custom_group_id || this.custom_group_id;
     this.type_value = data.type_value || this.type_value;
     this.type_ids = data.type_ids || this.type_ids;
