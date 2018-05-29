@@ -6,6 +6,7 @@ import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Model } from '../../app.models-list';
 import { EmailValidator } from '@angular/forms';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-business-signup',
@@ -140,7 +141,7 @@ export class BusinessSignupComponent implements OnInit {
         alert('Signup Successfull');
         this.router.navigate(['resources']);
       }, err => {
-        alert(err);
+        alert(err.message);
       });
     this.creating = false;
   }
