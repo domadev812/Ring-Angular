@@ -78,7 +78,7 @@ export class NavbarComponent implements OnInit {
   }
 
   goToHomePage(): void {
-    this.router.navigate(['prizes']);
+    this.router.navigate(['resources']);
   }
 }
 
