@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import { Organization } from './organization.model';
 import { Career } from './career.model';
 import { User } from './user.model';
+import { CareerGroup } from './career-group.model';
 export class Scholarship {
   id: string;
   title: string;
@@ -17,11 +18,14 @@ export class Scholarship {
   organization: Organization;
   schools: Array<Organization>;
   careers: Array<Career>;
+  career_groups: Array<CareerGroup>;
   images: Array<string>;
   created_at: any;
   updated_at: any;
   career_ids: Array<number>;
   school_ids: Array<number>;
+  career_group_ids: Array<number>;
+  career_group_title: Array<string>;
   users: Array<User>;
 
 
@@ -43,6 +47,7 @@ export class Scholarship {
     this.description = data.description || this.description;
     this.organization_id = data.organization_id || this.organization_id;
     this.approved = data.approved;
+    this.career_groups = data.career_groups || this.career_groups;
     this.organization = data.organization || this.organization;
     if (data.schools) {
       this.schools = data.schools.map(school => school);

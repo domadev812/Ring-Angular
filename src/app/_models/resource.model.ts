@@ -3,6 +3,7 @@ import { Career } from './career.model';
 import { User } from './user.model';
 import { Organization } from './organization.model';
 import { Scholarship } from './scholarship.model';
+import { CareerGroup } from './career-group.model';
 export class Resource {
   id: string;
   title: string;
@@ -15,6 +16,7 @@ export class Resource {
   created_at: any;
   updated_at: any;
   careers: Array<Career>;
+  career_groups: Array<CareerGroup>;
   users: Array<User>;
   organization: Organization;
   schools: Array<Organization>;
@@ -22,6 +24,8 @@ export class Resource {
   career_titles: Array<number>;
   career_ids: Array<number>;
   career_title: Array<string>;
+  career_group_ids: Array<number>;
+  career_group_title: Array<string>;
   approved: boolean;
 
 
@@ -40,6 +44,7 @@ export class Resource {
     this.organization_id = data.organization_id || this.organization_id;
     this.organization = data.organization || this.organization;
     this.careers = data.careers || this.careers;
+    this.career_groups = data.career_groups || this.career_groups;
     this.career_ids = data.careers || this.careers;
     this.users = data.users || this.users;
     this.organization = data.organization || this.organization;
