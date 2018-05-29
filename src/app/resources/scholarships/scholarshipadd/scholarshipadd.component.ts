@@ -47,8 +47,8 @@ export class ScholarshipAddComponent implements OnInit {
   public saveBtn: boolean;
   public currentRoute: string;
   public currentUser: any;
-  private adminOrCommunity: boolean;
-  private schoolName: string;
+  public adminOrCommunity: boolean;
+  public schoolName: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -131,14 +131,16 @@ export class ScholarshipAddComponent implements OnInit {
 
   setUpForView(roles: Array<string>): void {
     this.schoolName = this.currentUser.organization.name;
-    for (let role of roles) {
-      if (!this.scholarshipId && role !== 'admin' && role !== 'community') {
-        this.adminOrCommunity = false;
-        this.selectedOrganization.push(
-          new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.scholarship.organization_id)
-        );
-        this.scholarship.organization_id = this.currentUser.organization_id;
-      }
+    if (roles.includes('admin') || roles.includes('community')) {
+      this.adminOrCommunity = true;
+    } else {
+      this.adminOrCommunity = false;
+    }
+    if (!this.scholarshipId) {
+      this.selectedOrganization.push(
+        new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.scholarship.organization_id)
+      );
+      this.scholarship.organization_id = this.currentUser.organization_id;
     }
     this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
     const userType = roles.includes('admin') ? 'admin' : 'other';
@@ -178,9 +180,6 @@ export class ScholarshipAddComponent implements OnInit {
     this.showButtonGroup();
   }
 
-
-
-
   onSchoolSelect(item: any) {
     this.onChange(item);
   }
@@ -206,7 +205,7 @@ export class ScholarshipAddComponent implements OnInit {
   }
 
   getCareers(): void {
-    this.multiSelectService.getDropdownCareers().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+    this.multiSelectService.getDropdownCareerGroups().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.careerList = res;
     }, err => {
       console.log('err', err);
@@ -239,7 +238,7 @@ export class ScholarshipAddComponent implements OnInit {
     this.multiSelectPreFlight();
     this.originalScholarship = Object.assign({}, scholarship);
     this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
-    this.selectedCareers = this.scholarship.careers.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
+    this.selectedCareers = this.scholarship.career_groups.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
     if (this.scholarship.organization) {
       this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name,
         this.scholarship.organization_id));
@@ -350,8 +349,8 @@ export class ScholarshipAddComponent implements OnInit {
 
     this.scholarship.type = 'Scholarship';
 
-    this.scholarship.career_ids = this.selectedCareers.map(career => {
-      return career.id;
+    this.scholarship.career_group_ids = this.selectedCareers.map(career_group => {
+      return career_group.id;
     });
 
     this.scholarship.school_ids = this.selectedSchools.map(school => {

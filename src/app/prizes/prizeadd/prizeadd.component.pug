@@ -26,7 +26,7 @@
           .input-label
             | Points
             .invalid-validation([hidden]="points.valid || !prizeForm.submitted")
-              | Pionts are required
+              | Points are required
           input.prize-input(type="text" name="points" [(ngModel)]='prize.points' (ngModelChange)="onChange($event)" #points="ngModel" required)                         
         .item-info
           .input-label
