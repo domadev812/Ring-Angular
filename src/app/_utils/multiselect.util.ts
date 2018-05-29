@@ -63,6 +63,7 @@ export module MultiSelectUtil {
       Career: 'title',
       Organization: 'name',
       Group: 'name',
+      CareerGroup: 'title',
     };
 
     static buildFromData(data: any, model_name: string): SelectItem[] {

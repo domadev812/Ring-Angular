@@ -233,7 +233,7 @@ export class InternshipAddComponent implements OnInit {
       this.setTitle();
       this.showButtonGroup();
       this.multiSelectPreFlight();
-      const parsedCareers = res.careers.map(careers => {
+      const parsedCareers = res.career_groups.map(careers => {
         careers.title = careers.title;
         careers.id = careers.id;
         return careers;
@@ -255,7 +255,7 @@ export class InternshipAddComponent implements OnInit {
   }
 
   getCareers(): void {
-    this.multiSelectService.getDropdownCareers().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+    this.multiSelectService.getDropdownCareerGroups().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.careerList = res;
     }, err => {
       console.log('err', err);
@@ -289,8 +289,8 @@ export class InternshipAddComponent implements OnInit {
 
     this.internship.type = 'Internship';
 
-    this.internship.career_ids = this.selectedCareers.map((career) => {
-      return career.id;
+    this.internship.career_group_ids = this.selectedCareers.map(career_group => {
+      return career_group.id;
     });
 
     if (!this.internship.id) {

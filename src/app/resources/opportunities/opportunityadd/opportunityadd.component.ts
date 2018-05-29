@@ -230,10 +230,10 @@ export class OpportunityAddComponent implements OnInit {
       this.setTitle();
       this.showButtonGroup();
       this.multiSelectPreFlight();
-      const parsedCareers = res.careers.map(careers => {
-        careers.title = careers.title;
-        careers.id = careers.id;
-        return careers;
+      const parsedCareers = res.career_groups.map(career_groups => {
+        career_groups.title = career_groups.title;
+        career_groups.id = career_groups.id;
+        return career_groups;
       });
       this.selectedCareers = MultiSelectUtil.SelectItem.buildFromData(parsedCareers, 'Career');
       this.originalOpportunity = Object.assign({}, res);
@@ -252,7 +252,7 @@ export class OpportunityAddComponent implements OnInit {
   }
 
   getCareers(): void {
-    this.multiSelectService.getDropdownCareers().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+    this.multiSelectService.getDropdownCareerGroups().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.careerList = res;
     }, err => {
       console.log('err', err);
@@ -289,8 +289,8 @@ export class OpportunityAddComponent implements OnInit {
 
     this.opportunity.organization_id = this.selectedOrganization[0].id;
 
-    this.opportunity.career_ids = this.selectedCareers.map(career => {
-      return career.id;
+    this.opportunity.career_group_ids = this.selectedCareers.map(career_group => {
+      return career_group.id;
     });
 
     if (!this.opportunity.id) {
