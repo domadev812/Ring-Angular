@@ -218,7 +218,7 @@ export class NotificationAddComponent implements OnInit {
     }
   }
   getCareers(): void {
-    this.multiSelectService.getDropdownCareers().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+    this.multiSelectService.getDropdownCareerGroups().subscribe((res: MultiSelectUtil.SelectItem[]) => {
       this.careerList = res;
     }, err => {
       console.log('err', err);
@@ -268,8 +268,9 @@ export class NotificationAddComponent implements OnInit {
       }
     }
 
-    this.notification.type_ids = this.selectedCareers.map(career => {
-      return career.id;
+
+    this.notification.type_ids = this.selectedCareers.map(career_group => {
+      return career_group.id;
     });
 
     if (this.selectedType[0]) {
