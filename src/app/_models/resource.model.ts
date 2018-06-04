@@ -20,6 +20,7 @@ export class Resource {
   users: Array<User>;
   organization: Organization;
   schools: Array<Organization>;
+  school_ids: Array<number>;
   scolarship: Scholarship;
   career_titles: Array<number>;
   career_ids: Array<number>;
@@ -27,6 +28,7 @@ export class Resource {
   career_group_ids: Array<number>;
   career_group_title: Array<string>;
   approved: boolean;
+
 
 
   constructor(data) {
@@ -46,6 +48,7 @@ export class Resource {
     this.careers = data.careers || this.careers;
     this.career_groups = data.career_groups || this.career_groups;
     this.career_ids = data.careers || this.careers;
+    this.school_ids = data.school_ids || this.school_ids;
     this.users = data.users || this.users;
     this.organization = data.organization || this.organization;
     this.approved = data.approved || this.approved;
