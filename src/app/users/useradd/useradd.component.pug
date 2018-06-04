@@ -72,3 +72,9 @@
             .invalid-validation([hidden]="psw.valid || (psw.pristine && !userForm.submitted)")
                 | Password is required
           input.user-input(type="password" name="psw" #psw="ngModel"  [(ngModel)]='user.password' (ngModelChange)="onChange($event)" required)
+    .applied-content([hidden]="userTable")
+      app-applications
+    .opportunities-content([hidden]="userTable")
+      app-useropportunities
+    .notifications-content([hidden]="userTable")
+      app-usernotifications

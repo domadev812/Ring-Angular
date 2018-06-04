@@ -18,6 +18,9 @@ import { CounselorsComponent } from './counselors/counselors.component';
 import { CommunitiesComponent } from './communities/communities.component';
 import { UserAddComponent } from './useradd/useradd.component';
 import { SharedModule } from '../shared.module';
+import { ApplicationsComponent } from './useradd/applications/applications.component';
+import { UsernotificationsComponent } from './useradd/usernotifications/usernotifications.component';
+import { UseropportunitiesComponent } from './useradd/useropportunities/useropportunities.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { SharedModule } from '../shared.module';
     KeyContactsComponent,
     CounselorsComponent,
     CommunitiesComponent,
-    UserAddComponent
+    UserAddComponent,
+    ApplicationsComponent,
+    UsernotificationsComponent,
+    UseropportunitiesComponent
   ],
   imports: [
     CommonModule,

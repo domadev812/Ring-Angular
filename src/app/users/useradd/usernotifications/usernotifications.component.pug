@@ -1,0 +1,24 @@
+#user-notifications
+  .header-nav
+    .input-label.user-notifications
+      | Student Notifications
+  .d-flex.space-between.py-1
+      .table-header.mx-4
+        | Notification Title
+      .table-header.mx-4
+        | Body
+      .table-header.mx-4
+        | Created At
+      .table-header.mx-4
+        | Type
+  .table-content
+    .list(*ngFor="let notification of notifications")
+      .d-flex.space-between.bg-white.py-1.pointer((click)='editNotification(notification.id)')
+        .table-data.mx-4
+          | {{notification.subject}}
+        .table-data.mx-4
+          | {{notification.body}}
+        .table-data.mx-4
+          | {{notification.created_at}}
+        .table-data.mx-4
+          | {{notification.type}}  

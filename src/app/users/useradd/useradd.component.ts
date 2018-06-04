@@ -21,6 +21,8 @@ export class UserAddComponent implements OnInit {
   organizationTitle: string;
   editFlag: boolean;
   disableFlag: boolean;
+  scholarships: Array<Model.Scholarship>;
+  opportunities: Array<Model.Resource>;
   schoolList = [];
   commnunityList = [];
   organizationList = [];
@@ -35,6 +37,7 @@ export class UserAddComponent implements OnInit {
   ktsOrganizationSettings = {};
   creating = false;
   adminFlag = false;
+  userTable = false;
 
   constructor(
     public route: ActivatedRoute,
@@ -149,7 +152,14 @@ export class UserAddComponent implements OnInit {
   getUserRole(): any {
     return this.typeList.find(type => {
       let role = this.user.roles.find(roleItem => roleItem === type.id);
+      if (type.id === 'student') {
+        this.userTable = false;
+      } else {
+        this.userTable = true;
+      }
+      console.log(this.userTable);
       return role ? true : false;
+
     });
   }
 

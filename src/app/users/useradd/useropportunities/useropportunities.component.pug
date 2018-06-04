@@ -1,0 +1,20 @@
+#user-opportunities
+  .header-nav
+    .input-label.user-opportunities
+      | Student Opportunities
+  .d-flex.space-between.py-1
+      .table-header.mx-4
+        | Opportunity Title
+      .table-header.mx-4
+        | Organization URL
+      .table-header.mx-4
+        | Organization Name
+  .table-content
+    .list(*ngFor="let opportunity of opportunities")
+      .d-flex.space-between.bg-white.py-1.pointer((click)='editScholarship(opportunity.id)')
+        .table-data.mx-4
+          | {{opportunity.title}}
+        .table-data.mx-4
+          | {{opportunity.organization.url}}
+        .table-data.mx-4
+          | {{opportunity.organization.name}}

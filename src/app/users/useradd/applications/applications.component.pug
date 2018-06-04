@@ -1,0 +1,21 @@
+#applications
+  .header-nav
+    .input-label.student-applications
+      | Student Applications
+  .d-flex.space-between.py-1
+      .table-header.mx-4
+        | Scholarship Title
+      .table-header.mx-4
+        | Organization URL
+      .table-header.mx-4
+        | Organization Name
+  .table-content
+    .list(*ngFor="let scholarship of scholarships")
+      .d-flex.space-between.bg-white.py-1.pointer((click)='editScholarship(scholarship.id)')
+        .table-data.mx-4
+          | {{scholarship.title}}
+        .table-data.mx-4
+          | {{scholarship.organization.url}}
+        .table-data.mx-4
+          | {{scholarship.organization.name}}
+      
