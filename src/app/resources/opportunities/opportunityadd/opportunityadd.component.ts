@@ -20,12 +20,16 @@ export class OpportunityAddComponent implements OnInit {
   public originalOpportunity: Model.Resource;
   public careers: Array<Model.Career>;
   public organizations: Array<Model.Organization>;
+  public schools: Array<Model.Organization>;
   public organizationList = [];
   public selectedOrganization = [];
   public ktsSelectSettings: any = {};
+  public selectAllMultiSettings: any = {};
   public ktsMultiSettings: any = {};
   public careerList = [];   //Selectable Career List
   public selectedCareers = [];    //Selected Career List
+  public schoolList = [];
+  public selectedSchools = [];
   public title: string;
   public editFlag: boolean;
   public disableFlag: boolean;
@@ -38,6 +42,8 @@ export class OpportunityAddComponent implements OnInit {
   public currentRoute: string;
   public currentUser: any;
   public canViewApproveReject: boolean;
+  public adminOrCommunity: boolean;
+  public schoolName: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -58,6 +64,7 @@ export class OpportunityAddComponent implements OnInit {
       this.opportunity = new Model.Resource({});
       this.originalOpportunity = new Model.Resource({});
       this.careers = new Array<Model.Career>();
+      this.schools = new Array<Model.Organization>();
       this.organizations = new Array<Model.Organization>();
       this.title = 'New Opportunity';
       this.editFlag = false;
@@ -68,13 +75,15 @@ export class OpportunityAddComponent implements OnInit {
       this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
       this.setUpForView(this.currentUser.roles);
       this.getCareers();
+      this.getSchools();
       this.getOrganizations();
     } catch (err) { }
   }
 
-  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null): void {
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null, checkAll: boolean = null): void {
     this.ktsSelectSettings.disabled = sDisabled;
     this.ktsMultiSettings.disabled = mDisabled;
+    this.selectAllMultiSettings.enableCheckAll = checkAll;
   }
 
   setTitle(title: string = null) {
@@ -113,14 +122,14 @@ export class OpportunityAddComponent implements OnInit {
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
 
     if (isAdmin && this.opportunityId && !this.approved) {
-      this.setMsSettings(true, true);
+      this.setMsSettings(true, true, true);
       this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id));
     } else if (isAdmin && !this.opportunityId) {
-      this.setMsSettings(false, false);
+      this.setMsSettings(false, false, true);
     } else if (isAdmin && this.opportunityId && this.approved) {
-      this.setMsSettings(false, false);
+      this.setMsSettings(false, false, false);
     } else if (!isAdmin && !this.opportunityId) {
-      this.setMsSettings(true, false);
+      this.setMsSettings(true, false, false);
       this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id));
     }
   }
@@ -128,6 +137,18 @@ export class OpportunityAddComponent implements OnInit {
 
 
   setUpForView(roles: Array<string>): void {
+    this.schoolName = this.currentUser.organization.name;
+    if (roles.includes('admin') || roles.includes('community')) {
+      this.adminOrCommunity = true;
+    } else {
+      this.adminOrCommunity = false;
+    }
+    if (!this.opportunityId) {
+      this.selectedOrganization.push(
+        new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id)
+      );
+      this.opportunity.organization_id = this.currentUser.organization_id;
+    }
     this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
     const userType = roles.includes('admin') ? 'admin' : 'other';
     const selector = `${userType + '_' + this.currentRoute}`;
@@ -164,6 +185,22 @@ export class OpportunityAddComponent implements OnInit {
       this.multiSelectPreFlight();
     this.setTitle('New Opportunity');
     this.showButtonGroup();
+  }
+
+  onSchoolSelect(item: any) {
+    this.onChange(item);
+  }
+
+  onSchoolDeSelect(item: any) {
+    this.onChange(item);
+  }
+
+  getSchools(): void {
+    this.multiSelectService.getDropdownSchools().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+      this.schoolList = res;
+    }, err => {
+      console.log('err', err);
+    });
   }
 
 
@@ -291,6 +328,10 @@ export class OpportunityAddComponent implements OnInit {
 
     this.opportunity.career_group_ids = this.selectedCareers.map(career_group => {
       return career_group.id;
+    });
+
+    this.opportunity.school_ids = this.selectedSchools.map(school => {
+      return school.id;
     });
 
     if (!this.opportunity.id) {
