@@ -1,8 +1,11 @@
+import { Scholarship } from './scholarship.model';
+import { Resource } from './resource.model';
+
 // import { ENV } from '../config/config.dev';
 
 export class BaseUser {
   email: string;
-  first_name: string; 
+  first_name: string;
   last_name: string;
   id: string;
   password: string;
@@ -14,9 +17,12 @@ export class BaseUser {
   roles: string[];
   unread_count: number;
   fullName: Function;
+  scholarships: Array<Scholarship>;
+  opportunities: Array<Resource>;
+  notifications: Array<Notification>;
 
   constructor() {
-    
+
   }
 
   setData(data) {
@@ -32,6 +38,9 @@ export class BaseUser {
     this.reset_pass_token = data.reset_pass_token || this.reset_pass_token;
     this.roles = data.roles || this.roles;
     this.unread_count = data.unread_count || this.unread_count;
+    this.scholarships = data.scholarships;
+    this.opportunities = data.opportunities;
+    this.notifications = data.notifications;
   }
 
   getName(): string | undefined {
@@ -54,8 +63,8 @@ export class BaseUser {
 
   getAvatarUrl(): string | undefined {
     if (this.profile_image) {
-        //TODO: Get the right environment imported into file
-    //   return `${ENV.API_URL}/assets/images/${this.id}/${this.profile_image}`;
+      //TODO: Get the right environment imported into file
+      //   return `${ENV.API_URL}/assets/images/${this.id}/${this.profile_image}`;
     } else {
       return 'assets/icon/account_icon.svg';
     }
