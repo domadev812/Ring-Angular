@@ -20,10 +20,12 @@ export class InternshipAddComponent implements OnInit {
   public originalInternship: Model.Resource;
   public careers: Array<Model.Career>;
   public career_ids: Array<Model.Career>;
+  public schools: Array<Model.Organization>;
   public organizationList = [];
   public selectedOrganization = [];
   public ktsSelectSettings: any = {};
   public ktsMultiSettings: any = {};
+  public selectAllMultiSettings: any = {};
   public careerList = [];   //Selectable Career List
   public selectedCareers = [];    //Selected Career List
   public title: string;
@@ -31,6 +33,8 @@ export class InternshipAddComponent implements OnInit {
   public disableFlag: boolean;
   public opportunity = [];
   public currentCareers = [];
+  public schoolList = [];
+  public selectedSchools = [];
   public creating = false;
   public internshipId: string;
   public approved: boolean;
@@ -39,6 +43,9 @@ export class InternshipAddComponent implements OnInit {
   public currentRoute: string;
   public currentUser: any;
   public canViewApproveReject: boolean;
+  public adminOrCommunity: boolean;
+  public schoolName: string;
+
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -61,6 +68,7 @@ export class InternshipAddComponent implements OnInit {
       this.originalInternship = new Model.Resource({});
       this.careers = new Array<Model.Career>();
       this.career_ids = new Array<Model.Career>();
+      this.schools = new Array<Model.Organization>();
       this.editFlag = false;
       this.disableFlag = false;
       this.approved = true;
@@ -69,12 +77,14 @@ export class InternshipAddComponent implements OnInit {
       this.setUpForView(this.currentUser.roles);
       this.getCareers();
       this.getOrganizations();
+      this.getSchools();
     } catch (err) { }
   }
 
-  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null): void {
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null, checkAll: boolean = null): void {
     this.ktsSelectSettings.disabled = sDisabled;
     this.ktsMultiSettings.disabled = mDisabled;
+    this.selectAllMultiSettings.enableCheckAll = checkAll;
   }
 
   setTitle(title: string = null) {
@@ -111,22 +121,35 @@ export class InternshipAddComponent implements OnInit {
     const isAdmin = this.currentUser.roles.includes('admin');
     this.ktsSelectSettings = MultiSelectUtil.singleSelection;
     this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings;
 
     if (isAdmin && this.internshipId && !this.approved) {
-      this.setMsSettings(true, true);
+      this.setMsSettings(true, true, true);
       this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.internship.organization_id));
     } else if (isAdmin && !this.internshipId) {
-      this.setMsSettings(false, false);
+      this.setMsSettings(false, false, true);
     } else if (isAdmin && this.internshipId && this.approved) {
-      this.setMsSettings(false, false);
+      this.setMsSettings(false, false, false);
     } else if (!isAdmin && !this.internshipId) {
-      this.setMsSettings(true, false);
+      this.setMsSettings(true, false, false);
       this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.internship.organization_id));
     }
   }
 
 
   setUpForView(roles: Array<string>): void {
+    this.schoolName = this.currentUser.organization.name;
+    if (roles.includes('admin') || roles.includes('community')) {
+      this.adminOrCommunity = true;
+    } else {
+      this.adminOrCommunity = false;
+    }
+    if (!this.internshipId) {
+      this.selectedOrganization.push(
+        new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.internship.organization_id)
+      );
+      this.internship.organization_id = this.currentUser.organization_id;
+    }
     this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
     const userType = roles.includes('admin') ? 'admin' : 'other';
     const selector = `${userType + '_' + this.currentRoute}`;
@@ -163,6 +186,22 @@ export class InternshipAddComponent implements OnInit {
       this.multiSelectPreFlight();
     this.setTitle('New Internship');
     this.showButtonGroup();
+  }
+
+  onSchoolSelect(item: any) {
+    this.onChange(item);
+  }
+
+  onSchoolDeSelect(item: any) {
+    this.onChange(item);
+  }
+
+  getSchools(): void {
+    this.multiSelectService.getDropdownSchools().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+      this.schoolList = res;
+    }, err => {
+      console.log('err', err);
+    });
   }
 
   onCareerSelect(item: any) {
@@ -291,6 +330,10 @@ export class InternshipAddComponent implements OnInit {
 
     this.internship.career_group_ids = this.selectedCareers.map(career_group => {
       return career_group.id;
+    });
+
+    this.internship.school_ids = this.selectedSchools.map(school => {
+      return school.id;
     });
 
     if (!this.internship.id) {

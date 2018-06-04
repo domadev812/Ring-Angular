@@ -67,6 +67,24 @@
             (onSelect)='onCareerSelect($event)'
             (onDeSelect)='onCareerDeSelect($event)'
           )     
+        .item-info
+          .input-label-bold
+              | HIGH SCHOOLS
+          angular2-multiselect(
+            *ngIf="adminOrCommunity ; else notAdminOrCommunity"
+            name = 'schools'
+            [data]='schoolList'
+            [(ngModel)]='selectedSchools'
+            [settings]='selectAllMultiSettings'
+            (onSelect)='onSchoolSelect($event)'
+            (onDeSelect)='onSchoolDeSelect($event)'
+          )
+          ng-template(#notAdminOrCommunity)
+            input.resources-input.disabled(
+              name = 'schools'
+              [(ngModel)]='schoolName'
+              [disabled]='!adminOrCommunity'
+            )
         .item-info.checkboxes([tooltip]="tooltip('Active')")
           input(type='checkbox' id='active' [(ngModel)]='internship.is_active' [disabled]="!approved" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)")
           label(for='active')
