@@ -35,4 +35,8 @@ export class User extends BaseUser {
   getRole(): string {
     return this.roles[0];
   }
+
+  isAdmin(): boolean {
+    return this.roles.includes('admin');
+  }
 }

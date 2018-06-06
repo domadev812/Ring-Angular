@@ -3,6 +3,7 @@ import { Organization } from './organization.model';
 import { Career } from './career.model';
 import { User } from './user.model';
 import { CareerGroup } from './career-group.model';
+import { MultiSelectUtil } from '../_utils/multiselect.util';
 export class Scholarship {
   id: string;
   title: string;
@@ -40,8 +41,8 @@ export class Scholarship {
     this.title = data.title || this.title;
     this.amount = data.amount || this.amount;
     this.number_available = data.number_available || this.number_available;
-    this.active = data.active;
-    this.in_app = data.in_app;
+    this.active = data.active || false;
+    this.in_app = data.in_app || false;
     this.type = data.type || this.type;
     this.url = data.url || this.url;
     this.description = data.description || this.description;
@@ -71,4 +72,34 @@ export class Scholarship {
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');
   }
+
+  belongsToUser(user: User): boolean {
+    return this.organization_id === user.organization_id;
+  }
+
+  getPageState(user: User): 'edit' | 'approval' | 'readonly' | 'new' {
+    if (!this.id) return 'new';
+    else if (this.isEditable(user)) return 'edit';
+    else if (this.isApproval()) return 'approval';
+    else return 'readonly';
+  }
+
+  buildScholarshipFromForm(selectedCareers: MultiSelectUtil.SelectItem[], selectedSchools: MultiSelectUtil.SelectItem[]): void {
+    this.type = 'Scholarship';
+    this.career_group_ids = selectedCareers.map(career_group => {
+      return +career_group.id; // + converts string to number
+    });
+    this.school_ids = selectedSchools.map(school => {
+      return +school.id;
+    });
+
+  }
+  private isEditable(user: User): boolean {
+    return (user.isAdmin() || this.belongsToUser(user)) && this.approved;
+  }
+
+  private isApproval(): boolean {
+    return !this.approved;
+  }
+
 }
