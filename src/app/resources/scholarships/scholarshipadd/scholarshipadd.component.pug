@@ -1,25 +1,25 @@
 .page-wrapper.resources
   #scholarshipadd.content-wrapper
-    ngx-loading([show]='creating') 
+    ngx-loading([show]='isLoading') 
     form.form-group(#scholarshipForm='ngForm' (ngSubmit)="saveScholarship(scholarshipForm.valid)" novalidate)
       .header-nav.fixed-header
         h1.headers
           | {{title}}
-        .button-group([hidden]="saveBtn")
-          button.save-button(type='submit' [ngClass]="{'btn-disabled': disableFlag, 'feedback-btn': !disableFlag}" [disabled]="disableFlag")
+        .button-group(*ngIf="!approval()")
+          button.save-button.feedback-btn(type='submit' [ngClass]="{'btn-disabled': readonly(), 'feedback-btn': !readonly()}" [disabled]="readonly()")
             span
               | Save
           button.cancel-button.feedback-btn((click)='goBack()' type='button') 
             span
               | Cancel 
-        .button-group([hidden]="approveBtn")
-          button.save-button.feedback-btn(type='button'  (click)='approve()' )
+        .button-group(*ngIf="approval()")
+          button.save-button(type='button'  (click)='approve()' [ngClass]="{'btn-disabled': !canApprove, 'feedback-btn': canApprove}" [disabled]="!canApprove")
             span
               | Approve
-          button.cancel-button.feedback-btn((click)='reject()' type='button') 
+          button.cancel-button((click)='reject()' type='button' [ngClass]="{'reject-disabled': !canApprove, 'feedback-btn': canApprove}" [disabled]="!canApprove") 
             span
               | Reject 
-      .applicants-view.fixed-header(*ngIf="editFlag === true && scholarship.users" (click)="gotoApplicants(scholarship.id)")
+      .applicants-view.fixed-header(*ngIf="disabled && scholarship.users" (click)="gotoApplicants(scholarship.id)")
         | Applicants: {{scholarship.users.length}} 
         img.link-arrow(src="../assets/imgs/link-arrow.svg")  
       .form-content 
@@ -28,13 +28,13 @@
             | NAME
             .invalid-validation([hidden]="name.valid || (name.pristine && !scholarshipForm.submitted)")
               | Name is required
-          input.resources-input(name="name" [(ngModel)]='scholarship.title' (ngModelChange)="onChange($event)" [disabled]="!approved" [ngClass]="{'disabled': !approved}" #name='ngModel' required )
+          input.resources-input(name="name" [(ngModel)]='scholarship.title' [disabled]="disabled()" [ngClass]="{'disabled': disabled()}" #name='ngModel' required )
         .item-info
           .input-label
             | DESCRIPTION
             .invalid-validation([hidden]="details.valid || (details.pristine && !scholarshipForm.submitted)")
               | Description is required
-          textarea.resources-textarea(rows='6' name="details" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.description' (ngModelChange)="onChange($event)" #details="ngModel" required) 
+          textarea.resources-textarea(rows='6' name="details" [disabled]="disabled()"  [ngClass]="{'disabled': disabled()}" [(ngModel)]='scholarship.description'  #details="ngModel" required) 
         .item-info
           .input-label-dropdown
             | ORGANIZATION
@@ -42,11 +42,9 @@
               | Organization is required
           angular2-multiselect(
             name = 'organization'
-            [data]='organizationList'
+            [data]='organizationList | async'
             [(ngModel)]='selectedOrganization'
-            [settings]='ktsSelectSettings'
-            (onSelect)='onOrganizationSelect($event)'
-            (onDeSelect)='onOrganizationDeSelect($event)'
+            [settings]='organizationSelectSettings'
           )
         .item-info
           .input-label
@@ -55,53 +53,42 @@
               | Application link is required
             .invalid-validation([hidden]="!scholarship.url || scholarship.url === '' || validURL(scholarship.url) || (link.pristine && !scholarshipForm.submitted)")
               | Application link is not correct
-          input.resources-input([(ngModel)]='scholarship.url' [disabled]="!approved"  [ngClass]="{'disabled': !approved}" (ngModelChange)="onChange($event)" name="link" #link='ngModel' required)
+          input.resources-input([(ngModel)]='scholarship.url' [disabled]="disabled()"  [ngClass]="{'disabled': disabled()}" name="link" #link='ngModel' required)
         .item-info
           .input-label
             | AMOUNT
             .invalid-validation([hidden]="amount.valid || (amount.pristine && !scholarshipForm.submitted)")
               | Amount is required
-          input.resources-input(type="number" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.amount' (ngModelChange)="onChange($event)" name='amount' #amount='ngModel' required)
+          input.resources-input(type="number" [disabled]="disabled()"  [ngClass]="{'disabled': disabled()}" [(ngModel)]='scholarship.amount' name='amount' #amount='ngModel' required)
         .item-info
           .input-label
             | NUMBER AVAILABLE
             .invalid-validation([hidden]="number_available.valid || (number_available.pristine && !scholarshipForm.submitted)")
               | Number available is required
-          input.resources-input(type="number" [disabled]="!approved"  [ngClass]="{'disabled': !approved}" [(ngModel)]='scholarship.number_available' (ngModelChange)="onChange($event)" name="number_available" #number_available="ngModel" required)
+          input.resources-input(type="number" [disabled]="disabled()"  [ngClass]="{'disabled': disabled()}" [(ngModel)]='scholarship.number_available' name="number_available" #number_available="ngModel" required)
         .item-info
           .input-label-dropdown
             | CAREERS
           angular2-multiselect(
             name = 'careers'
-            [data]='careerList'
+            [data]='careerList | async'
             [(ngModel)]='selectedCareers'
-            [settings]='ktsMultiSettings'
-            (onSelect)='onCareerSelect($event)'
-            (onDeSelect)='onCareerDeSelect($event)'
+            [settings]='careerMultiSettings'
           )    
         .item-info
           .input-label-bold
-              | HIGH SCHOOLS
+              | HIGH SCHOOL(S)
           angular2-multiselect(
-            *ngIf="adminOrCommunity ; else notAdminOrCommunity"
             name = 'schools'
-            [data]='schoolList'
+            [data]='schoolList | async'
             [(ngModel)]='selectedSchools'
-            [settings]='selectAllMultiSettings'
-            (onSelect)='onSchoolSelect($event)'
-            (onDeSelect)='onSchoolDeSelect($event)'
+            [settings]='schoolMultiSettings'
           )
-          ng-template(#notAdminOrCommunity)
-            input.resources-input.disabled(
-              name = 'schools'
-              [(ngModel)]='schoolName'
-              [disabled]='!adminOrCommunity'
-            )
         .item-info.checkboxes([tooltip]="tooltip('In App')")
-          input(type='checkbox' [(ngModel)]='scholarship.in_app' [disabled]="editFlag" (ngModelChange)="onChange($event)" id='in_app' name='in_app')
+          input(type='checkbox' [(ngModel)]='scholarship.in_app' [disabled]="disabled()" id='in_app' name='in_app')
           label(for='in_app')
             | In App
         .item-info.checkboxes([tooltip]="tooltip('Active')")
-          input(type='checkbox' [(ngModel)]='scholarship.active' [disabled]="!approved" (ngModelChange)="onChange($event)" id='active' name='active')
+          input(type='checkbox' [(ngModel)]='scholarship.active' [disabled]="disabled()" id='active' name='active')
           label(for='active')
             | Active
