@@ -5,33 +5,33 @@
       .header-nav.fixed-header
         h1.headers
           | {{title}}
-        .button-group([hidden]="saveBtn")
-            button.notifications-btn.primary-button.feedback-btn(type="submit", *ngIf="!notification.id") 
-              span
-                | Save
-            button.notifications-btn.secondary-button.feedback-btn(type="button" (click)="cancelNotification()") 
-              span
-                | Cancel 
-        .button-group([hidden]="approveBtn")
-            button.notifications-btn.primary-button.feedback-btn(type='button'  (click)='approve()' )
-              span
-                | Approve
-            button.notifications-btn.secondary-button.feedback-btn((click)='reject()' type='button') 
-              span
-                | Reject  
+        .button-group(*ngIf="!approval()")
+          button.notification-btn.primary-button.feedback-btn(type='submit' [ngClass]="{'btn-disabled': readonly(), 'feedback-btn': !readonly()}" [disabled]="readonly()")
+            span
+              | Save
+          button.notifications-btn.secondary-button.feedback-btn((click)='goBack()' type='button') 
+            span
+              | Cancel 
+        .button-group(*ngIf="approval() && isAdmin")
+          button.notifications-btn.primary-button.feedback-btn(type='button'  (click)='approve()' [ngClass]="{'btn-disabled': !canApprove, 'feedback-btn': canApprove}" [disabled]="!canApprove")
+            span
+              | Approve
+          button.notifications-btn.secondary-button.feedback-btn((click)='reject()' type='button' [ngClass]="{'reject-disabled': !canApprove, 'feedback-btn': canApprove}" [disabled]="!canApprove") 
+            span
+              | Reject 
       .wrapper-content 
         .item-info
           .input-label-top
             | SUBJECT
             .invalid-validation([hidden]="subject.valid || (subject.pristine && !notificationForm.submitted)")
               | Subject is required
-          input.notification-input(type="text" name="subject"  [ngClass]="{'disabled': !approved || notification.id}" [(ngModel)]='notification.subject' #subject="ngModel" [disabled]="notification.id  || !approved" required)
+          input.notification-input(name="subject"  [ngClass]="{'disabled': disabled() || notification.id}" [(ngModel)]='notification.subject' #subject="ngModel" [disabled]="notification.id  || approval()" required)
         .item-info
           .input-label
             | MESSAGE
             .invalid-validation([hidden]="message.valid || (message.pristine && !notificationForm.submitted)")
               | Message is required
-          textarea.notification-textarea(rows="6" name="message" [ngClass]="{'disabled': !approved || notification.id}" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id || !approved" required)
+          textarea.notification-textarea(rows="6" name="message" [ngClass]="{'disabled': approval() || notification.id}" [(ngModel)]="notification.body" #message="ngModel" [disabled]="notification.id || approval()" required)
         .item-info
           .input-label
             | Recipient Category
@@ -43,8 +43,8 @@
             [(ngModel)]='selectedType'
             [settings]='notificationRecipientCategory'
             (onSelect)='onTypeSelect($event)'
-            (onDeSelect)='onTypeDeSelect($event)'
-          )
+            (onDeSelect)='onTypeDeSelect($event)'    
+                  )
         .item-info(*ngIf="valueListVisibleFlag")
           .input-label-dropdown
             | {{valueListTitle}}

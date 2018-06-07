@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import { CareerGroup } from './career-group.model';
+import { User } from './user.model';
 export class Notification {
   id: string;
   subject: string;
@@ -45,5 +46,15 @@ export class Notification {
     this.updated_at = data.updated_at ? moment(data.updated_at, moment.ISO_8601)
       .format('DD  MMM  YYYY') : moment(new Date(), moment.ISO_8601)
         .format('DD  MMM  YYYY');
+  }
+
+  getPageState(user: User): 'approval' | 'readonly' | 'new' {
+    if (!this.id) return 'new';
+    else if (this.isApproval()) return 'approval';
+    else return 'readonly';
+  }
+
+  private isApproval(): boolean {
+    return !this.approved;
   }
 }

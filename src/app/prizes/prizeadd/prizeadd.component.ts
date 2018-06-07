@@ -26,8 +26,8 @@ export class PrizeAddComponent implements OnInit {
   public selectedSponsor = [];
   public deliveryList = [{ itemName: 'In-House', id: 1 }, { itemName: 'Third Party', id: 2 }];
   public selectedDelivery = [];
-  public ktsSelectSettings: any = {};
-  public selectAllMultiSettings: any = {};
+  public ktsSelectSettings: MultiSelectUtil.ISelectSettings;
+  public selectAllMultiSettings: MultiSelectUtil.ISelectSettings;
   public ktsDeliverySelectSettings = {};
   public creating = false;
   public points: number;
@@ -61,7 +61,7 @@ export class PrizeAddComponent implements OnInit {
     this.limit = 50;
     this.editFlag = false;
     this.disableFlag = false;
-    this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings;
+    this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings();
     this.ktsDeliverySelectSettings = MultiSelectUtil.singleDeliverySelection;
     const id = this.route.snapshot.paramMap.get('prizeId');
     this.getGroups();
@@ -114,7 +114,7 @@ export class PrizeAddComponent implements OnInit {
     const filtered = roles.filter(role => {
       if (role === 'admin') { return true; }
     });
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection();
     this.ktsSelectSettings.disabled = filtered.length > 0 ? false : true;
   }
 

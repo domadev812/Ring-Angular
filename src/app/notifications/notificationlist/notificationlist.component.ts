@@ -24,7 +24,7 @@ export class NotificationlistComponent implements OnInit {
 
   ngOnInit() {
     this.notifications = new Array<Model.Notification>();
-    this.limit = 20;
+    // this.limit = 20;
     this.offset = 0;
     this.getNotifications();
     this.loading = true;

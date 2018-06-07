@@ -33,8 +33,8 @@ export class UserAddComponent implements OnInit {
   { itemName: 'Community', id: 'communities' }];
   filteredTypeList = [];
   selectedType = [];
-  ktsTypeSettings = {};
-  ktsOrganizationSettings = {};
+  ktsTypeSettings: MultiSelectUtil.ISelectSettings;
+  ktsOrganizationSettings: MultiSelectUtil.ISelectSettings;
   creating = false;
   adminFlag = false;
   userTable = false;
@@ -59,8 +59,8 @@ export class UserAddComponent implements OnInit {
     this.originalUser = new Model.User({});
     this.editFlag = false;
     this.disableFlag = false;
-    this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);
-    this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);
+    this.ktsTypeSettings = MultiSelectUtil.singleSelection();
+    this.ktsOrganizationSettings = MultiSelectUtil.singleSelection();
 
     const id = this.route.snapshot.paramMap.get('userId');
     this.getCurrentUser();
@@ -104,8 +104,8 @@ export class UserAddComponent implements OnInit {
     this.currentUserService.getCurrentUser(this.authProvider).then((res: Model.User) => {
       this.currentUser = res;
       let roles = this.currentUser.roles.map(role => role);
-      this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);
-      this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);
+      // this.ktsTypeSettings = Object.assign({}, MultiSelectUtil.singleSelection);
+      // this.ktsOrganizationSettings = Object.assign({}, MultiSelectUtil.singleSelection);
       if (roles.indexOf('admin') !== -1) {
         this.filteredTypeList = this.typeList.map(type => type);
         this.adminFlag = true;
@@ -157,7 +157,6 @@ export class UserAddComponent implements OnInit {
       } else {
         this.userTable = true;
       }
-      console.log(this.userTable);
       return role ? true : false;
 
     });

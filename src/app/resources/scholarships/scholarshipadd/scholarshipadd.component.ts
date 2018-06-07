@@ -34,7 +34,7 @@ export class ScholarshipAddComponent implements OnInit {
   public schoolMultiSettings: MultiSelectUtil.ISelectSettings;
   public careerList: Observable<MultiSelectUtil.SelectItem[]>;
   public selectedCareers = [];
-  public schoolList: Observable<MultiSelectUtil.SelectItem[]>;
+  public schoolList = [];
   public selectedSchools = [];
   public organizationList: Observable<MultiSelectUtil.SelectItem[]>;
   public selectedOrganization = [];
@@ -55,7 +55,6 @@ export class ScholarshipAddComponent implements OnInit {
   ) {
     // TODO: fix async pipe
     this.careerList = this.multiSelectService.getDropdownCareerGroups();
-    this.schoolList = this.multiSelectService.getDropdownSchools();
     this.organizationList = this.multiSelectService.getDropdownOrganizations();
   }
 
@@ -67,6 +66,7 @@ export class ScholarshipAddComponent implements OnInit {
       this.scholarship = new Model.Scholarship({});
       this.schools = new Array<Model.Organization>();
       this.organizations = new Array<Model.Organization>(null);
+      await this.getSchools();
       this.setState();
     } catch (err) {
       alert(err.message ? err.message : 'Server Error');
@@ -79,6 +79,9 @@ export class ScholarshipAddComponent implements OnInit {
     else this.title = 'Edit Scholarship';
   }
 
+  async getSchools(): Promise<void> {
+    this.schoolList = await this.multiSelectService.getDropdownSchools().toPromise();
+  }
 
   // dropdowns should follow disabled for the rest of page except for the following case:
   //    A user is not an admin, which then the multiselects for organizations/schools are disabled regardless and prefilled  
@@ -100,9 +103,11 @@ export class ScholarshipAddComponent implements OnInit {
       this.selectedOrganization.push(
         new MultiSelectUtil.SelectItem(currentUser.organization.name, currentUser.organization_id)
       );
-      this.selectedSchools.push(
-        new MultiSelectUtil.SelectItem(currentUser.organization.name, currentUser.organization_id)
-      );
+      const filteredSchools = MultiSelectUtil.isListed(this.schoolList, currentUser);
+      if (filteredSchools)
+        this.selectedSchools.push(
+          new MultiSelectUtil.SelectItem(currentUser.organization.name, currentUser.organization_id)
+        );
       this.scholarship.organization_id = currentUser.organization_id;
     }
     this.pageState = this.scholarship.getPageState(currentUser);

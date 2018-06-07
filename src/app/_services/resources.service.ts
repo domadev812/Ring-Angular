@@ -136,6 +136,19 @@ export class ResourcesService {
       });
   }
 
+  getCareerGroups(): Observable<Model.Career[]> {
+    let url = `${environment.apiUrl}/api/career-group?`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          return Model.initializeArray(json.data, 'Career');
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+
   getOrganizationSize(): Observable<number> {
     let url = `${environment.apiUrl}/api/organization`;
     return this.http.get(url)

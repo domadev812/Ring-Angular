@@ -1,5 +1,5 @@
-.page-wrapper.approvals(appMouseWheel [scrollClass]="scrollClass")
-  #approvals.content-wrapper
+.page-wrapper-index.approvals(appMouseWheel [scrollClass]="scrollClass")
+  #approvals.content-wrapper-index
     .header-nav
       h1.headers
         | Approvals
@@ -18,7 +18,7 @@
         | CREATED AT
       .table-header.col-edit
         | &nbsp;
-    .table-content-with-search
+    .table-content-without-search
       .list(*ngFor="let approval of approvals")
         .d-flex.space-between.bg-white.px-4.py-1.pointer((click)='approveItem(approval.content_type, approval.resource_id)')
           .table-data-primary.col-resource

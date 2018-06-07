@@ -35,7 +35,7 @@ export class UseropportunitiesComponent implements OnInit {
     });
   }
 
-  editopportunity(id) {
+  editOpportunity(id) {
     this.router.navigate(['opportunityedit/' + id]);
   }
 }

@@ -8,6 +8,8 @@ import { error } from 'util';
 import { Model } from '../../app.models-list';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
 import { NavbarService } from '../../app.services-list';
+import { Observable } from 'rxjs/Observable';
+import { User } from '../../_models/user.model';
 
 @Component({
   selector: 'app-notificationadd',
@@ -20,11 +22,13 @@ export class NotificationAddComponent implements OnInit {
   public min = new Date().getFullYear();
   public max = this.min + 4;
   public careers: Array<Model.Career>;
+  public notificationId: string;
+
+  public ktsSelectSettings: MultiSelectUtil.ISelectSettings;
+  public ktsMultiSettings: MultiSelectUtil.ISelectSettings;
   public careerList = [];
   public selectedCareers = [];
-  public ktsSelectSettings: any = {};
   public notificationRecipientCategory: any = {};
-  public ktsMultiSettings: any = {};
   public typeList = [{ id: 'all', itemName: 'All' },
   { id: 'gender', itemName: 'Gender' },
   { id: 'graduation_year', itemName: 'Graduation Year' },
@@ -37,15 +41,11 @@ export class NotificationAddComponent implements OnInit {
   public valueListTitle = '';
   public valueListVisibleFlag = false;
   public careerListVisibleFlag = false;
-  public creating = false;
-  public canViewApproveReject: boolean;
-  public approved: boolean;
-  public showElement: boolean;
-  public approveBtn: boolean;
-  public saveBtn: boolean;
-  public currentRoute: string;
-  public currentUser: any;
-  public notificationId: string;
+
+  public pageState: 'new' | 'approval' | 'readonly';
+  public canApprove = false;
+  public isLoading = false;
+  public isAdmin = false;
 
   constructor(private route: ActivatedRoute,
     private notificationsService: NotificationsService,
@@ -56,8 +56,7 @@ export class NotificationAddComponent implements OnInit {
     public authProvider: AuthService,
     public access: AccessService,
     public cdr: ChangeDetectorRef
-  ) {
-  }
+  ) { }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -66,112 +65,51 @@ export class NotificationAddComponent implements OnInit {
       this.notification = new Model.Notification({});
       this.careers = new Array<Model.Career>();
       this.notificationId = this.route.snapshot.paramMap.get('notificationId');
-      this.approved = true;
-      this.currentRoute = this.route.snapshot.url[0].path;
-      this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
-      this.setUpForView(this.currentUser.roles);
-      this.title = 'New Notification';
-      this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-      this.ktsMultiSettings = MultiSelectUtil.multiSettings;
-      this.notificationRecipientCategory = MultiSelectUtil.notificationRecipientCategory;
-
       this.getCareers();
+      this.setState();
+      this.notificationRecipientCategory = MultiSelectUtil.notificationRecipientCategory;
       for (let year = this.min; year <= this.max; year++) {
         this.originalTypeValueList.push({ id: year.toString(), itemName: year.toString(), category: 'graduation_year' });
       }
     } catch (err) { }
   }
 
-  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null, dDisabled: boolean = null): void {
-    this.ktsSelectSettings.disabled = sDisabled;
-    this.ktsMultiSettings.disabled = mDisabled;
-    this.notificationRecipientCategory.disabled = dDisabled;
+  setTitle() {
+    if (this.approval()) this.title = 'Awaiting Approval';
+    else if (!this.notificationId) this.title = 'New Notification';
+    else this.title = 'Notification';
   }
 
-  setTitle(title: string = null) {
-    const isAdmin = this.currentUser.roles.includes('admin');
-    if (title) {
-      this.title = title;
-    } else if (!this.approved && isAdmin) {
-      this.title = this.notification.organization_name;
-    } else if (this.notificationId) {
-      this.title = 'View Notification';
-    }
+
+
+  setMultiSelect(currentUser: User): void {
+    // if (!currentUser.isAdmin()) selectSettings.disabled = true;
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection({ disabled: this.disabled() });
+    this.ktsMultiSettings = MultiSelectUtil.selectAllMultiSettings({ disabled: this.disabled() });
+    this.notificationRecipientCategory = MultiSelectUtil.singleSelection({ disabled: this.disabled() });
   }
 
-  showButtonGroup() {
-    const isAdmin = this.currentUser.roles.includes('admin');
-    if (!this.notificationId) {
-      this.approveBtn = true;
-    } else if (!isAdmin && !this.notificationId) {
-      this.approveBtn = false;
-      this.saveBtn = true;
-    } else {
-      this.approveBtn = false;
-      this.saveBtn = true;
-    }
+  async setState(): Promise<void> {
+    const currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
+    this.isAdmin = currentUser.isAdmin();
+    this.canApprove = this.access.getAccess(currentUser.getRole()).functionalityAccess.approveRejectButtons;
+    if (this.notificationId) await this.getNotification(this.notificationId);
+    this.pageState = this.notification.getPageState(currentUser);
+    this.setTitle();
+    this.setMultiSelect(currentUser);
   }
 
-  multiSelectPreFlight(): void {
-    const isAdmin = this.currentUser.roles.includes('admin');
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
-    this.notificationRecipientCategory = MultiSelectUtil.notificationRecipientCategory;
-
-    if (isAdmin && this.notificationId && !this.approved) {
-      this.setMsSettings(true, true, true);
-    } else if (isAdmin && !this.notificationId) {
-      this.setMsSettings(false, false);
-    } else if (isAdmin && this.notificationId || this.approved) {
-      this.setMsSettings(true, true);
-    } else if (!isAdmin && !this.notificationId) {
-      this.setMsSettings(true, true, true);
-    }
-
+  disabled(): boolean {
+    return this.pageState !== 'new' && (this.pageState === 'readonly' || this.pageState === 'approval');
   }
 
-  setUpForView(roles: Array<string>): void {
-    this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
-    const userType = roles.includes('admin') ? 'admin' : 'other';
-    const selector = `${userType + '_' + this.currentRoute}`;
-    const setupIndex = {
-      'admin_notificationview': this.adminNotificationView.bind(this),
-      'admin_notificationadd': this.adminNotificationAdd.bind(this),
-      'other_notificationadd': this.userNotificationAdd.bind(this),
-      'other_notificationview': this.userNotificationView.bind(this),
-
-    };
-    return setupIndex[selector]();
+  approval(): boolean {
+    return this.pageState === 'approval';
   }
 
-  async adminNotificationView(): Promise<void> {
-    try {
-      if (this.notificationId) await this.getNotification(this.notificationId);
-      if (this.approved) this.showButtonGroup();
-      this.approveBtn = false;
-      if (!this.approved)
-        this.ktsMultiSettings.disabled = true;
-      this.notificationRecipientCategory.disabled = true;
-    } catch (err) { }
+  readonly(): boolean {
+    return this.pageState === 'readonly';
   }
-  userNotificationView(): void {
-    if (this.notificationId) this.getNotification(this.notificationId);
-
-  }
-
-  adminNotificationAdd(): void {
-    if (!this.notificationId)
-      this.multiSelectPreFlight();
-    this.setTitle('New notification');
-    this.showButtonGroup();
-  }
-
-  userNotificationAdd(): void {
-    if (!this.notificationId)
-      this.setTitle('New notification');
-    this.showButtonGroup();
-  }
-
 
   onTypeSelect(item: any) {
     this.selectedValueList = [];
@@ -225,32 +163,28 @@ export class NotificationAddComponent implements OnInit {
     });
   }
 
-  getNotification(id: string) {
-    this.creating = true;
-    this.notificationsService.getNotification(id).subscribe((res) => {
-      this.notification = res;
-      this.approved = res.approved;
-      this.creating = false;
-      this.setTitle();
-      this.showButtonGroup();
-      this.multiSelectPreFlight();
-      let notificationType = this.typeList.find(type => type.id === res.type);
+  async getNotification(id: string): Promise<void> {
+    try {
+      this.isLoading = true;
+      this.notification = await this.notificationsService.getNotification(id).toPromise();
+      this.isLoading = false;
+      let notificationType = this.typeList.find(type => type.id === this.notification.type);
       if (!notificationType) {
         return;
       }
-      this.selectedType.push(this.typeList.find(type => type.id === res.type));
-      if (res.type === 'gender' || res.type === 'graduation_year') {
-        this.selectedValueList.push(this.originalTypeValueList.find(value => value.id === res.resource['resource_value']));
-      } else if (res.type === 'careers') {
-        this.selectedCareers = res.resource.map(career => {
+      this.selectedType.push(this.typeList.find(type => type.id === this.notification.type));
+      if (this.notification.type === 'gender' || this.notification.type === 'graduation_year') {
+        this.selectedValueList.push(this.originalTypeValueList.find(value => value.id === this.notification.resource['resource_value']));
+      } else if (this.notification.type === 'careers') {
+        this.selectedCareers = this.notification.resource.map(career => {
           return { id: career.id, itemName: career.title };
         });
       }
       this.changeState();
-    }, (errors) => {
-      this.creating = false;
-      alert('Server error');
-    });
+    } catch (err) {
+      alert(err.message ? err.message : 'Server Error');
+    }
+    this.isLoading = false;
   }
 
   saveNotification(valid: boolean): void {
@@ -275,6 +209,7 @@ export class NotificationAddComponent implements OnInit {
 
     if (this.selectedType[0]) {
       this.notification.type = this.selectedType[0].id;
+      // this.notification.type = 'all';
       if (this.selectedValueList[0]) {
         this.notification.type_value = this.selectedValueList[0].id;
       } else {
@@ -283,13 +218,13 @@ export class NotificationAddComponent implements OnInit {
     } else {
       this.notification.type = null;
     }
-    this.creating = true;
+    this.isLoading = true;
     this.notificationsService.createNotification(this.notification).subscribe((res) => {
-      this.creating = false;
+      this.isLoading = false;
       alert('Created new notification successfully');
       this.router.navigate(['notifications']);
     }, (errors) => {
-      this.creating = false;
+      this.isLoading = false;
       alert('Server error');
     });
   }
@@ -297,7 +232,7 @@ export class NotificationAddComponent implements OnInit {
 
   approve(): void {
     this.notificationsService.notificationApprove(this.notificationId).subscribe((res) => {
-      this.creating = false;
+      this.isLoading = false;
       alert('Notification Approved');
       this.router.navigate(['approvals']);
     }, err => {
@@ -307,12 +242,16 @@ export class NotificationAddComponent implements OnInit {
 
   reject(): void {
     this.notificationsService.notificationReject(this.notificationId).subscribe((res) => {
-      this.creating = false;
+      this.isLoading = false;
       alert('Notification Rejected');
       this.router.navigate(['approvals']);
     }, err => {
       alert(err);
     });
+  }
+
+  goBack(): void {
+    this.router.navigate(['notifications']);
   }
 
   cancelNotification(): void {

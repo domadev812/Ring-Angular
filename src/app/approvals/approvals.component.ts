@@ -10,7 +10,7 @@ import { Model } from '../app.models-list';
   styleUrls: ['./approvals.component.scss']
 })
 export class ApprovalsComponent implements OnInit {
-
+  scrollClass: String = 'table-content-without-search';
   selectedTab: String;
   approvals: Array<Model.Approval>;
   public loading = false;
@@ -18,7 +18,7 @@ export class ApprovalsComponent implements OnInit {
   public infiniteScrollLoading: boolean;
   public limit: number;
   public offset: number;
-  scrollClass: String = 'table-content-with-search';
+
 
   constructor(
     private router: Router,
@@ -68,5 +68,6 @@ export class ApprovalsComponent implements OnInit {
       this.router.navigate(['internshipedit/' + id]);
     }
   }
+
 }
 

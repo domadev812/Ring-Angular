@@ -14,7 +14,7 @@ import { GlobalState } from '../../global.state';
 })
 export class NewgroupComponent implements OnInit {
 
-  public selectAllMultiSettings: any = {};
+  public selectAllMultiSettings: MultiSelectUtil.ISelectSettings;
   public schools: Array<Model.Organization>;
   public schoolList = [];
   public selectedGroup = [];
@@ -42,7 +42,7 @@ export class NewgroupComponent implements OnInit {
     this.navBarService.show();
     this.navBarService.activeTabChanged('organizations');
     this.schools = new Array<Model.Organization>();
-    this.schoolGroup = new Model.Group({}); this.selectAllMultiSettings = MultiSelectUtil.selectAllMultiSettings;
+    this.schoolGroup = new Model.Group({}); this.selectAllMultiSettings = MultiSelectUtil.multiSettings();
     this.getSchools();
     this.setTitle();
   }

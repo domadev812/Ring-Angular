@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http, Response, RequestOptions, Headers, RequestOptionsArgs } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Model } from '../app.models-list';
 import { environment } from '../../environments/environment';
 import { FileUploader } from 'ng2-file-upload';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 
@@ -24,6 +26,18 @@ export class OrganizationService {
         const json = response.json();
         if (json) {
           return new Model.Organization(json);
+        } else {
+          Observable.throw({ messages: 'Internal Server Error', response });
+        }
+      });
+  }
+  createUserOrganization(organization: Model.Organization, user: Model.User): Observable<Model.User> {
+    let url = `${environment.apiUrl}/api/users/community`;
+    return this.http.post(url, { organization, user })
+      .map((response: Response) => {
+        const json = response.json();
+        if (json) {
+          return new Model.User(json);
         } else {
           Observable.throw({ messages: 'Internal Server Error', response });
         }
@@ -121,5 +135,18 @@ export class OrganizationService {
   }
 
 
+
+  sendData(data: Object): Observable<boolean> {
+    return this.http
+      .post('https://script.google.com/macros/s/AKfycbzkhkLQRc7e62eyHz1F-8TN8dzFTV4bbP3G6dFDphZh7-W32IM/exec', data, null)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.result === 'success') {
+          return true;
+        } else {
+          Observable.throw({ message: 'Internal Server Error' });
+        }
+      });
+  }
 
 }

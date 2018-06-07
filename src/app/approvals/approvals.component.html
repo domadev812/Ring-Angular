@@ -1,0 +1,31 @@
+
+<div class="page-wrapper approvals" appMouseWheel [scrollClass]="scrollClass">
+  <div class="content-wrapper" id="approvals">
+    <div class="header-nav">
+      <h1 class="headers">Approvals</h1>
+    </div>
+    <div class="justify-start newTabs mb-4">
+      <div class="sub-nav-item center mr-4 newSubNav" [ngClass]="{'sub-nav-item-selected': selectedTab === 'approvals'}">Approvals</div>
+    </div>
+    <ngx-loading [show]="loading"> </ngx-loading>
+    <div class="d-flex space-between px-4 py-1">
+      <div class="table-header col-resource">CONTENT TYPE</div>
+      <div class="table-header col-organization">TITLE</div>
+      <div class="table-header col-link">CREATOR</div>
+      <div class="table-header col-created">CREATED AT</div>
+      <div class="table-header col-edit">&nbsp;</div>
+    </div>
+    <div class="table-content-with-search">
+      <div class="list" *ngFor="let approval of approvals">
+        <div class="d-flex space-between bg-white px-4 py-1 pointer" (click)="approveItem(approval.content_type, approval.resource_id)">
+          <div class="table-data-primary col-resource">{{approval.content_type}}</div>
+          <div class="table-data col-organization">{{approval.resource.title}}</div>
+          <div class="table-data col-link">{{approval.organization_name}}</div>
+          <div class="table-data col-created">{{approval.created_at}}</div>
+          <div class="table-data col-edit"><i class="fa fa-eye edit-row" (click)="approveItem(approval.content_type, approval.resource_id)"></i></div>
+        </div>
+      </div>
+      <div class="infinite-scroll-loading infinite-scroll-loading" *ngIf="infiniteScrollLoading">Loading ...</div>
+    </div>
+  </div>
+</div>

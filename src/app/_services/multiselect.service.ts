@@ -16,6 +16,8 @@ export class MultiSelectService {
   public ethnicitiesSelect: MultiSelectUtil.SelectItem[];
   public organizationsSelect: MultiSelectUtil.SelectItem[];
   public sponsorsSelect: MultiSelectUtil.SelectItem[];
+  public groupSelect: MultiSelectUtil.SelectItem[];
+  public organizationTypeSelect: MultiSelectUtil.SelectItem[];
 
   constructor(private http: Http) {
 
@@ -43,6 +45,23 @@ export class MultiSelectService {
       return Observable.of(this.careersSelect);
     }
     let url = `${environment.apiUrl}/api/careers`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          this.careersSelect = MultiSelectUtil.SelectItem.buildFromData(json.data, 'Career');
+          return this.careersSelect;
+        } else {
+          Observable.throw({ message: 'Internal Server Error' });
+        }
+      });
+  }
+
+  getDropdownCareerGroups(): Observable<MultiSelectUtil.SelectItem[]> {
+    if (this.careersSelect) {
+      return Observable.of(this.careersSelect);
+    }
+    let url = `${environment.apiUrl}/api/career-group?`;
     return this.http.get(url)
       .map((response: Response) => {
         const json = response.json();
@@ -83,6 +102,36 @@ export class MultiSelectService {
         if (json && json.data) {
           this.sponsorsSelect = MultiSelectUtil.SelectItem.buildFromData(json.data, 'Organization');
           return this.sponsorsSelect;
+        } else {
+          Observable.throw({ message: 'Internal Server Error' });
+        }
+      });
+  }
+  getDropdownCommunities(): Observable<MultiSelectUtil.SelectItem[]> {
+    if (this.sponsorsSelect) {
+      return Observable.of(this.sponsorsSelect);
+    }
+    let url = `${environment.apiUrl}/api/organization?type=community`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          this.sponsorsSelect = MultiSelectUtil.SelectItem.buildFromData(json.data, 'Organization');
+          return this.sponsorsSelect;
+        } else {
+          Observable.throw({ message: 'Internal Server Error' });
+        }
+      });
+  }
+
+  getDropdownGroups(): Observable<MultiSelectUtil.SelectItem[]> {
+    let url = `${environment.apiUrl}/api/groups`;
+    return this.http.get(url)
+      .map((response: Response) => {
+        const json = response.json();
+        if (json && json.data) {
+          this.groupSelect = MultiSelectUtil.SelectItem.buildFromData(json.data, 'Group');
+          return this.groupSelect;
         } else {
           Observable.throw({ message: 'Internal Server Error' });
         }

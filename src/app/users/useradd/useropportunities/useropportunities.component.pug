@@ -11,7 +11,7 @@
         | Organization Name
   .table-content
     .list(*ngFor="let opportunity of opportunities")
-      .d-flex.space-between.bg-white.py-1.pointer((click)='editScholarship(opportunity.id)')
+      .d-flex.space-between.bg-white.py-1.pointer((click)='editOpportunity(opportunity.id)')
         .table-data.mx-4
           | {{opportunity.title}}
         .table-data.mx-4

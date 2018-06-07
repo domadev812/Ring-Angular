@@ -1,32 +1,65 @@
 import { Model } from '../app.models-list';
+import { User } from '../_models/user.model';
+import { Organization } from '../_models/organization.model';
 
 export module MultiSelectUtil {
 
-  export const multiSettings = {
-    text: 'MAKE SELECTION',
-    enableCheckAll: false,
-    enableSearchFilter: true,
-    classes: 'kts-multiselect',
-    unSelectAllText: 'DeSelect All',
-    singleSelection: false,
-  };
-  export const selectAllMultiSettings = {
-    text: 'MAKE SELECTION',
-    enableCheckAll: true,
-    enableSearchFilter: true,
-    classes: 'kts-multiselect',
-    unSelectAllText: 'DeSelect All',
-    singleSelection: false,
-  };
+  export interface ISelectSettings {
+    singleSelection?: boolean;
+    text?: string;
+    enableCheckAll?: boolean;
+    selectAllText?: string;
+    unSelectAllText?: string;
+    enableSearchFilter?: boolean;
+    maxHeight?: number;
+    badgeShowLimit?: number;
+    classes?: string;
+    limitSelection?: number;
+    disabled?: boolean;
+    searchPlaceholderText?: string;
+    groupBy?: string;
+    searchAutofocus?: boolean;
+    labelKey?: string;
+    primaryKey?: string;
+    position?: string;
+    noDataLabel?: string;
+    searchBy?: any[];
+  }
+  export function multiSettings(config?: ISelectSettings): ISelectSettings {
+    return {
+      text: 'MAKE SELECTION',
+      enableCheckAll: true,
+      enableSearchFilter: true,
+      classes: 'kts-multiselect',
+      unSelectAllText: 'DeSelect All',
+      singleSelection: false,
+      ...config
+    };
+  }
 
-  export const singleSelection = {
-    text: 'MAKE SELECTION',
-    enableCheckAll: false,
-    enableSearchFilter: true,
-    classes: 'kts-multiselect',
-    unSelectAllText: 'DeSelect All',
-    singleSelection: true,
-  };
+  export function selectAllMultiSettings(config?: ISelectSettings): ISelectSettings {
+    return {
+      text: 'MAKE SELECTION',
+      enableCheckAll: true,
+      enableSearchFilter: true,
+      classes: 'kts-multiselect',
+      unSelectAllText: 'DeSelect All',
+      singleSelection: false,
+      ...config
+    };
+  }
+
+  export function singleSelection(config?: ISelectSettings): ISelectSettings {
+    return {
+      text: 'MAKE SELECTION',
+      enableCheckAll: false,
+      enableSearchFilter: true,
+      classes: 'kts-multiselect',
+      unSelectAllText: 'DeSelect All',
+      singleSelection: true,
+      ...config
+    };
+  }
 
   export const singleDeliverySelection = {
     text: 'MAKE SELECTION',
@@ -72,5 +105,12 @@ export module MultiSelectUtil {
 
       });
     }
+  }
+
+  export function isListed(organizations: Organization[], user: User): boolean {
+    const schoolList = organizations.filter((organization) => {
+      return organization.id === user.organization_id;
+    });
+    return schoolList.length > 0;
   }
 }

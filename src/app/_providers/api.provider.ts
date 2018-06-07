@@ -23,9 +23,15 @@ export class Api extends Http {
   }
 
   post(path: string, body: any, options: RequestOptionsArgs = new RequestOptions()): Observable<Response> {
-    return super
-      .post(this.apiUrl(path), JSON.stringify(body), this.getRequestOptionWithHeaders(options))
-      .catch(this.formatErrorResponse);
+    if (options) {
+      return super
+        .post(this.apiUrl(path), JSON.stringify(body), this.getRequestOptionWithHeaders(options))
+        .catch(this.formatErrorResponse);
+    } else {
+      return super
+        .post(this.apiUrl(path), JSON.stringify(body), null)
+        .catch(this.formatErrorResponse);
+    }
   }
 
   patch(path: string, body: any, options: RequestOptionsArgs = new RequestOptions()): Observable<Response> {
@@ -56,12 +62,11 @@ export class Api extends Http {
     if (!options.headers) {
       options.headers = new Headers();
     }
-
     options.headers.append('Content-Type', 'application/json');
     options.headers.append('Accept', 'application/json');
 
     if (this.currentUserService.authenticated()) {
-      let token = localStorage.getItem('Token');      
+      let token = localStorage.getItem('Token');
       options.headers.append('Authorization', `Bearer ${token}`);
     }
 

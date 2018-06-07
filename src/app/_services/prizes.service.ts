@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { Model } from '../app.models-list';
 import 'rxjs/add/operator/map';
+import { Prize } from '../_models/prize.model';
 
 @Injectable()
 export class PrizesService {
@@ -82,7 +83,7 @@ export class PrizesService {
 
   getPrize(prizeId: string): Observable<Model.Prize> {
     let url = `${environment.apiUrl}/api/prizes/${prizeId}`;
-    return this.http.get(url)
+    return this.http.get(url, {})
       .map((response: Response) => {
         const json = response.json();
         if (json && json.data) {
@@ -94,8 +95,8 @@ export class PrizesService {
   }
 
   updatePrize(prize: Model.Prize): Observable<boolean> {
-    let url = `${environment.apiUrl}/api/prizes`;
-    return this.http.post(url, prize)
+    let url = `${environment.apiUrl}/api/prizes/${prize.id}`;
+    return this.http.patch(url, prize)
       .map((response: Response) => {
         const json = response.json();
         if (json && json.data) {

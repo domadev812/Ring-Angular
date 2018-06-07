@@ -22,6 +22,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
 import { GlobalState } from './global.state';
 import { LoadingModule } from 'ngx-loading';
 import { SharedModule } from './shared.module';
+// import { BusinessSignupComponent } from './business-signup/business-signup.component';
+// import { FileSelectDirective } from 'ng2-file-upload';
 
 
 
@@ -29,7 +31,9 @@ import { SharedModule } from './shared.module';
   declarations: [
     Components.AppComponent,
     Components.LoginComponent,
-    Components.NavbarComponent
+    Components.NavbarComponent,
+    // BusinessSignupComponent,
+    // FileSelectDirective
   ],
   imports: [
     BrowserModule,
