@@ -110,26 +110,22 @@ export class NewgroupComponent implements OnInit {
     this.schoolGroup.organization_ids = this.selectedGroup.map(organizations => {
       return organizations.id;
     });
-    this.creating = true;
+
     if (!this.schoolGroupId)
       this.groupService.createGroup(this.schoolGroup).subscribe((res) => {
         console.log('here is the schoolGroup', this.schoolGroup);
-        this.creating = false;
         alert('Created School Group Succesfully');
         this.router.navigate(['organizations']);
         this.schoolGroup = res;
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
     else
       this.groupService.updateGroup(this.schoolGroup).subscribe((res) => {
-        this.creating = false;
         alert('Update School Group successfully');
         this.global.selectedTab = 'organizations';
         this.router.navigate(['organizations']);
       }, (errors) => {
-        this.creating = false;
         alert('Server error');
       });
   }
