@@ -31,7 +31,7 @@ export module MultiSelectUtil {
       enableCheckAll: true,
       enableSearchFilter: true,
       classes: 'kts-multiselect',
-      unSelectAllText: 'DeSelect All',
+      unSelectAllText: 'Deselect All',
       singleSelection: false,
       ...config
     };
@@ -43,7 +43,7 @@ export module MultiSelectUtil {
       enableCheckAll: true,
       enableSearchFilter: true,
       classes: 'kts-multiselect',
-      unSelectAllText: 'DeSelect All',
+      unSelectAllText: 'Deselect All',
       singleSelection: false,
       ...config
     };
@@ -55,7 +55,7 @@ export module MultiSelectUtil {
       enableCheckAll: false,
       enableSearchFilter: true,
       classes: 'kts-multiselect',
-      unSelectAllText: 'DeSelect All',
+      unSelectAllText: 'Deselect All',
       singleSelection: true,
       ...config
     };
@@ -66,7 +66,7 @@ export module MultiSelectUtil {
     enableCheckAll: false,
     enableSearchFilter: true,
     classes: 'kts-multiselect',
-    unSelectAllText: 'DeSelect All',
+    unSelectAllText: 'Deselect All',
     singleSelection: true,
 
   };
@@ -75,7 +75,7 @@ export module MultiSelectUtil {
     enableCheckAll: false,
     enableSearchFilter: true,
     classes: 'kts-multiselect',
-    unSelectAllText: 'DeSelect All',
+    unSelectAllText: 'Deselect All',
     singleSelection: true,
 
   };

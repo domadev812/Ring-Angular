@@ -1,10 +1,11 @@
-import { Directive, ElementRef, Output, EventEmitter, Input, HostListener  } from '@angular/core';
+import { Directive, ElementRef, Output, EventEmitter, Input, HostListener } from '@angular/core';
 
-@Directive({ 
-  selector: '[detectClick]' 
+@Directive({
+    // tslint:disable-next-line:directive-selector
+    selector: '[detectClick]'
 })
 
-export class DetectClickDirective { 
+export class DetectClickDirective {
     clickIsInsideElement = false;
     active = false;
     @Output() detectClick = new EventEmitter<boolean>();
@@ -14,9 +15,9 @@ export class DetectClickDirective {
     }
 
     @HostListener('document:click', ['$event.target']) onClick(targetElement) {
-        this.clickIsInsideElement = this.elRef.nativeElement.contains(targetElement)
-        this.detectClick.emit(this.clickIsInsideElement)
+        this.clickIsInsideElement = this.elRef.nativeElement.contains(targetElement);
+        this.detectClick.emit(this.clickIsInsideElement);
     }
 
-    constructor(private elRef: ElementRef ) { }
+    constructor(private elRef: ElementRef) { }
 }
