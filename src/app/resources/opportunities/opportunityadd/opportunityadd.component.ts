@@ -12,6 +12,7 @@ import { NavbarService } from '../../../app.services-list';
 import { Resource } from '../../../_models/resource.model';
 import { User } from '../../../_models/user.model';
 import { Observable } from 'rxjs/Observable';
+import { ToastService } from '../../../_services/toast.service';
 
 @Component({
   selector: 'app-opportunityadd',
@@ -49,6 +50,7 @@ export class OpportunityAddComponent implements OnInit {
     private currentUserService: CurrentUserService,
     private authProvider: AuthService,
     public access: AccessService,
+    public toastService: ToastService
   ) {
     this.careerList = this.multiSelectService.getDropdownCareerGroups();
     this.organizationList = this.multiSelectService.getDropdownOrganizations();
@@ -65,7 +67,7 @@ export class OpportunityAddComponent implements OnInit {
       await this.getSchools();
       this.setState();
     } catch (err) {
-      alert(err.message ? err.message : 'Server Error');
+      this.toastService.showError(err.message ? err.message : 'Server Error');
     }
   }
 
@@ -133,7 +135,7 @@ export class OpportunityAddComponent implements OnInit {
           this.opportunity.organization_id));
       }
     } catch (err) {
-      alert(err.message ? err.message : 'Server Error');
+      this.toastService.showError(err.message ? err.message : 'Server Error');
     }
     this.isLoading = false;
   }
@@ -142,40 +144,51 @@ export class OpportunityAddComponent implements OnInit {
 
     if (!valid) return;
     this.opportunity.buildResourceFromForm(this.selectedCareers, this.selectedSchools, 'Other');
+    this.isLoading = true;
     if (!this.opportunity.id) {
       this.resourcesService.createResource(this.opportunity).subscribe((res) => {
-        alert('Created new opportunity successfully');
+        this.isLoading = false;
+        this.toastService.show('Created new opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
-        alert('Server error');
+        this.isLoading = false;
+        this.toastService.showError('Server error');;
       });
     } else {
       this.resourcesService.updateResource(this.opportunity).subscribe((res) => {
-        alert('Updated opportunity successfully');
+        this.isLoading = false;
+        this.toastService.show('Updated opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
-        alert('Server error');
+        this.isLoading = false;
+        this.toastService.showError('Server error');;
       });
     }
   }
 
   approve(): void {
+    this.isLoading = true
     this.resourcesService.opportunityApprove(this.opportunityId).subscribe((res) => {
-      alert('Opportunity Approved');
+      this.isLoading = false;
+      this.toastService.show('Opportunity Approved');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.isLoading = false;
+      this.toastService.showError('Server error');
     });
   }
 
   reject(): void {
+    this.isLoading = true
     this.resourcesService.opportunityReject(this.opportunityId).subscribe((res) => {
-      alert('Opportunity Rejected');
+      this.isLoading = false;
+      this.toastService.show('Opportunity Rejected');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.isLoading = false;
+      this.toastService.showError('Server error');
     });
   }
 

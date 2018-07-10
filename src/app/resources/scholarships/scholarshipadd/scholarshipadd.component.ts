@@ -1,13 +1,15 @@
 import 'rxjs/add/observable/throw';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MultiSelectService, ResourcesService, CurrentUserService, AuthService, AccessService, } from '../../../app.services-list';
+import { MultiSelectService, ResourcesService, CurrentUserService, AuthService, AccessService,ToastService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { NavbarService } from '../../../app.services-list';
 import { GlobalState } from '../../../global.state';
 import { User } from '../../../_models/user.model';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs';
+import { NotificationsService } from 'angular2-notifications';
+
 
 @Component({
   selector: 'app-scholarshipadd',
@@ -46,6 +48,8 @@ export class ScholarshipAddComponent implements OnInit {
     private currentUserService: CurrentUserService,
     public authProvider: AuthService,
     public access: AccessService,
+    private _service: NotificationsService,
+    public toastService: ToastService
   ) {
     // TODO: fix async pipe
     this.careerList = this.multiSelectService.getDropdownCareerGroups();
@@ -63,7 +67,7 @@ export class ScholarshipAddComponent implements OnInit {
       await this.getSchools();
       this.setState();
     } catch (err) {
-      alert(err.message ? err.message : 'Server Error');
+      this.toastService.showError(err.message ? err.message : 'Server Error');
     }
   }
 
@@ -132,7 +136,7 @@ export class ScholarshipAddComponent implements OnInit {
           this.scholarship.organization_id));
       }
     } catch (err) {
-      alert(err.message ? err.message : 'Server Error');
+      this.toastService.showError(err.message ? err.message : 'Server Error');
     }
     this.isLoading = false;
   }
@@ -140,23 +144,28 @@ export class ScholarshipAddComponent implements OnInit {
   saveScholarship(valid: boolean): void {
     if (!valid || !this.isValid()) return;
 
+    this.isLoading = true;
     this.scholarship.buildScholarshipFromForm(this.selectedCareers, this.selectedSchools);
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
-        alert('Create new scholarship successfully');
         this.global.selectedTab = 'scholarships';
+        this.isLoading = false;
+        this.toastService.show('Create new scholarship successfully');
         this.router.navigate(['resources']);
         this.scholarship = res;
       }, (errors) => {
-        alert('Server error');
+        this.isLoading = false;
+        this.toastService.showError('Server error');
       });
     } else {
       this.resourcesService.updateScholarship(this.scholarship).subscribe((res) => {
-        alert('Update scholarship successfully');
+        this.isLoading = false;
+        this.toastService.show('Update scholarship successfully');
         this.global.selectedTab = 'scholarships';
         this.router.navigate(['resources']);
       }, (errors) => {
-        alert('Server error');
+        this.isLoading = false;
+        this.toastService.showError('Server error');
       });
     }
   }
@@ -170,19 +179,19 @@ export class ScholarshipAddComponent implements OnInit {
 
   approve(): void {
     this.resourcesService.scholarshipApprove(this.scholarshipId).subscribe((res) => {
-      alert('Scholarship Approved');
+      this.toastService.show('Scholarship Approved');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.toastService.showError(err);
     });
   }
 
   reject(): void {
     this.resourcesService.scholarshipReject(this.scholarshipId).subscribe((res) => {
-      alert('Scholarship Rejected');
+      this.toastService.show('Scholarship Rejected');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.toastService.showError(err);
     });
   }
 

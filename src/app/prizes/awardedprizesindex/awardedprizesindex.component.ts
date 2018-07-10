@@ -3,6 +3,7 @@ import { PrizesService } from '../../_services/prizes.service';
 import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-awardedprizesindex',
@@ -21,7 +22,8 @@ export class AwardedPrizesIndexComponent implements OnInit {
 
   constructor(
     public router: Router,
-    public prizesService: PrizesService
+    public prizesService: PrizesService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -45,7 +47,7 @@ export class AwardedPrizesIndexComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

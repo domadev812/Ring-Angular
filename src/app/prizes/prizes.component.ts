@@ -10,6 +10,7 @@ import { error } from 'util';
 import { PrizesService } from '../app.services-list';
 import { NavbarService, CurrentUserService, AuthService, AccessService } from '../app.services-list';
 import { GlobalState } from '../global.state';
+import { ToastService } from '../_services/toast.service';
 
 @Component({
   selector: 'app-prizes',
@@ -52,7 +53,8 @@ export class PrizesComponent implements OnInit {
     private navBarService: NavbarService,
     private currentUserService: CurrentUserService,
     private authProvider: AuthService,
-    public access: AccessService
+    public access: AccessService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -120,10 +122,10 @@ export class PrizesComponent implements OnInit {
     if (this.cardNumber && this.cardNumber.length > 0) {
       this.prizesService.activateCardNumber(this.cardNumber).subscribe((res) => {
         this.isActivated = true;
-        alert('Key Card Activated.');
+        this.toastService.show('Key Card Activated.');
       }, (errors) => {
         this.isActivated = false;
-        alert('There was a problem. The card was not activated.');
+        this.toastService.show('There was a problem. The card was not activated.');
       });
     }
   }

@@ -8,6 +8,7 @@ import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { NavbarService } from '../../../app.services-list';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../../../_models/user.model';
+import { ToastService } from '../../../_services/toast.service';
 
 @Component({
   selector: 'app-internshipadd',
@@ -45,6 +46,7 @@ export class InternshipAddComponent implements OnInit {
     private currentUserService: CurrentUserService,
     private authProvider: AuthService,
     public access: AccessService,
+    public toastService: ToastService
   ) {
     this.careerList = this.multiSelectService.getDropdownCareerGroups();
     this.organizationList = this.multiSelectService.getDropdownOrganizations();
@@ -61,7 +63,7 @@ export class InternshipAddComponent implements OnInit {
       await this.getSchools();
       this.setState();
     } catch (err) {
-      alert(err.message ? err.message : 'Server Error');
+      this.toastService.showError(err.message ? err.message : 'Server Error');
     }
   }
 
@@ -129,7 +131,7 @@ export class InternshipAddComponent implements OnInit {
           this.internship.organization_id));
       }
     } catch (err) {
-      alert(err.message ? err.message : 'Server Error');
+      this.toastService.showError(err.message ? err.message : 'Server Error');
     }
     this.isLoading = false;
   }
@@ -139,21 +141,26 @@ export class InternshipAddComponent implements OnInit {
     if (!valid) return;
 
     this.internship.buildResourceFromForm(this.selectedCareers, this.selectedSchools, 'Internship');
+    this.isLoading = true;
     if (!this.internship.id) {
       this.resourcesService.createResource(this.internship).subscribe((res) => {
-        alert('Created new internship successfully');
+        this.isLoading = false;        
+        this.toastService.show('Created new internship successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
-        alert('Server error');
+        this.isLoading = false;
+        this.toastService.showError('Server error');;
       });
     } else {
       this.resourcesService.updateResource(this.internship).subscribe((res) => {
-        alert('Updated internship successfully');
+        this.isLoading = false;
+        this.toastService.show('Updated internship successfully');
         this.global.selectedTab = 'internships';
         this.router.navigate(['resources']);
       }, (errors) => {
-        alert('Server error');
+        this.isLoading = false;
+        this.toastService.showError('Server error');;
       });
     }
   }
@@ -163,20 +170,24 @@ export class InternshipAddComponent implements OnInit {
   }
 
   approve(): void {
+    this.isLoading = true;
     this.resourcesService.internshipApprove(this.internshipId).subscribe((res) => {
-      alert('internship Approved');
+      this.isLoading = false;
+      this.toastService.show('internship Approved');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.toastService.showError('Server error');
     });
   }
 
   reject(): void {
+    this.isLoading = true;
     this.resourcesService.internshipReject(this.internshipId).subscribe((res) => {
-      alert('internship Rejected');
+      this.isLoading = false;
+      this.toastService.show('internship Rejected');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.toastService.showError('Server error');
     });
   }
 

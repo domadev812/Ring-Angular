@@ -5,6 +5,7 @@ import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 import * as moment from 'moment';
 import { Campaign } from '../../_models/campaign.model';
+import { ToastService } from '../../_services/toast.service';
 
 
 @Component({
@@ -22,7 +23,9 @@ export class PrizesIndexComponent implements OnInit {
   public searchText: string;
   public loading = false;
 
-  constructor(private router: Router, private prizesService: PrizesService) { }
+  constructor(private router: Router, 
+    private prizesService: PrizesService,
+    public toastService: ToastService) { }
 
   ngOnInit() {
     this.prizes = new Array<Model.Prize>();
@@ -49,7 +52,7 @@ export class PrizesIndexComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

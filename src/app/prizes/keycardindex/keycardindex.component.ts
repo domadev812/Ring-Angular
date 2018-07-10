@@ -4,6 +4,7 @@ import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 import { Observable } from 'rxjs/Observable';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-keycardindex',
@@ -24,7 +25,8 @@ export class KeycardindexComponent implements OnInit {
 
   constructor(
     public router: Router,
-    public prizesService: PrizesService
+    public prizesService: PrizesService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -49,7 +51,7 @@ export class KeycardindexComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

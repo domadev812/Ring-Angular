@@ -3,6 +3,7 @@ import { ActivatedRoute, Routes, RouterModule } from '@angular/router';
 import { Model } from '../../app.models-list';
 import { ResourcesService } from '../../app.services-list';
 import { NavbarService } from '../../app.services-list';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-appliedusers',
@@ -19,6 +20,7 @@ export class AppliedUserComponent implements OnInit {
     private route: ActivatedRoute, 
     private resourcesService: ResourcesService,
     private navBarService: NavbarService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class AppliedUserComponent implements OnInit {
     this.resourcesService.getResourceApplications(id).subscribe((res) => {
       this.applications = res;      
     }, (errors) => {
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 
@@ -46,7 +48,7 @@ export class AppliedUserComponent implements OnInit {
     this.resourcesService.getResource(id).subscribe((res) => {
       this.resource = res;
     }, (errors) => {
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 }

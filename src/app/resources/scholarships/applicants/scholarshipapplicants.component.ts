@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Model } from '../../../app.models-list';
 import { ResourcesService } from '../../../app.services-list';
 import { NavbarService } from '../../../app.services-list';
+import { ToastService } from '../../../_services/toast.service';
 
 @Component({
   selector: 'app-scholarshipapplicants',
@@ -19,6 +20,7 @@ export class ScholarshipApplicantsComponent implements OnInit {
     private router: Router, 
     private resourcesService: ResourcesService,
     private navBarService: NavbarService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -42,7 +44,7 @@ export class ScholarshipApplicantsComponent implements OnInit {
       this.creating = false;
     }, (errors) => {
       this.creating = false;
-      alert(errors.message);
+      this.toastService.showError(errors.message);
     });
   }
 
@@ -52,7 +54,7 @@ export class ScholarshipApplicantsComponent implements OnInit {
       this.scholarship = res;           
       this.creating = false;
     }, (errors) => {
-      alert(errors.message);
+      this.toastService.showError(errors.message);
       this.creating = false;
     });
   }

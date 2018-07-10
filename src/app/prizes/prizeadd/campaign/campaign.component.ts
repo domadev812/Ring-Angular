@@ -6,6 +6,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { PrizesService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
+import { ToastService } from '../../../_services/toast.service';
 
 @Component({
   selector: 'app-campaign',
@@ -37,7 +38,8 @@ export class CampaignComponent implements OnInit {
   today: any;
 
   constructor(private prizesService: PrizesService,
-    private modalService: BsModalService) { }
+    private modalService: BsModalService,
+    public toastService: ToastService) { }
 
   ngOnInit() {
     this.modalType = 0;
@@ -106,12 +108,12 @@ export class CampaignComponent implements OnInit {
 
     if (this.campaignId === 0) {
       this.prizesService.createCampaign(this.prizeId, new Model.Campaign(newCampaign)).subscribe((res) => {
-        alert('Campaign is created');
+        this.toastService.show('Campaign is created');
         this.campaigns.push(res);
         this.modalRef.hide();
         this.refreshPage.emit();
       }, (errors) => {
-        alert(errors.message);
+        this.toastService.showError(errors.message);
       });
     } else {
       if (!this.checkValue()) {
@@ -119,12 +121,12 @@ export class CampaignComponent implements OnInit {
       }
 
       this.prizesService.updateCampaign(this.prizeId, this.campaignId, this.quantity).subscribe((res) => {
-        alert('Campaign is updated');
+        this.toastService.show('Campaign is updated');
         this.campaigns.splice(this.selectedIndex, 1, res);
         this.modalRef.hide();
         this.refreshPage.emit();
       }, (errors) => {
-        alert(errors.message);
+        this.toastService.showError(errors.message);
       });
     }
   }
@@ -153,11 +155,11 @@ export class CampaignComponent implements OnInit {
 
   deleteCampaign(campaignId: number, prizeId: string): void {
     this.prizesService.deleteCampaign(this.prizeId, this.campaignId).subscribe((res) => {
-      alert('Campaign is deleted');
+      this.toastService.show('Campaign is deleted');
       this.refreshPage.emit();
       this.modalRef.hide();
     }, (errors) => {
-      alert(errors.message);
+      this.toastService.showError(errors.message);
     });
   }
 }
