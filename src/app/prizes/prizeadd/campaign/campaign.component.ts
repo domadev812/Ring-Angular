@@ -2,13 +2,10 @@ import 'rxjs/add/observable/throw';
 import * as moment from 'moment';
 import { Component, OnInit, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
-import { error } from 'util';
 import { PrizesService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
-import { Campaign } from '../../../_models/campaign.model';
 
 @Component({
   selector: 'app-campaign',
@@ -71,6 +68,13 @@ export class CampaignComponent implements OnInit {
   tooltip(redeemed: boolean): string {
     if (redeemed) {
       return 'You cannot delete a campaign with redeemed items.';
+    } else {
+      return '';
+    }
+  }
+  cTooltip(prizeId: any): string {
+    if (!prizeId) {
+      return 'You must save a new prize before creating a campaing.';
     } else {
       return '';
     }

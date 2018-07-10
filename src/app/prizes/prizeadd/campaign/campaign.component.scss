@@ -98,6 +98,22 @@ input {
   position: absolute;
   z-index: 99999999999;
 }
+.cTooltip {
+  // visibility: hidden;
+  left: 0;
+  bottom: 100%;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 99999999999;
+}
 .delete-btn:hover .tooltip{
+  visibility: visible;
+}
+.campaign-btn:hover .cTooltip{
   visibility: visible;
 }

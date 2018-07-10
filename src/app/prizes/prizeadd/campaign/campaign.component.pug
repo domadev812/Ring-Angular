@@ -1,9 +1,10 @@
 .header-nav
   .input-label.campaign-title
     | CAMPAIGNS
-  button.primary-button.prizes-btn.campaign-btn(type = "button" [ngClass]="{'btn-disabled': !prizeId, 'feedback-btn': prizeId}" [disabled]="!prizeId" (click)='openModal(template)') 
-    span
-      | New campaign 
+  .container-tooltip([tooltip]="cTooltip(prizeId)")
+    button.primary-button.prizes-btn.campaign-btn( type = "button" [ngClass]="{'btn-disabled': !prizeId, 'feedback-btn': prizeId}" [disabled]="!prizeId" (click)='openModal(template)') 
+      span
+        | New campaign 
 .d-flex.space-between.py-1
     .table-header.mx-4.col-start-date
       | Start Date
