@@ -4,6 +4,7 @@ import { ResourcesService } from '../../_services/resources.service';
 import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
+import { ToastService } from '../../_services/toast.service';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class StudentsComponent implements OnInit {
   public loading = false;
 
   constructor(private router: Router,
-    private usersService: UsersService) { }
+    private usersService: UsersService,
+    public toastService: ToastService) { }
 
   ngOnInit() {
     this.students = new Array<Model.User>();
@@ -51,7 +53,7 @@ export class StudentsComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

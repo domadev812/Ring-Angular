@@ -5,6 +5,7 @@ import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 import { User as ApiUser } from '../../_models/user.model';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-counselors',
@@ -23,7 +24,8 @@ export class CounselorsComponent implements OnInit {
   public loading = false;
 
   constructor(private router: Router,
-    private usersService: UsersService) { }
+    private usersService: UsersService,
+    public toastService: ToastService) { }
 
   ngOnInit() {
     this.counselors = new Array<ApiUser>();
@@ -51,7 +53,7 @@ export class CounselorsComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

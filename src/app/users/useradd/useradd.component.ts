@@ -6,6 +6,7 @@ import { MultiSelectService, UsersService, NavbarService, AuthService, CurrentUs
 import { Model } from '../../app.models-list';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
 import { GlobalState } from '../../global.state';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-useradd',
@@ -48,6 +49,7 @@ export class UserAddComponent implements OnInit {
     public navBarService: NavbarService,
     public authProvider: AuthService,
     public currentUserService: CurrentUserService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -145,7 +147,7 @@ export class UserAddComponent implements OnInit {
       this.creating = false;
     }, (errors) => {
       this.creating = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 
@@ -228,10 +230,10 @@ export class UserAddComponent implements OnInit {
 
   createUser() {
     this.usersService.createUser(this.user).subscribe((res) => {
-      alert('User is created');
+      this.toastService.show('User is created');
       this.router.navigate(['users']);
     }, (errors) => {
-      alert(errors.message);
+      this.toastService.showError(errors.message);
     });
   }
 
@@ -239,10 +241,10 @@ export class UserAddComponent implements OnInit {
     let updatedUser = Object.assign({}, this.user);
     delete updatedUser.password;
     this.usersService.updateUser(updatedUser).subscribe((res) => {
-      alert('User is updated');
+      this.toastService.show('User is updated');
       this.router.navigate(['users']);
     }, (errors) => {
-      alert(errors.message);
+      this.toastService.showError(errors.message);
     });
   }
 
