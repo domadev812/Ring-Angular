@@ -3,6 +3,7 @@ import { ActivatedRoute, Routes, RouterModule, Router } from '@angular/router';
 import { NotificationsService } from '../../_services/notifications.service';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-notificationlist',
@@ -20,7 +21,8 @@ export class NotificationlistComponent implements OnInit {
   public loading = false;
 
   constructor(private notificationsService: NotificationsService,
-    private router: Router) { }
+    private router: Router,
+    public toastService: ToastService) { }
 
   ngOnInit() {
     this.notifications = new Array<Model.Notification>();
@@ -37,7 +39,7 @@ export class NotificationlistComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

@@ -10,6 +10,7 @@ import { MultiSelectUtil } from '../../_utils/multiselect.util';
 import { NavbarService } from '../../app.services-list';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../../_models/user.model';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-notificationadd',
@@ -55,7 +56,8 @@ export class NotificationAddComponent implements OnInit {
     private currentUserService: CurrentUserService,
     public authProvider: AuthService,
     public access: AccessService,
-    public cdr: ChangeDetectorRef
+    public cdr: ChangeDetectorRef,
+    public toastService: ToastService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -182,7 +184,7 @@ export class NotificationAddComponent implements OnInit {
       }
       this.changeState();
     } catch (err) {
-      alert(err.message ? err.message : 'Server Error');
+      this.toastService.showError(err.message ? err.message : 'Server Error');
     }
     this.isLoading = false;
   }
@@ -221,11 +223,11 @@ export class NotificationAddComponent implements OnInit {
     this.isLoading = true;
     this.notificationsService.createNotification(this.notification).subscribe((res) => {
       this.isLoading = false;
-      alert('Created new notification successfully');
+      this.toastService.show('Created new notification successfully');
       this.router.navigate(['notifications']);
     }, (errors) => {
       this.isLoading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 
@@ -233,20 +235,20 @@ export class NotificationAddComponent implements OnInit {
   approve(): void {
     this.notificationsService.notificationApprove(this.notificationId).subscribe((res) => {
       this.isLoading = false;
-      alert('Notification Approved');
+      this.toastService.show('Notification Approved');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.toastService.showError('Server error');
     });
   }
 
   reject(): void {
     this.notificationsService.notificationReject(this.notificationId).subscribe((res) => {
       this.isLoading = false;
-      alert('Notification Rejected');
+      this.toastService.show('Notification Rejected');
       this.router.navigate(['approvals']);
     }, err => {
-      alert(err);
+      this.toastService.showError('Server error');
     });
   }
 

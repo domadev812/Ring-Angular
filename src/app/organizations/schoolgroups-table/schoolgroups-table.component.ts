@@ -5,6 +5,7 @@ import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-schoolgroups-table',
@@ -31,6 +32,7 @@ export class SchoolGroupsTableComponent implements OnInit {
     public access: AccessService,
     private authProvider: AuthService,
     private currentUserService: CurrentUserService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -63,7 +65,7 @@ export class SchoolGroupsTableComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

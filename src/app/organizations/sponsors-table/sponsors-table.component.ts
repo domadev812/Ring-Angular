@@ -6,6 +6,7 @@ import { Model } from '../../app.models-list';
 import { Observable } from 'rxjs/Observable';
 import { Organization } from '../../_models/organization.model';
 import { Router } from '@angular/router';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-sponsors-table',
@@ -26,7 +27,8 @@ export class SponsorsTableComponent implements OnInit {
 
   constructor(private http: Http,
     private organizationService: OrganizationService,
-    public router: Router
+    public router: Router,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class SponsorsTableComponent implements OnInit {
       this.offset += res.length;
     }, (errors) => {
       this.loading = false;
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

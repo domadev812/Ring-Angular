@@ -8,6 +8,7 @@ import { error } from 'util';
 import { Model } from '../../app.models-list';
 import { NavbarService } from '../../app.services-list';
 import { GlobalState } from '../../global.state';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-messageboard',
@@ -28,6 +29,7 @@ export class MessageBoardComponent implements OnInit {
     private router: Router,
     private navBarService: NavbarService,
     private messageBoardService: MessageBoardService,
+    public toastService: ToastService,
     public global: GlobalState,
   ) {
   }
@@ -55,7 +57,7 @@ export class MessageBoardComponent implements OnInit {
       else
         this.currentMessage = res.message;
     }, (errors) => {
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 
@@ -63,10 +65,10 @@ export class MessageBoardComponent implements OnInit {
     this.creating = true;
     this.messageBoardService.updateMessage(this.messageBoard).subscribe((res) => {
       this.creating = false;
-      alert('The message has been posted!');
+      this.toastService.show('The message has been posted!');
       this.router.navigate(['notifications']);
     }, (errors) => {
-      alert('Server error');
+      this.toastService.showError('Server error');;
     });
   }
 

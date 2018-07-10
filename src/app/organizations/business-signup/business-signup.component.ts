@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MultiSelectUtil, } from '../../_utils/multiselect.util';
-import { MultiSelectService, ResourcesService, OrganizationService } from '../../app.services-list';
-import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
-import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
+import { CurrentUserService, MultiSelectService, OrganizationService } from '../../app.services-list';
+import { Router } from '@angular/router';
+import { FileUploader } from 'ng2-file-upload';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Model } from '../../app.models-list';
-import { EmailValidator } from '@angular/forms';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-business-signup',
@@ -15,8 +14,8 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 })
 export class BusinessSignupComponent implements OnInit {
   public organizationTypeList = [];
-  public ktsSelectSettings: any = {};
-  public ktsMultiSettings: any = {};
+  public ktsSelectSettings: MultiSelectUtil.ISelectSettings;
+  public ktsMultiSettings: MultiSelectUtil.ISelectSettings;
   public careerGroupsList = [];
   public careers: Array<Model.Career>;
   public selectedOrganizationType = '';
@@ -41,14 +40,15 @@ export class BusinessSignupComponent implements OnInit {
   constructor(
     private router: Router,
     private multiSelectService: MultiSelectService,
-    private resourcesService: ResourcesService,
     private organizationService: OrganizationService,
     private sanitizer: DomSanitizer,
+    private currentUserService: CurrentUserService,
+    public toastService: ToastService
   ) { }
 
   ngOnInit() {
-    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
-    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection();
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings();
     this.organizationTypeList = MultiSelectUtil.orgType;
     this.getCareerGroups();
     this.uploader = this.organizationService.uploader;
@@ -127,7 +127,7 @@ export class BusinessSignupComponent implements OnInit {
 
     this.organizationService.sendData(data).subscribe((res: boolean) => {
     }, err => {
-      alert(err);
+      this.toastService.showError('Server error');
       console.log(err);
     });
   }
@@ -138,10 +138,10 @@ export class BusinessSignupComponent implements OnInit {
     this.organizationService.createUserOrganization(this.organization, this.user)
       .subscribe((user: Model.User) => {
         this.handleOrganizationSuccess.bind(this)(user.organization_id);
-        alert('Signup Successfull');
+        this.currentUserService.clearCurrentUserPromise();
         this.router.navigate(['resources']);
       }, err => {
-        alert(err.message);
+        this.toastService.showError(err.message ? err.message : 'Server Error');
       });
     this.creating = false;
   }
