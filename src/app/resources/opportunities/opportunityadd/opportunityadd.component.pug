@@ -53,7 +53,7 @@
               | Application link is required
             .invalid-validation([hidden]="!opportunity.link || opportunity.link === '' || validURL(opportunity.link) || (link.pristine && !opportunityForm.submitted)")
               | Application link is not correct
-          input.resources-input([(ngModel)]="opportunity.link" [disabled]="disabled()" [ngClass]="{'disabled': disabled()}" name="link" #link="ngModel" required)
+          input.resources-input([(ngModel)]="opportunity.link" [disabled]="disabled()" type="email" [ngClass]="{'disabled': disabled()}" name="link" #link="ngModel" required)
         .item-info
           .input-label-dropdown
               | CAREERS

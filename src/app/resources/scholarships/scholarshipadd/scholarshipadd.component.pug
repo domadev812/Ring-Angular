@@ -53,7 +53,7 @@
               | Application link is required
             .invalid-validation([hidden]="!scholarship.url || scholarship.url === '' || validURL(scholarship.url) || (link.pristine && !scholarshipForm.submitted)")
               | Application link is not correct
-          input.resources-input([(ngModel)]='scholarship.url' [disabled]="disabled()"  [ngClass]="{'disabled': disabled()}" name="link" #link='ngModel' required)
+          input.resources-input([(ngModel)]='scholarship.url' [disabled]="disabled()" type="email" [ngClass]="{'disabled': disabled()}" name="link" #link='ngModel' required)
         .item-info
           .input-label
             | AMOUNT

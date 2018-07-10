@@ -1,12 +1,9 @@
 import 'rxjs/add/observable/throw';
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
-import { error } from 'util';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrganizationService, NavbarService, CurrentUserService, AuthService } from '../../app.services-list';
 import { Model } from '../../app.models-list';
-import { GlobalState } from '../../global.state';
-import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
-import { environment } from '../../../environments/environment';
+import { FileUploader } from 'ng2-file-upload';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
@@ -56,19 +53,19 @@ export class OrganizationAddComponent implements OnInit {
 
       if (this.type === 'school') {
         this.isSchool = true;
-        if(!this.hasId) {
+        if (!this.hasId) {
           this.title = 'New School';
         } else {
           this.title = 'School Details';
         }
       } else if (this.type === 'sponsor') {
-        if(!this.hasId) {
+        if (!this.hasId) {
           this.title = 'New Sponsor';
         } else {
           this.title = 'Sponsor Details';
         }
       } else {
-        this.type = 'community'
+        this.type = 'community';
         this.title = 'Community Details';
       }
       this.hasBaseDropZoneOver = false;
@@ -180,7 +177,7 @@ export class OrganizationAddComponent implements OnInit {
 
   validURL(url: string) {
     // tslint:disable-next-line:max-line-length
-    const pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+    const pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[A-Za-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
     return pattern.test(url);
   }
 }

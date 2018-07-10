@@ -1,15 +1,11 @@
 import 'rxjs/add/observable/throw';
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { error } from 'util';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MultiSelectService, ResourcesService, CurrentUserService, AuthService, AccessService } from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { GlobalState } from '../../../global.state';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { NavbarService } from '../../../app.services-list';
-import { Resource } from '../../../_models/resource.model';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../../../_models/user.model';
 

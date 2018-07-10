@@ -65,7 +65,7 @@
               | Email is required
             .invalid-validation([hidden]="!user.email || user.email === '' || validEmail(user.email) || (email.pristine && !userForm.submitted)")
               | Incorrect format
-          input.user-input([(ngModel)]="user.email" name="email" #email="ngModel" (ngModelChange)="onChange($event)" [ngClass]="{'input-disabled': editFlag }" [disabled]="editFlag" required ) 
+          input.user-input([(ngModel)]="user.email" name="email" #email="ngModel" type="email" (ngModelChange)="onChange($event)" [ngClass]="{'input-disabled': editFlag }" [disabled]="editFlag" required ) 
         .item-info(*ngIf="!editFlag")
           .input-label
             | PASSWORD
