@@ -15,3 +15,5 @@
           | password
         input.input(type="password" id="password" (keyup)="$event.keyCode == 13 && login()" formControlName="password")
       button.primary-button((click)='login()' ) Login
+      .forgot-password((click)="forgotPassword()")
+        | Forgot Password?

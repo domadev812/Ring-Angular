@@ -1,7 +1,11 @@
 @import "~assets/stylesheets/style-guide";
 @import "~assets/stylesheets/mixins";
 
-
+.forgot-password {
+  color: red;
+  margin: 15px 0px;
+  cursor: pointer;
+}
 .login-page-wrapper{
   display: flex;
   justify-content: center;

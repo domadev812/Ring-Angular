@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AuthService } from '../_services/auth.service';
 import { NavbarService } from '../app.services-list';
+import { ToastService } from '../_services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private navBarService: NavbarService,
+    public toastService: ToastService
   ) {
   }
 
@@ -37,9 +39,13 @@ export class LoginComponent implements OnInit {
         }
       }, (err) => {
         let message = err.message ? `: ${err.message}` : '';
-        alert(message);
+        this.toastService.showError(message);
 
         // loader.dismiss();
       });
+  }
+
+  forgotPassword(): void {
+    window.open('https://www.utahfutures.org/login', '_blank');
   }
 }
