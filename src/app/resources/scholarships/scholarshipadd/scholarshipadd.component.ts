@@ -1,14 +1,22 @@
 import 'rxjs/add/observable/throw';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MultiSelectService, ResourcesService, CurrentUserService, AuthService, AccessService,ToastService } from '../../../app.services-list';
+import {
+  MultiSelectService,
+  ResourcesService,
+  CurrentUserService,
+  AuthService,
+  AccessService,
+  ToastService
+} from '../../../app.services-list';
 import { Model } from '../../../app.models-list';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { NavbarService } from '../../../app.services-list';
 import { GlobalState } from '../../../global.state';
 import { User } from '../../../_models/user.model';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
+import { ScholarshipTypes } from '../../../_models/scholarship.model';
 
 
 @Component({
@@ -18,6 +26,7 @@ import { NotificationsService } from 'angular2-notifications';
 })
 export class ScholarshipAddComponent implements OnInit {
   public scholarship: Model.Scholarship;
+  public tuitionWaiver: boolean;
   public careers: Array<Model.Career>;
   public schools: Array<Model.Organization>;
   public organizations: Array<Model.Organization>;
@@ -84,9 +93,9 @@ export class ScholarshipAddComponent implements OnInit {
   // dropdowns should follow disabled for the rest of page except for the following case:
   //    A user is not an admin, which then the multiselects for organizations/schools are disabled regardless and prefilled  
   setMultiSelect(currentUser: User): void {
-    const isAdmin = currentUser.roles.includes('admin');
     const selectSettings: MultiSelectUtil.ISelectSettings = { disabled: this.disabled() };
-    if (!currentUser.isAdmin()) selectSettings.disabled = true;
+    if (!this.access.getAccess(currentUser.getRole()).functionalityAccess.canUseHighSchoolMultiSelect)
+      selectSettings.disabled = true;
     this.organizationSelectSettings = MultiSelectUtil.singleSelection(selectSettings);
     this.schoolMultiSettings = MultiSelectUtil.selectAllMultiSettings(selectSettings);
     this.careerMultiSettings = MultiSelectUtil.multiSettings({ disabled: this.disabled() });
@@ -131,6 +140,7 @@ export class ScholarshipAddComponent implements OnInit {
       this.scholarship = await this.resourcesService.getScholarship(id).toPromise();
       this.selectedSchools = this.scholarship.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
       this.selectedCareers = this.scholarship.career_groups.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
+      this.tuitionWaiver = ScholarshipTypes.tuition_waiver === this.scholarship.type;
       if (this.scholarship.organization) {
         this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.scholarship.organization.name,
           this.scholarship.organization_id));
@@ -145,7 +155,12 @@ export class ScholarshipAddComponent implements OnInit {
     if (!valid || !this.isValid()) return;
 
     this.isLoading = true;
-    this.scholarship.buildScholarshipFromForm(this.selectedCareers, this.selectedSchools);
+    this.scholarship.buildScholarshipFromForm(
+      this.selectedCareers,
+      this.selectedSchools,
+      this.selectedOrganization,
+      this.tuitionWaiver
+    );
     if (!this.scholarship.id) {
       this.resourcesService.createScholarship(this.scholarship).subscribe((res) => {
         this.global.selectedTab = 'scholarships';
@@ -211,6 +226,9 @@ export class ScholarshipAddComponent implements OnInit {
         ' Please contact Keys to Success before you select this.';
     } else if (type === 'Active') {
       return 'Select this for your scholarship, internship, or opportunity to be active for students to see.';
+    } else {
+      return `Check this box if this is not a scholarship, but a tuition free voucher.
+        This will be shown when the student views the scholarship.`;
     }
   }
 }

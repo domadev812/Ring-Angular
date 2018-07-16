@@ -92,3 +92,7 @@
           input(type='checkbox' [(ngModel)]='scholarship.active' [disabled]="disabled()" id='active' name='active')
           label(for='active')
             | Active
+        .item-info.checkboxes([tooltip]="tooltip('Tuition')")
+          input(type='checkbox' [(ngModel)]='tuitionWaiver' [disabled]="disabled()" id='tuition_waiver' name='tuition_waiver')
+          label(for='tuition_waiver')
+            | Tuition Waiver
