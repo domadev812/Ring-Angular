@@ -4,6 +4,11 @@ import { Career } from './career.model';
 import { User } from './user.model';
 import { CareerGroup } from './career-group.model';
 import { MultiSelectUtil } from '../_utils/multiselect.util';
+
+export enum ScholarshipTypes {
+  scholarship = 'scholarship',
+  tuition_waiver = 'tuition_waiver'
+}
 export class Scholarship {
   id: string;
   title: string;
@@ -12,7 +17,7 @@ export class Scholarship {
   active: boolean;
   approved: any;
   in_app: boolean;
-  type: string;
+  type: ScholarshipTypes;
   url: string;
   description: string;
   organization_id: string;
@@ -84,8 +89,14 @@ export class Scholarship {
     else return 'readonly';
   }
 
-  buildScholarshipFromForm(selectedCareers: MultiSelectUtil.SelectItem[], selectedSchools: MultiSelectUtil.SelectItem[]): void {
-    this.type = 'Scholarship';
+  buildScholarshipFromForm(
+    selectedCareers: MultiSelectUtil.SelectItem[],
+    selectedSchools: MultiSelectUtil.SelectItem[],
+    selectedOrganization: MultiSelectUtil.SelectItem[],
+    tuitionWaiver: boolean
+  ): void {
+    this.organization_id = selectedOrganization[0].id;
+    this.type = tuitionWaiver ? ScholarshipTypes.tuition_waiver : ScholarshipTypes.scholarship;
     this.career_group_ids = selectedCareers.map(career_group => {
       return +career_group.id; // + converts string to number
     });
