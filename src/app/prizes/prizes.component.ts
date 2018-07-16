@@ -118,14 +118,14 @@ export class PrizesComponent implements OnInit {
     this.modalRef = this.modalService.show(keycard, this.config);
   }
 
-  activate(event): void {
+  activate(): void {
     if (this.cardNumber && this.cardNumber.length > 0) {
       this.prizesService.activateCardNumber(this.cardNumber).subscribe((res) => {
         this.isActivated = true;
-        this.toastService.show('Key Card Activated.');
-      }, (errors) => {
+        this.toastService.show('Key card activated.');
+      }, (err) => {
         this.isActivated = false;
-        this.toastService.show('There was a problem. The card was not activated.');
+        this.toastService.showError(err.message);
       });
     }
   }
