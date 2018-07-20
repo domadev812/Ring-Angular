@@ -1,11 +1,13 @@
 import 'rxjs/add/observable/throw';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
+import { error } from 'util';
 import { OrganizationService, NavbarService, CurrentUserService, AuthService } from '../../app.services-list';
 import { Model } from '../../app.models-list';
-import { FileUploader } from 'ng2-file-upload';
+import { GlobalState } from '../../global.state';
+import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
+import { environment } from '../../../environments/environment';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-organizationadd',
@@ -36,8 +38,7 @@ export class OrganizationAddComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private currentUserService: CurrentUserService,
     public authProvider: AuthService,
-    private navBarService: NavbarService,
-    public toastService: ToastService
+    private navBarService: NavbarService
   ) {
 
   }
@@ -100,14 +101,14 @@ export class OrganizationAddComponent implements OnInit {
         .updateOrganization(this.organization)
         .subscribe(this.handleOrganizationSuccess.bind(this));
       this.creating = false;
-      this.toastService.show('Organization Updated Successfully');
+      alert('Organization Updated Successfully');
       this.router.navigate(['organizations']);
     } else {
       this.organizationService
         .createOrganization(this.organization)
         .subscribe(this.handleOrganizationSuccess.bind(this));
       this.creating = false;
-      this.toastService.show('Organization Created Successfully');
+      alert('Organization Created Successfully');
       this.router.navigate(['organizations']);
     }
   }
@@ -144,7 +145,7 @@ export class OrganizationAddComponent implements OnInit {
       this.creating = false;
     }, (errors) => {
       this.creating = false;
-      this.toastService.showError('Server error');;
+      alert('Server error');
     });
   }
 
@@ -163,13 +164,13 @@ export class OrganizationAddComponent implements OnInit {
     const del = confirm('Are you sure you want to delete this school?');
     if (del === true) {
       this.organizationService.deleteOrganization(this.organization.id).subscribe((res) => {
-        this.toastService.show('School Deleted');
+        alert('School Deleted');
         this.router.navigate(['organizations']);
       }, err => {
-        this.toastService.showError('Server error');
+        alert(err);
       });
     } else {
-      this.toastService.show('School not deleted');
+      alert('School not deleted');
     }
   }
 
@@ -179,7 +180,7 @@ export class OrganizationAddComponent implements OnInit {
 
   validURL(url: string) {
     // tslint:disable-next-line:max-line-length
-    const pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[A-Za-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+    const pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
     return pattern.test(url);
   }
 }
