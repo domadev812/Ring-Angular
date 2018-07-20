@@ -6,7 +6,6 @@ import { MultiSelectService, NavbarService, AuthService, AccessService, GroupSer
 import { ActivatedRoute, Router, Routes, RouterModule } from '@angular/router';
 import { Group } from '../../_models/group.model';
 import { GlobalState } from '../../global.state';
-import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-newgroup',
@@ -35,7 +34,6 @@ export class NewgroupComponent implements OnInit {
     private access: AccessService,
     private groupService: GroupService,
     public global: GlobalState,
-    public toastService: ToastService
 
   ) { }
 
@@ -116,19 +114,19 @@ export class NewgroupComponent implements OnInit {
     if (!this.schoolGroupId)
       this.groupService.createGroup(this.schoolGroup).subscribe((res) => {
         console.log('here is the schoolGroup', this.schoolGroup);
-        this.toastService.show('Created School Group Succesfully');
+        alert('Created School Group Succesfully');
         this.router.navigate(['organizations']);
         this.schoolGroup = res;
       }, (errors) => {
-        this.toastService.showError('Server error');;
+        alert('Server error');
       });
     else
       this.groupService.updateGroup(this.schoolGroup).subscribe((res) => {
-        this.toastService.show('Update School Group successfully');
+        alert('Update School Group successfully');
         this.global.selectedTab = 'organizations';
         this.router.navigate(['organizations']);
       }, (errors) => {
-        this.toastService.showError('Server error');;
+        alert('Server error');
       });
   }
 
