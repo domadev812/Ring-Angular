@@ -10,7 +10,6 @@ import { GlobalState } from '../../global.state';
 import { MultiSelectUtil } from '../../_utils/multiselect.util';
 import { NavbarService } from '../../app.services-list';
 import { Prize } from '../../_models/prize.model';
-import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-prizeadd',
@@ -50,7 +49,6 @@ export class PrizeAddComponent implements OnInit {
     private currentUserService: CurrentUserService,
     public authProvider: AuthService,
     private groupService: GroupService,
-    public toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -175,7 +173,7 @@ export class PrizeAddComponent implements OnInit {
       this.disableFlag = flag;
     }, (errors) => {
       this.creating = false;
-      this.toastService.showError('Server error');;
+      alert('Server error');
     });
   }
 
@@ -241,19 +239,19 @@ export class PrizeAddComponent implements OnInit {
     if (!this.prize.id) {
       this.prizesService.createPrize(this.prize).subscribe((res) => {
         this.newPrizeId = res.id;
-        this.toastService.show('Prize is created');
+        alert('Prize is created');
         this.global.selectedTab = 'prizes';
         this.router.navigate(['prizeedit/' + this.newPrizeId]);
       }, (errors) => {
-        this.toastService.showError('Server error');;
+        alert('Server error');
       });
     } else {
       this.prizesService.updatePrize(this.prize).subscribe((res) => {
-        this.toastService.show('Prize is updated');
+        alert('Prize is updated');
         this.global.selectedTab = 'prizes';
         this.router.navigate(['prizes']);
       }, (errors) => {
-        this.toastService.showError('Server error');;
+        alert('Server error');
       });
     }
   }
