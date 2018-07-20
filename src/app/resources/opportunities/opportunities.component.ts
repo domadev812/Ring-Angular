@@ -3,7 +3,6 @@ import { ResourcesService } from '../../_services/resources.service';
 import { Router, Routes, RouterModule } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { Model } from '../../app.models-list';
-import { ToastService } from '../../_services/toast.service';
 
 @Component({
   selector: 'app-opportunities',
@@ -21,9 +20,7 @@ export class OpportunitiesComponent implements OnInit {
   public organizations: Array<Model.Organization>;
   public loading = false;
 
-  constructor(private router: Router, 
-    private resourcesService: ResourcesService,
-    public toastService: ToastService) { }
+  constructor(private router: Router, private resourcesService: ResourcesService) { }
 
   ngOnInit() {
     this.opportunities = new Array<Model.Resource>();
@@ -50,7 +47,7 @@ export class OpportunitiesComponent implements OnInit {
       this.opportunities = res.map(opportunity => opportunity);
       this.offset += res.length;
     }, (errors) => {
-      this.toastService.showError('Server error');;
+      alert('Server error');
       this.loading = false;
     });
   }

@@ -9,10 +9,6 @@ import { Model } from '../../../app.models-list';
 import { GlobalState } from '../../../global.state';
 import { MultiSelectUtil } from '../../../_utils/multiselect.util';
 import { NavbarService } from '../../../app.services-list';
-import { Resource } from '../../../_models/resource.model';
-import { User } from '../../../_models/user.model';
-import { Observable } from 'rxjs/Observable';
-import { ToastService } from '../../../_services/toast.service';
 
 @Component({
   selector: 'app-opportunityadd',
@@ -21,25 +17,33 @@ import { ToastService } from '../../../_services/toast.service';
 })
 export class OpportunityAddComponent implements OnInit {
   public opportunity: Model.Resource;
+  public originalOpportunity: Model.Resource;
   public careers: Array<Model.Career>;
   public organizations: Array<Model.Organization>;
   public schools: Array<Model.Organization>;
-  public opportunityId: string;
-  public title;
-
-  public organizationSelectSettings: MultiSelectUtil.ISelectSettings;
-  public careerMultiSettings: MultiSelectUtil.ISelectSettings;
-  public schoolMultiSettings: MultiSelectUtil.ISelectSettings;
-  public careerList: Observable<MultiSelectUtil.SelectItem[]>;
-  public selectedCareers = [];
+  public organizationList = [];
+  public selectedOrganization = [];
+  public ktsSelectSettings: any = {};
+  public selectAllMultiSettings: any = {};
+  public ktsMultiSettings: any = {};
+  public careerList = [];   //Selectable Career List
+  public selectedCareers = [];    //Selected Career List
   public schoolList = [];
   public selectedSchools = [];
-  public organizationList: Observable<MultiSelectUtil.SelectItem[]>;
-  public selectedOrganization = [];
-
-  public pageSate: 'edit' | 'approval' | 'readonly' | 'new' = 'edit';
-  public canApprove = false;
-  public isLoading = false;
+  public title: string;
+  public editFlag: boolean;
+  public disableFlag: boolean;
+  public isAdmin: boolean;
+  public creating: boolean;
+  public opportunityId: string;
+  public approved: boolean;
+  public approveBtn: boolean;
+  public saveBtn: boolean;
+  public currentRoute: string;
+  public currentUser: any;
+  public canViewApproveReject: boolean;
+  public adminOrCommunity: boolean;
+  public schoolName: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -50,11 +54,7 @@ export class OpportunityAddComponent implements OnInit {
     private currentUserService: CurrentUserService,
     private authProvider: AuthService,
     public access: AccessService,
-    public toastService: ToastService
-  ) {
-    this.careerList = this.multiSelectService.getDropdownCareerGroups();
-    this.organizationList = this.multiSelectService.getDropdownOrganizations();
-  }
+  ) { }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -62,133 +62,312 @@ export class OpportunityAddComponent implements OnInit {
       this.navBarService.show();
       this.navBarService.activeTabChanged('resources');
       this.opportunity = new Model.Resource({});
+      this.originalOpportunity = new Model.Resource({});
+      this.careers = new Array<Model.Career>();
       this.schools = new Array<Model.Organization>();
-      this.organizations = new Array<Model.Organization>(null);
-      await this.getSchools();
-      this.setState();
-    } catch (err) {
-      this.toastService.showError(err.message ? err.message : 'Server Error');
+      this.organizations = new Array<Model.Organization>();
+      this.title = 'New Opportunity';
+      this.editFlag = false;
+      this.disableFlag = false;
+      this.creating = false;
+      this.approved = true;
+      this.currentRoute = this.route.snapshot.url[0].path;
+      this.currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
+      this.setUpForView(this.currentUser.roles);
+      this.getCareers();
+      this.getSchools();
+      this.getOrganizations();
+    } catch (err) { }
+  }
+
+  setMsSettings(sDisabled: boolean = null, mDisabled: boolean = null, checkAll: boolean = null): void {
+    this.ktsSelectSettings.disabled = sDisabled;
+    this.ktsMultiSettings.disabled = mDisabled;
+    this.selectAllMultiSettings.enableCheckAll = checkAll;
+  }
+
+  setTitle(title: string = null) {
+    if (title) {
+      this.title = title;
+    } else if (!this.approved) {
+      this.title = this.opportunity.organization.name;
+    } else if (this.opportunityId !== null) {
+      this.title = 'Edit Opportunity';
     }
   }
 
-  setTitle() {
-    if (this.approval()) this.title = 'Awaiting Approval';
-    else if (!this.opportunityId) this.title = 'New Opportunity';
-    else this.title = 'Edit Opportunity';
+  showButtonGroup() {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    if (this.opportunityId === null) {
+      this.approveBtn = true;
+    }
+    if (isAdmin && !this.approved) {
+      this.approveBtn = false;
+      this.saveBtn = true;
+    } else {
+      this.approveBtn = true;
+    }
   }
 
-  async getSchools(): Promise<void> {
-    this.schoolList = await this.multiSelectService.getDropdownSchools().toPromise();
+  setMultiSelect() {
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsSelectSettings.disabled = !this.approved;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+    this.ktsMultiSettings.disabled = !this.approved;
   }
 
-  // dropdowns should follow disabled for the rest of page except for the following case:
-  //    A user is not an admin, which then the multiselects for organizations/schools are disabled regardless and prefilled  
-  setMultiSelect(currentUser: User): void {
-    const isAdmin = currentUser.roles.includes('admin');
-    const selectSettings: MultiSelectUtil.ISelectSettings = { disabled: this.disabled() };
-    if (!currentUser.isAdmin()) selectSettings.disabled = true;
-    this.organizationSelectSettings = MultiSelectUtil.singleSelection(selectSettings);
-    this.schoolMultiSettings = MultiSelectUtil.selectAllMultiSettings(selectSettings);
-    this.careerMultiSettings = MultiSelectUtil.multiSettings({ disabled: this.disabled() });
+  multiSelectPreFlight(): void {
+    const isAdmin = this.currentUser.roles.includes('admin');
+    this.ktsSelectSettings = MultiSelectUtil.singleSelection;
+    this.ktsMultiSettings = MultiSelectUtil.multiSettings;
+
+    if (isAdmin && this.opportunityId && !this.approved) {
+      this.setMsSettings(true, true, true);
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id));
+    } else if (isAdmin && !this.opportunityId) {
+      this.setMsSettings(false, false, true);
+    } else if (isAdmin && this.opportunityId && this.approved) {
+      this.setMsSettings(false, false, false);
+    } else if (!isAdmin && !this.opportunityId) {
+      this.setMsSettings(true, false, false);
+      this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id));
+    }
   }
 
-  async setState(): Promise<void> {
-    const currentUser = await this.currentUserService.getCurrentUser(this.authProvider);
-    this.canApprove = this.access.getAccess(currentUser.getRole()).functionalityAccess.approveRejectButtons;
-    if (this.opportunityId) await this.getResource(this.opportunityId);
-    else {
+
+
+  setUpForView(roles: Array<string>): void {
+    this.schoolName = this.currentUser.organization.name;
+    if (roles.includes('admin') || roles.includes('community')) {
+      this.adminOrCommunity = true;
+    } else {
+      this.adminOrCommunity = false;
+    }
+    if (!this.opportunityId) {
       this.selectedOrganization.push(
-        new MultiSelectUtil.SelectItem(currentUser.organization.name, currentUser.organization_id)
+        new MultiSelectUtil.SelectItem(this.currentUser.organization.name, this.opportunity.organization_id)
       );
-      const filteredSchools = MultiSelectUtil.isListed(this.schoolList, currentUser);
-      if (filteredSchools)
-        this.selectedSchools.push(
-          new MultiSelectUtil.SelectItem(currentUser.organization.name, currentUser.organization_id)
-        );
-      this.opportunity.organization_id = currentUser.organization_id;
+      this.opportunity.organization_id = this.currentUser.organization_id;
     }
-    this.pageSate = this.opportunity.getPageState(currentUser);
-    this.setTitle();
-    this.setMultiSelect(currentUser);
+    this.canViewApproveReject = this.access.getAccess(this.currentUser.getRole()).functionalityAccess.approveRejectButtons;
+    const userType = roles.includes('admin') ? 'admin' : 'other';
+    const selector = `${userType + '_' + this.currentRoute}`;
+    const setupIndex = {
+      'admin_opportunityedit': this.adminopportunityEdit.bind(this),
+      'admin_opportunityadd': this.adminopportunityAdd.bind(this),
+      'other_opportunityadd': this.useropportunityAdd.bind(this),
+      'other_opportunityedit': this.useropportunityEdit.bind(this),
+
+    };
+    return setupIndex[selector]();
   }
 
-  disabled(): boolean {
-    return this.pageSate !== 'new' && (this.pageSate === 'readonly' || this.pageSate === 'approval');
+  adminopportunityEdit(): void {
+    if (this.opportunityId) this.getResource(this.opportunityId);
+    if (this.approved) this.showButtonGroup();
+    this.approveBtn = false;
+
+  }
+  useropportunityEdit(): void {
+    if (this.opportunityId) this.getResource(this.opportunityId);
+
   }
 
-  approval(): boolean {
-    return this.pageSate === 'approval';
+  adminopportunityAdd(): void {
+    if (!this.opportunityId)
+      this.multiSelectPreFlight();
+    this.setTitle('New Opportunity');
+    this.showButtonGroup();
   }
 
-  readonly(): boolean {
-    return this.pageSate === 'readonly';
+  useropportunityAdd(): void {
+    if (!this.opportunityId)
+      this.multiSelectPreFlight();
+    this.setTitle('New Opportunity');
+    this.showButtonGroup();
   }
 
-  async getResource(id: string): Promise<void> {
-    try {
-      this.isLoading = true;
-      this.opportunity = await this.resourcesService.getResource(id).toPromise();
-      this.selectedSchools = this.opportunity.schools.map(school => new MultiSelectUtil.SelectItem(school.name, school.id));
-      this.selectedCareers = this.opportunity.career_groups.map(career => new MultiSelectUtil.SelectItem(career.title, career.id));
-      if (this.opportunity.organization) {
-        this.selectedOrganization.push(new MultiSelectUtil.SelectItem(this.opportunity.organization.name,
-          this.opportunity.organization_id));
+  onSchoolSelect(item: any) {
+    this.onChange(item);
+  }
+
+  onSchoolDeSelect(item: any) {
+    this.onChange(item);
+  }
+
+  getSchools(): void {
+    this.multiSelectService.getDropdownSchools().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+      this.schoolList = res;
+    }, err => {
+      console.log('err', err);
+    });
+  }
+
+
+  onCareerSelect(item: any) {
+    this.onChange(item);
+  }
+  onCareerDeSelect(item: any) {
+    this.onChange(item);
+  }
+
+  onOrganizationSelect(item: any) {
+    this.opportunity.organization_id = item.id;
+    this.onChange(item);
+  }
+  onOrganizationDeSelect(item: any) {
+    this.onChange(item);
+  }
+
+  onChange(event): void {
+    if (this.editFlag) {
+      if (this.opportunity.title !== this.originalOpportunity.title) {
+        this.disableFlag = false;
+        return;
       }
-    } catch (err) {
-      this.toastService.showError(err.message ? err.message : 'Server Error');
+      if (this.opportunity.details !== this.originalOpportunity.details) {
+        this.disableFlag = false;
+        return;
+      }
+      if (this.opportunity.link !== this.originalOpportunity.link) {
+        this.disableFlag = false;
+        return;
+      }
+      if (this.selectedOrganization.length === 0) {
+        this.disableFlag = false;
+        return;
+      } else if (this.selectedOrganization[0].id !== this.originalOpportunity.organization_id) {
+        this.disableFlag = false;
+        return;
+      }
+      if (this.opportunity.is_active !== this.originalOpportunity.is_active) {
+        this.disableFlag = false;
+        return;
+      }
+      if (!this.isCareersSame()) {
+        this.disableFlag = false;
+        return;
+      }
+
+      this.disableFlag = true;
+    } else {
+      this.disableFlag = false;
     }
-    this.isLoading = false;
+  }
+
+  isCareersSame(): boolean {
+    return this.selectedCareers.length > 0 ? false : true;
+  }
+
+  getResource(id: string): void {
+    this.creating = true;
+    this.resourcesService.getResource(id).subscribe((res) => {
+      this.opportunity = res;
+      this.approved = res.approved;
+      this.setTitle();
+      this.showButtonGroup();
+      this.multiSelectPreFlight();
+      const parsedCareers = res.career_groups.map(career_groups => {
+        career_groups.title = career_groups.title;
+        career_groups.id = career_groups.id;
+        return career_groups;
+      });
+      this.selectedCareers = MultiSelectUtil.SelectItem.buildFromData(parsedCareers, 'Career');
+      this.originalOpportunity = Object.assign({}, res);
+      if (!this.originalOpportunity.is_active) {
+        this.originalOpportunity.is_active = false;
+      }
+      if (this.organizationList.length > 0) {
+        let org = this.organizationList.find(organization => organization.id === this.opportunity.organization_id);
+        this.selectedOrganization.push(org);
+      }
+      this.creating = false;
+    }, (errors) => {
+      this.creating = false;
+      alert('Server error');
+    });
+  }
+
+  getCareers(): void {
+    this.multiSelectService.getDropdownCareerGroups().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+      this.careerList = res;
+    }, err => {
+      console.log('err', err);
+    });
+  }
+
+  getOrganizations(): void {
+    this.multiSelectService.getDropdownOrganizations().subscribe((res: MultiSelectUtil.SelectItem[]) => {
+      this.organizationList = res;
+    }, err => {
+      console.log('err', err);
+    });
   }
 
   saveOpportunity(valid: boolean): void {
 
-    if (!valid) return;
-    this.opportunity.buildResourceFromForm(this.selectedCareers, this.selectedSchools, 'Other');
-    this.isLoading = true;
+    if (!valid) {
+      return;
+    }
+
+    if (!this.validURL(this.opportunity.link)) {
+      alert('Please input valid url link');
+      return;
+    }
+
+    if (this.selectedOrganization.length === 0) {
+      return;
+    }
+    if (!this.opportunity.is_active) {
+      this.opportunity.is_active = false;
+    }
+
+    this.opportunity.type = 'Other';
+
+    this.opportunity.organization_id = this.selectedOrganization[0].id;
+
+    this.opportunity.career_group_ids = this.selectedCareers.map(career_group => {
+      return career_group.id;
+    });
+
+    this.opportunity.school_ids = this.selectedSchools.map(school => {
+      return school.id;
+    });
+
     if (!this.opportunity.id) {
       this.resourcesService.createResource(this.opportunity).subscribe((res) => {
-        this.isLoading = false;
-        this.toastService.show('Created new opportunity successfully');
+        alert('Created new opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.isLoading = false;
-        this.toastService.showError('Server error');;
+        alert('Server error');
       });
     } else {
       this.resourcesService.updateResource(this.opportunity).subscribe((res) => {
-        this.isLoading = false;
-        this.toastService.show('Updated opportunity successfully');
+        alert('Updated opportunity successfully');
         this.global.selectedTab = 'opportunities';
         this.router.navigate(['resources']);
       }, (errors) => {
-        this.isLoading = false;
-        this.toastService.showError('Server error');;
+        alert('Server error');
       });
     }
   }
 
   approve(): void {
-    this.isLoading = true
     this.resourcesService.opportunityApprove(this.opportunityId).subscribe((res) => {
-      this.isLoading = false;
-      this.toastService.show('Opportunity Approved');
+      alert('Opportunity Approved');
       this.router.navigate(['approvals']);
     }, err => {
-      this.isLoading = false;
-      this.toastService.showError('Server error');
+      alert(err);
     });
   }
 
   reject(): void {
-    this.isLoading = true
     this.resourcesService.opportunityReject(this.opportunityId).subscribe((res) => {
-      this.isLoading = false;
-      this.toastService.show('Opportunity Rejected');
+      alert('Opportunity Rejected');
       this.router.navigate(['approvals']);
     }, err => {
-      this.isLoading = false;
-      this.toastService.showError('Server error');
+      alert(err);
     });
   }
 
@@ -206,7 +385,7 @@ export class OpportunityAddComponent implements OnInit {
 
   validURL(url: string) {
     // tslint:disable-next-line:max-line-length
-    const pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[A-Za-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+    const pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
     return pattern.test(url);
   }
 
